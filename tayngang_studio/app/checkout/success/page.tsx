@@ -1,14 +1,11 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Package, Truck, Phone } from "lucide-react";
+import { CheckCircle, Package, Phone, Truck } from "lucide-react";
 import Link from "next/link";
 
 export default function CheckoutSuccessPage() {
   return (
     <div className="min-h-screen bg-[#EAEAEA]">
-      <Header />
       <main className="py-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-8">
@@ -104,7 +101,6 @@ export default function CheckoutSuccessPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

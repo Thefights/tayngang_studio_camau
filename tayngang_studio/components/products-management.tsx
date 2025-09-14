@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Trash2, Eye, Search } from "lucide-react";
+import { Edit, Eye, Plus, Search, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 // Mock products data
 const products = [
@@ -166,6 +166,8 @@ export function ProductsManagement() {
                           src={product.image || "/placeholder.svg"}
                           alt={product.name}
                           className="w-full h-full object-cover"
+                          width={48}
+                          height={48}
                         />
                       </div>
                       <div>

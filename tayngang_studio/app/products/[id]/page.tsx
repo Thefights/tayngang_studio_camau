@@ -1,8 +1,6 @@
-import { notFound } from "next/navigation";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { ProductDetail } from "@/components/product-detail";
 import { RelatedProducts } from "@/components/related-products";
+import { notFound } from "next/navigation";
 
 // Mock product data - in real app this would come from database
 const products = [
@@ -95,12 +93,10 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="min-h-screen bg-[#EAEAEA]">
-      <Header />
       <main>
         <ProductDetail product={product} />
         <RelatedProducts currentProductId={product.id} />
       </main>
-      <Footer />
     </div>
   );
 }

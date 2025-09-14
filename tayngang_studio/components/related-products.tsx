@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Mock related products data
 const relatedProducts = [
@@ -76,6 +76,8 @@ export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  width={300}
+                  height={300}
                 />
 
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Minus, Plus, X, ShoppingBag, ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, Minus, Plus, ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 // Mock cart data
 const initialCartItems = [
@@ -152,6 +151,8 @@ export function ShoppingCartContent() {
                           src={item.image || "/placeholder.svg"}
                           alt={item.name}
                           className="w-full h-full object-cover"
+                          width={96}
+                          height={96}
                         />
                       </motion.div>
 
@@ -287,14 +288,7 @@ export function ShoppingCartContent() {
                 <span>Tạm tính:</span>
                 <span>{subtotal.toLocaleString("vi-VN")}₫</span>
               </div>
-              <div className="flex justify-between text-[#5A3E2B]/80">
-                <span>Phí vận chuyển:</span>
-                <span>
-                  {shipping === 0
-                    ? "Miễn phí"
-                    : `${shipping.toLocaleString("vi-VN")}₫`}
-                </span>
-              </div>
+
               {discount > 0 && (
                 <div className="flex justify-between text-[#A5C6A1]">
                   <span>Giảm giá:</span>
@@ -318,33 +312,6 @@ export function ShoppingCartContent() {
             )}
           </Card>
 
-          {/* Promo Code */}
-          <Card className="p-6 bg-white border-[#5A3E2B]/10">
-            <h3 className="font-serif text-lg text-[#5A3E2B] mb-3">
-              Mã giảm giá
-            </h3>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Nhập mã giảm giá"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                className="border-[#5A3E2B]/20 focus:border-[#5A3E2B]"
-              />
-              <Button
-                variant="outline"
-                className="border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent"
-              >
-                Áp dụng
-              </Button>
-            </div>
-            {promoCode === "CAMAU10" && (
-              <p className="text-sm text-[#A5C6A1] mt-2">
-                Mã giảm giá đã được áp dụng! Giảm 10%
-              </p>
-            )}
-          </Card>
-
-          {/* Checkout Button */}
           <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

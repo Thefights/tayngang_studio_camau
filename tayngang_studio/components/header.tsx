@@ -1,22 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import {
-  ShoppingCart,
-  Menu,
-  X,
-  User,
-  Package,
-  ChevronDown,
-  LogOut,
-  UserCircle,
-  History,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/public/assets/home/logo.png";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ChevronDown,
+  History,
+  LogOut,
+  Menu,
+  Package,
+  ShoppingCart,
+  User,
+  UserCircle,
+  X,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,7 +41,13 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-[#00000] rounded-sm flex items-center justify-center">
-              <Image src={Logo} alt="TayNgang Studio" className="w-20 h-20" />
+              <Image
+                src={Logo}
+                alt="TayNgang Studio"
+                className="w-20 h-20"
+                width={32}
+                height={32}
+              />
             </div>
             <span className="font-serif text-xl text-[#5A3E2B] font-medium">
               TayNgang Studio

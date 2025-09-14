@@ -1,20 +1,11 @@
-import type { Metadata } from "next";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  ArrowLeft,
-  Package,
-  Truck,
-  CheckCircle,
-  MapPin,
-  Phone,
-  Mail,
-  Download,
-} from "lucide-react";
-import Link from "next/link";
+import { ArrowLeft, Download, MapPin, Phone } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Chi tiết đơn hàng - Sổ tay du lịch Cà Mau",
@@ -148,86 +139,6 @@ export default function OrderDetailPage({}: { params: { id: string } }) {
                 </h2>
                 {getStatusBadge(orderData.status)}
               </div>
-
-              <div className="space-y-6">
-                {orderData.timeline.map((step, index) => (
-                  <div key={index} className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          step.completed
-                            ? step.current
-                              ? "bg-[#87C1D8] text-white"
-                              : "bg-[#A5C6A1] text-white"
-                            : "bg-gray-200 text-gray-400"
-                        }`}
-                      >
-                        {step.completed ? (
-                          step.current ? (
-                            <Truck className="w-4 h-4" />
-                          ) : (
-                            <CheckCircle className="w-4 h-4" />
-                          )
-                        ) : (
-                          <Package className="w-4 h-4" />
-                        )}
-                      </div>
-                      {index < orderData.timeline.length - 1 && (
-                        <div
-                          className={`w-0.5 h-12 mt-2 ${
-                            step.completed ? "bg-[#A5C6A1]" : "bg-gray-200"
-                          }`}
-                        />
-                      )}
-                    </div>
-                    <div className="flex-1 pb-8">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3
-                          className={`font-medium ${
-                            step.current ? "text-[#87C1D8]" : "text-[#5A3E2B]"
-                          }`}
-                        >
-                          {step.status}
-                        </h3>
-                        {step.current && (
-                          <Badge
-                            variant="outline"
-                            className="text-xs border-[#87C1D8] text-[#87C1D8]"
-                          >
-                            Hiện tại
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-[#5A3E2B]/70 mb-1">
-                        {step.date}
-                      </p>
-                      <p className="text-sm text-[#5A3E2B]/60">
-                        {step.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {orderData.trackingNumber && (
-                <div className="mt-6 p-4 bg-[#87C1D8]/10 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-[#5A3E2B]/70">Mã vận đơn:</p>
-                      <p className="font-mono text-[#5A3E2B] font-medium">
-                        {orderData.trackingNumber}
-                      </p>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-[#87C1D8] text-[#87C1D8] hover:bg-[#87C1D8] hover:text-white bg-transparent"
-                    >
-                      Theo dõi
-                    </Button>
-                  </div>
-                </div>
-              )}
             </Card>
 
             {/* Order Items */}
@@ -246,6 +157,8 @@ export default function OrderDetailPage({}: { params: { id: string } }) {
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
                         className="w-full h-full object-cover"
+                        width={64}
+                        height={64}
                       />
                     </div>
                     <div className="flex-1">
@@ -342,27 +255,6 @@ export default function OrderDetailPage({}: { params: { id: string } }) {
                   <Phone className="w-4 h-4 text-[#5A3E2B]/50" />
                   <p className="text-[#5A3E2B]/70 text-sm">
                     {orderData.shippingAddress.phone}
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Customer Info */}
-            <Card className="p-6 bg-white border-[#5A3E2B]/10">
-              <h2 className="text-xl font-serif text-[#5A3E2B] mb-4">
-                Thông tin khách hàng
-              </h2>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#5A3E2B]/50" />
-                  <p className="text-[#5A3E2B]/70 text-sm">
-                    {orderData.customer.email}
-                  </p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-[#5A3E2B]/50" />
-                  <p className="text-[#5A3E2B]/70 text-sm">
-                    {orderData.customer.phone}
                   </p>
                 </div>
               </div>

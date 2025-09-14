@@ -67,7 +67,7 @@ export function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 mt-1 text-[#87C1D8] flex-shrink-0" />
                 <span className="text-white/80 text-sm">
-                  600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ 900000
+                  600 Nguyễn Văn Cừ Nối Dài, An Bình, Ninh Kiều, Cần Thơ 900000
                 </span>
               </div>
               <div className="flex items-center space-x-3">

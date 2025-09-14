@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Link from "next/link"
-import { Star, Heart } from "lucide-react"
-import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
+import { Star, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 
 // Mock product data
 const products = [
@@ -52,7 +52,7 @@ const products = [
     isNew: false,
     isBestseller: true,
   },
-]
+];
 
 export function ProductGallery() {
   return (
@@ -66,10 +66,12 @@ export function ProductGallery() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h2 className="text-3xl lg:text-4xl font-serif text-[#5A3E2B] mb-4 text-balance">Bộ Sưu Tập Sổ Tay</h2>
+          <h2 className="text-3xl lg:text-4xl font-serif text-[#5A3E2B] mb-4 text-balance">
+            Bộ Sưu Tập Sổ Tay
+          </h2>
           <p className="text-lg text-[#5A3E2B]/70 max-w-2xl mx-auto text-pretty">
-            Mỗi cuốn sổ tay đều được chế tác tỉ mỉ, mang đến trải nghiệm viết và ghi chép tuyệt vời cho hành trình khám
-            phá của bạn.
+            Mỗi cuốn sổ tay đều được chế tác tỉ mỉ, mang đến trải nghiệm viết và
+            ghi chép tuyệt vời cho hành trình khám phá của bạn.
           </p>
         </motion.div>
 
@@ -108,7 +110,12 @@ export function ProductGallery() {
                         className="bg-[#A5C6A1] text-white text-xs font-medium px-2 py-1 rounded-full"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.3, type: "spring", stiffness: 500, damping: 30 }}
+                        transition={{
+                          delay: 0.3,
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30,
+                        }}
                       >
                         Mới
                       </motion.span>
@@ -118,7 +125,12 @@ export function ProductGallery() {
                         className="bg-[#87C1D8] text-white text-xs font-medium px-2 py-1 rounded-full"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.4, type: "spring", stiffness: 500, damping: 30 }}
+                        transition={{
+                          delay: 0.4,
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30,
+                        }}
                       >
                         Bán chạy
                       </motion.span>
@@ -157,7 +169,9 @@ export function ProductGallery() {
                         asChild
                         className="bg-white text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white transition-all duration-300"
                       >
-                        <Link href={`/products/${product.id}`}>Xem chi tiết</Link>
+                        <Link href={`/products/${product.id}`}>
+                          Xem chi tiết
+                        </Link>
                       </Button>
                     </motion.div>
                   </motion.div>
@@ -171,7 +185,9 @@ export function ProductGallery() {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-current"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
@@ -182,11 +198,15 @@ export function ProductGallery() {
                   </div>
 
                   {/* Product Name */}
-                  <h3 className="font-serif text-lg text-[#5A3E2B] font-medium text-balance">{product.name}</h3>
+                  <h3 className="font-serif text-lg text-[#5A3E2B] font-medium text-balance">
+                    {product.name}
+                  </h3>
 
                   {/* Price */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-[#5A3E2B]">{product.price.toLocaleString("vi-VN")}₫</span>
+                    <span className="text-xl font-bold text-[#5A3E2B]">
+                      {product.price.toLocaleString("vi-VN")}₫
+                    </span>
                     {product.originalPrice && (
                       <span className="text-sm text-[#5A3E2B]/50 line-through">
                         {product.originalPrice.toLocaleString("vi-VN")}₫
@@ -212,31 +232,7 @@ export function ProductGallery() {
             </motion.div>
           ))}
         </div>
-
-        {/* View All Button */}
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white px-8 bg-transparent transition-all duration-300"
-            >
-              <Link href="/products">Xem tất cả sản phẩm</Link>
-            </Button>
-          </motion.div>
-        </motion.div>
       </div>
     </section>
-  )
+  );
 }

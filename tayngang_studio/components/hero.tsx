@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import HomeImage from "@/public/assets/home/hero-image.jpg";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -69,7 +69,7 @@ export function Hero() {
                   size="lg"
                   className="border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white px-8 py-3 text-base font-medium bg-transparent transition-all duration-300"
                 >
-                  Tìm hiểu thêm
+                  <Link href="/about">Tìm hiểu thêm về chúng tôi</Link>
                 </Button>
               </motion.div>
             </motion.div>
@@ -91,6 +91,8 @@ export function Hero() {
                 src={HomeImage}
                 alt="Sổ tay du lịch Cà Mau"
                 className="w-full h-full object-cover"
+                width={500}
+                height={500}
               />
             </motion.div>
             <motion.div

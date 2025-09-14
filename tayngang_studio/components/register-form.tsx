@@ -1,21 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Separator } from "@/components/ui/separator"
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { motion } from "framer-motion";
+import { ArrowRight, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 export function RegisterForm() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,38 +24,38 @@ export function RegisterForm() {
     confirmPassword: "",
     agreeToTerms: false,
     subscribeNewsletter: false,
-  })
-  const [isLoading, setIsLoading] = useState(false)
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
-      alert("Mật khẩu xác nhận không khớp!")
-      setIsLoading(false)
-      return
+      alert("Mật khẩu xác nhận không khớp!");
+      setIsLoading(false);
+      return;
     }
 
     if (!formData.agreeToTerms) {
-      alert("Vui lòng đồng ý với điều khoản sử dụng!")
-      setIsLoading(false)
-      return
+      alert("Vui lòng đồng ý với điều khoản sử dụng!");
+      setIsLoading(false);
+      return;
     }
 
     // Simulate API call
     setTimeout(() => {
-      console.log("Register attempt:", formData)
-      setIsLoading(false)
+      console.log("Register attempt:", formData);
+      setIsLoading(false);
       // Redirect to login or account page
-      window.location.href = "/auth/login"
-    }, 1500)
-  }
+      window.location.href = "/auth/login";
+    }, 1500);
+  };
 
   return (
     <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,7 +66,9 @@ export function RegisterForm() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <h1 className="text-3xl font-serif text-[#5A3E2B] mb-2">Đăng ký</h1>
-        <p className="text-[#5A3E2B]/70">Tạo tài khoản để trải nghiệm mua sắm tốt hơn</p>
+        <p className="text-[#5A3E2B]/70">
+          Tạo tài khoản để trải nghiệm mua sắm tốt hơn
+        </p>
       </motion.div>
 
       <motion.div
@@ -85,7 +86,10 @@ export function RegisterForm() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-[#5A3E2B] font-medium">
+                <Label
+                  htmlFor="firstName"
+                  className="text-[#5A3E2B] font-medium"
+                >
                   Họ
                 </Label>
                 <div className="relative">
@@ -94,21 +98,28 @@ export function RegisterForm() {
                     id="firstName"
                     required
                     value={formData.firstName}
-                    onChange={(e) => handleInputChange("firstName", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
                     className="pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20"
                     placeholder="Nguyễn"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-[#5A3E2B] font-medium">
+                <Label
+                  htmlFor="lastName"
+                  className="text-[#5A3E2B] font-medium"
+                >
                   Tên
                 </Label>
                 <Input
                   id="lastName"
                   required
                   value={formData.lastName}
-                  onChange={(e) => handleInputChange("lastName", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
                   className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20"
                   placeholder="Văn A"
                 />
@@ -180,7 +191,9 @@ export function RegisterForm() {
                   type={showPassword ? "text" : "password"}
                   required
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   className="pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20"
                   placeholder="••••••••"
                 />
@@ -189,7 +202,11 @@ export function RegisterForm() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5A3E2B]/50 hover:text-[#5A3E2B] transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </motion.div>
@@ -201,7 +218,10 @@ export function RegisterForm() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.7 }}
             >
-              <Label htmlFor="confirmPassword" className="text-[#5A3E2B] font-medium">
+              <Label
+                htmlFor="confirmPassword"
+                className="text-[#5A3E2B] font-medium"
+              >
                 Xác nhận mật khẩu
               </Label>
               <div className="relative">
@@ -211,7 +231,9 @@ export function RegisterForm() {
                   type={showConfirmPassword ? "text" : "password"}
                   required
                   value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
                   className="pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20"
                   placeholder="••••••••"
                 />
@@ -220,46 +242,12 @@ export function RegisterForm() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5A3E2B]/50 hover:text-[#5A3E2B] transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
-              </div>
-            </motion.div>
-
-            {/* Terms and Newsletter */}
-            <motion.div
-              className="space-y-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-            >
-              <div className="flex items-start space-x-2">
-                <Checkbox
-                  id="terms"
-                  checked={formData.agreeToTerms}
-                  onCheckedChange={(checked) => handleInputChange("agreeToTerms", checked as boolean)}
-                  className="mt-1"
-                />
-                <Label htmlFor="terms" className="text-sm text-[#5A3E2B]/80 cursor-pointer leading-relaxed">
-                  Tôi đồng ý với{" "}
-                  <Link href="/terms" className="text-[#87C1D8] hover:text-[#5A3E2B] transition-colors">
-                    điều khoản sử dụng
-                  </Link>{" "}
-                  và{" "}
-                  <Link href="/privacy" className="text-[#87C1D8] hover:text-[#5A3E2B] transition-colors">
-                    chính sách bảo mật
-                  </Link>
-                </Label>
-              </div>
-              <div className="flex items-start space-x-2">
-                <Checkbox
-                  id="newsletter"
-                  checked={formData.subscribeNewsletter}
-                  onCheckedChange={(checked) => handleInputChange("subscribeNewsletter", checked as boolean)}
-                  className="mt-1"
-                />
-                <Label htmlFor="newsletter" className="text-sm text-[#5A3E2B]/80 cursor-pointer leading-relaxed">
-                  Đăng ký nhận thông tin khuyến mãi và sản phẩm mới
-                </Label>
               </div>
             </motion.div>
 
@@ -333,16 +321,6 @@ export function RegisterForm() {
                 </svg>
                 Đăng ký với Google
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full border-[#5A3E2B]/20 text-[#5A3E2B] hover:bg-[#5A3E2B]/5 bg-white transition-all duration-300 hover:scale-[1.02]"
-              >
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-                Đăng ký với Facebook
-              </Button>
             </motion.div>
           </form>
 
@@ -355,7 +333,10 @@ export function RegisterForm() {
           >
             <p className="text-[#5A3E2B]/70">
               Đã có tài khoản?{" "}
-              <Link href="/auth/login" className="text-[#87C1D8] hover:text-[#5A3E2B] font-medium transition-colors">
+              <Link
+                href="/auth/login"
+                className="text-[#87C1D8] hover:text-[#5A3E2B] font-medium transition-colors"
+              >
                 Đăng nhập ngay
               </Link>
             </p>
@@ -363,5 +344,5 @@ export function RegisterForm() {
         </Card>
       </motion.div>
     </div>
-  )
+  );
 }
