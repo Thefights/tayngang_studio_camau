@@ -2,18 +2,17 @@
 
 import type React from "react";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, CreditCard, Mail } from "lucide-react";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowLeft, CreditCard, Mail } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 // Mock cart data for checkout
 const cartItems = [
@@ -237,60 +236,6 @@ export function CheckoutForm() {
               </Card>
             </motion.div>
 
-            {/* Shipping Method */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Card className="p-6 bg-white border-[#5A3E2B]/10">
-                <h2 className="text-xl font-serif text-[#5A3E2B] mb-4">
-                  Phương thức vận chuyển
-                </h2>
-                <RadioGroup
-                  value={shippingMethod}
-                  onValueChange={setShippingMethod}
-                >
-                  <div className="flex items-center space-x-2 p-3 border border-[#5A3E2B]/20 rounded-lg">
-                    <RadioGroupItem value="standard" id="standard" />
-                    <Label htmlFor="standard" className="flex-1 cursor-pointer">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-medium text-[#5A3E2B]">
-                            Giao hàng tiêu chuẩn
-                          </p>
-                          <p className="text-sm text-[#5A3E2B]/70">
-                            3-5 ngày làm việc
-                          </p>
-                        </div>
-                        <span className="text-[#5A3E2B] font-medium">
-                          {subtotal >= 500000 ? "Miễn phí" : "30.000₫"}
-                        </span>
-                      </div>
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2 p-3 border border-[#5A3E2B]/20 rounded-lg">
-                    <RadioGroupItem value="express" id="express" />
-                    <Label htmlFor="express" className="flex-1 cursor-pointer">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="font-medium text-[#5A3E2B]">
-                            Giao hàng nhanh
-                          </p>
-                          <p className="text-sm text-[#5A3E2B]/70">
-                            1-2 ngày làm việc
-                          </p>
-                        </div>
-                        <span className="text-[#5A3E2B] font-medium">
-                          50.000₫
-                        </span>
-                      </div>
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </Card>
-            </motion.div>
-
             {/* Payment Method */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -336,30 +281,6 @@ export function CheckoutForm() {
                   </div>
                 </RadioGroup>
               </Card>
-            </motion.div>
-
-            {/* Terms and Conditions */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" required />
-                <Label
-                  htmlFor="terms"
-                  className="text-sm text-[#5A3E2B]/80 cursor-pointer"
-                >
-                  Tôi đồng ý với{" "}
-                  <Link
-                    href="/terms"
-                    className="text-[#87C1D8] hover:underline"
-                  >
-                    điều khoản và điều kiện
-                  </Link>{" "}
-                  của cửa hàng
-                </Label>
-              </div>
             </motion.div>
           </form>
         </motion.div>
@@ -425,14 +346,6 @@ export function CheckoutForm() {
                 <div className="flex justify-between text-[#5A3E2B]/80">
                   <span>Tạm tính:</span>
                   <span>{subtotal.toLocaleString("vi-VN")}₫</span>
-                </div>
-                <div className="flex justify-between text-[#5A3E2B]/80">
-                  <span>Phí vận chuyển:</span>
-                  <span>
-                    {shippingCost === 0
-                      ? "Miễn phí"
-                      : `${shippingCost.toLocaleString("vi-VN")}₫`}
-                  </span>
                 </div>
                 <Separator className="bg-[#5A3E2B]/10" />
                 <div className="flex justify-between text-lg font-bold text-[#5A3E2B]">

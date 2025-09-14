@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Award, Users, Globe } from "lucide-react";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Về chúng tôi - Sổ tay du lịch Cà Mau",
-  description:
-    "Tìm hiểu về câu chuyện, sứ mệnh và giá trị của thương hiệu sổ tay du lịch Cà Mau.",
+import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Award, Globe, Heart, Users } from "lucide-react";
+import Image from "next/image";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
 };
 
 export default function AboutPage() {
@@ -16,7 +16,13 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-[#5A3E2B] to-[#87C1D8] text-white overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            className="max-w-4xl mx-auto text-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
             <h1 className="text-5xl md:text-6xl font-bold font-serif mb-6">
               Câu Chuyện Của Chúng Tôi
             </h1>
@@ -25,7 +31,7 @@ export default function AboutPage() {
               lịch được chế tác tỉ mỉ, ghi lại từng khoảnh khắc đáng nhớ trong
               hành trình khám phá của bạn.
             </p>
-          </div>
+          </motion.div>
         </div>
         <div className="absolute inset-0 bg-black/20"></div>
       </section>
@@ -34,7 +40,12 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
               <h2 className="text-4xl font-bold font-serif text-[#5A3E2B] mb-6">
                 Khởi Nguồn Từ Tình Yêu Du Lịch
               </h2>
@@ -57,8 +68,14 @@ export default function AboutPage() {
                   và sự tôn trọng đối với nghề thủ công truyền thống.
                 </p>
               </div>
-            </div>
-            <div className="relative">
+            </motion.div>
+            <motion.div
+              className="relative"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
               <Image
                 src="/ca-mau-landscape-sunset.jpg"
                 alt="Phong cảnh Cà Mau"
@@ -66,7 +83,87 @@ export default function AboutPage() {
                 height={400}
                 className="rounded-2xl shadow-2xl"
               />
-            </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Mission */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              className="relative"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <Image
+                src="/ca-mau-landscape-sunset.jpg"
+                alt="Phong cảnh Cà Mau"
+                width={600}
+                height={400}
+                className="rounded-2xl shadow-2xl"
+              />
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <h2 className="text-4xl font-bold font-serif text-[#5A3E2B] mb-6">
+                Sứ mệnh lan tỏa giá trị, kết nối con người và quảng bá văn hóa
+                bản địa.
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                Dự án sinh ra để quảng bá vẻ đẹp tự nhiên, văn hóa, lịch sử và
+                ẩm thực của Cà Mau bằng niềm đam mê. Đồng thời truyền tải giá
+                trị bản địa thông qua hình ảnh, câu chuyện và những trải nghiệm
+                thực tế nhằm kết nối du khách với người dân địa phương, góp phần
+                phát triển du lịch, bảo tồn di sản văn hóa, nâng cao nhận thức
+                về du lịch bền vững cũng như trách nhiệm với môi trường.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Vision */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <h2 className="text-4xl font-bold font-serif text-[#5A3E2B] mb-6">
+                Tầm nhìn khát vọng vươn tầm và khẳng định vị thế Cà Mau
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                Trở thành một ấn phẩm du lịch – văn hóa góp phần khẳng định vị
+                thế Cà Mau trên bản đồ du lịch Việt Nam và truyền cảm hứng khám
+                phá vùng đất Cà Mau đến trong nước và quốc tế.
+              </p>
+            </motion.div>
+            <motion.div
+              className="relative"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <Image
+                src="/ca-mau-landscape-sunset.jpg"
+                alt="Phong cảnh Cà Mau"
+                width={600}
+                height={400}
+                className="rounded-2xl shadow-2xl"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
@@ -74,7 +171,13 @@ export default function AboutPage() {
       {/* Our Values */}
       <section className="py-20 bg-[#EAEAEA]/50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <motion.div
+            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
             <h2 className="text-4xl font-bold font-serif text-[#5A3E2B] mb-6">
               Giá Trị Cốt Lõi
             </h2>
@@ -82,162 +185,129 @@ export default function AboutPage() {
               Những giá trị định hướng mọi hoạt động của chúng tôi trong việc
               tạo ra những sản phẩm chất lượng và ý nghĩa.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="pt-6">
-                <div className="w-16 h-16 bg-[#5A3E2B]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Heart className="w-8 h-8 text-[#5A3E2B]" />
-                </div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
-                  Tình Yêu Thủ Công
-                </h3>
-                <p className="text-gray-600">
-                  Mỗi sản phẩm được chế tác thủ công với tình yêu và sự tỉ mỉ,
-                  mang đậm dấu ấn cá nhân của người thợ.
-                </p>
-              </CardContent>
-            </Card>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="w-16 h-16 bg-[#5A3E2B]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Heart className="w-8 h-8 text-[#5A3E2B]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
+                    Cá nhân hoá hành trình
+                  </h3>
+                  <p className="text-gray-600">
+                    Biến cuốn sổ thành nơi người dùng ghi chú, vẽ, dán ảnh – kể
+                    lại chuyến đi theo cách riêng, không ai giống ai.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="pt-6">
-                <div className="w-16 h-16 bg-[#87C1D8]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Award className="w-8 h-8 text-[#87C1D8]" />
-                </div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
-                  Chất Lượng Cao
-                </h3>
-                <p className="text-gray-600">
-                  Chúng tôi chỉ sử dụng những chất liệu tốt nhất, đảm bảo độ bền
-                  và vẻ đẹp lâu dài cho sản phẩm.
-                </p>
-              </CardContent>
-            </Card>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="w-16 h-16 bg-[#87C1D8]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Award className="w-8 h-8 text-[#87C1D8]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
+                    Kết nối cảm xúc bản địa
+                  </h3>
+                  <p className="text-gray-600">
+                    Khám phá Cà Mau qua câu chuyện con người, văn hoá và món ăn
+                    – chạm tới chiều sâu thay vì chỉ check-in bề nổi.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="pt-6">
-                <div className="w-16 h-16 bg-[#A5C6A1]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-8 h-8 text-[#A5C6A1]" />
-                </div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
-                  Cộng Đồng
-                </h3>
-                <p className="text-gray-600">
-                  Xây dựng cộng đồng những người yêu du lịch, chia sẻ câu chuyện
-                  và trải nghiệm qua từng trang sổ.
-                </p>
-              </CardContent>
-            </Card>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="w-16 h-16 bg-[#A5C6A1]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Users className="w-8 h-8 text-[#A5C6A1]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
+                    Truyền cảm hứng sáng tạo
+                  </h3>
+                  <p className="text-gray-600">
+                    Sổ tay được thiết kế đẹp mắt, mang phong cách minh hoạ tay,
+                    dành cho thế hệ yêu du lịch nghệ thuật và “sống ảo” tinh tế.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
-              <CardContent className="pt-6">
-                <div className="w-16 h-16 bg-[#5A3E2B]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Globe className="w-8 h-8 text-[#5A3E2B]" />
-                </div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
-                  Bền Vững
-                </h3>
-                <p className="text-gray-600">
-                  Cam kết sử dụng nguyên liệu thân thiện với môi trường, góp
-                  phần bảo vệ hành tinh xanh.
-                </p>
-              </CardContent>
-            </Card>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+            >
+              <Card className="text-center p-8 border-none shadow-lg hover:shadow-xl transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="w-16 h-16 bg-[#5A3E2B]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Globe className="w-8 h-8 text-[#5A3E2B]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#5A3E2B] mb-4">
+                    Lan toả du lịch bền vững
+                  </h3>
+                  <p className="text-gray-600">
+                    Gắn kết với người địa phương, khuyến khích du lịch tử tế,
+                    không làm tổn thương thiên nhiên – góp phần phát triển cộng
+                    đồng.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20">
+      {/* Project Goals Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold font-serif text-[#5A3E2B] mb-6">
-              Đội Ngũ Của Chúng Tôi
+          <motion.div
+            className="text-center max-w-4xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <h2 className="text-4xl font-bold font-serif text-[#5A3E2B] mb-8">
+              Mục Tiêu Dự Án
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Những con người đam mê và tài năng, cùng nhau tạo nên những sản
-              phẩm độc đáo và ý nghĩa cho cộng đồng yêu du lịch.
+            <p className="text-lg leading-relaxed text-gray-700">
+              Giới thiệu hình ảnh Cà Mau đến với người dân từ các nơi khác và du
+              khách quốc tế một cách sinh động, dễ tiếp cận, đồng thời giúp học
+              sinh – sinh viên Cà Mau hiểu và yêu hơn quê hương của mình. Góp
+              phần quảng bá văn hóa, ẩm thực và các giá trị lịch sử của Cà Mau
+              ra bên ngoài.
             </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center p-8 border-none shadow-lg">
-              <CardContent className="pt-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-[#5A3E2B] to-[#87C1D8] rounded-full mx-auto mb-6"></div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-2">
-                  Nguyễn Văn An
-                </h3>
-                <p className="text-[#87C1D8] font-medium mb-4">
-                  Nhà sáng lập & Giám đốc sáng tạo
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Với hơn 15 năm kinh nghiệm trong ngành thủ công mỹ nghệ, anh
-                  An là người đặt nền móng cho thương hiệu.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center p-8 border-none shadow-lg">
-              <CardContent className="pt-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-[#87C1D8] to-[#A5C6A1] rounded-full mx-auto mb-6"></div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-2">
-                  Trần Thị Bình
-                </h3>
-                <p className="text-[#87C1D8] font-medium mb-4">
-                  Trưởng phòng thiết kế
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Chuyên gia thiết kế với tình yêu đặc biệt dành cho văn hóa
-                  truyền thống và xu hướng hiện đại.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center p-8 border-none shadow-lg">
-              <CardContent className="pt-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-[#A5C6A1] to-[#5A3E2B] rounded-full mx-auto mb-6"></div>
-                <h3 className="text-xl font-bold text-[#5A3E2B] mb-2">
-                  Lê Minh Cường
-                </h3>
-                <p className="text-[#87C1D8] font-medium mb-4">
-                  Trưởng phòng sản xuất
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Đảm bảo chất lượng sản phẩm từ khâu chọn nguyên liệu đến thành
-                  phẩm cuối cùng.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-[#5A3E2B] to-[#87C1D8] text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold font-serif mb-6">
-            Bắt Đầu Hành Trình Của Bạn
-          </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-            Hãy để chúng tôi đồng hành cùng bạn trong những chuyến đi đáng nhớ.
-            Khám phá bộ sưu tập sổ tay du lịch Cà Mau ngay hôm nay.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-white text-[#5A3E2B] hover:bg-white/90 px-8"
-            >
-              Xem Sản Phẩm
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-[#5A3E2B] px-8 bg-transparent"
-            >
-              Liên Hệ Chúng Tôi
-            </Button>
-          </div>
+            <p className="text-lg leading-relaxed text-gray-700 mt-6">
+              Tạo ra một sản phẩm du lịch độc đáo, vừa mang tính giáo dục, vừa
+              mang tính nghệ thuật và tương tác. Kết hợp nghệ thuật minh họa,
+              nội dung sáng tạo và công nghệ để thu hút sự quan tâm của giới trẻ
+              và khách du lịch hiện đại, đồng thời truyền cảm hứng khám phá quê
+              hương qua lăng kính sáng tạo của chính người trẻ địa phương.
+            </p>
+          </motion.div>
         </div>
       </section>
     </div>

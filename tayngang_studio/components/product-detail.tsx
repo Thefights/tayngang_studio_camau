@@ -1,23 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Star,
   Heart,
-  Share2,
   Minus,
   Plus,
-  ShoppingCart,
-  Truck,
-  Shield,
   RotateCcw,
+  Share2,
+  Shield,
+  ShoppingCart,
+  Star,
+  Truck,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
 
 interface Product {
   id: string;
@@ -99,6 +99,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   src={image || "/placeholder.svg"}
                   alt={`${product.name} ${index + 1}`}
                   className="w-full h-full object-cover"
+                  width={100}
+                  height={100}
                 />
               </motion.button>
             ))}

@@ -121,23 +121,6 @@ export function AccountDashboard() {
                 Thành viên từ {formData.joinDate}
               </p>
             </div>
-
-            <nav className="space-y-2">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-[#5A3E2B] hover:bg-[#5A3E2B]/10"
-              >
-                <User className="w-4 h-4 mr-3" />
-                Thông tin cá nhân
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-[#5A3E2B] hover:bg-[#5A3E2B]/10"
-              >
-                <Package className="w-4 h-4 mr-3" />
-                Đơn hàng của tôi
-              </Button>
-            </nav>
           </Card>
         </div>
 
@@ -336,6 +319,8 @@ export function AccountDashboard() {
                             src={item.image || "/placeholder.svg"}
                             alt={item.name}
                             className="w-full h-full object-cover"
+                            width={80}
+                            height={80}
                           />
                         </div>
                         <div className="flex-1">
