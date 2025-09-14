@@ -1,8 +1,8 @@
-import { notFound } from "next/navigation"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ProductDetail } from "@/components/product-detail"
-import { RelatedProducts } from "@/components/related-products"
+import { notFound } from "next/navigation";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { ProductDetail } from "@/components/product-detail";
+import { RelatedProducts } from "@/components/related-products";
 
 // Mock product data - in real app this would come from database
 const products = [
@@ -46,7 +46,7 @@ const products = [
     id: "2",
     name: "Sổ Tay Miền Tây Deluxe",
     price: 350000,
-    originalPrice: null,
+    originalPrice: undefined,
     images: [
       "/premium-blue-travel-journal-with-golden-details.jpg",
       "/placeholder.svg?key=img4",
@@ -78,19 +78,19 @@ const products = [
     category: "Deluxe",
     tags: ["cao-cap", "deluxe", "qua-tang"],
   },
-]
+];
 
 interface ProductPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find((p) => p.id === params.id)
+  const product = products.find((p) => p.id === params.id);
 
   if (!product) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -102,11 +102,11 @@ export default function ProductPage({ params }: ProductPageProps) {
       </main>
       <Footer />
     </div>
-  )
+  );
 }
 
 export function generateStaticParams() {
   return products.map((product) => ({
     id: product.id,
-  }))
+  }));
 }
