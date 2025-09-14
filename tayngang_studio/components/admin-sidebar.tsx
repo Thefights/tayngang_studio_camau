@@ -1,11 +1,19 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { LayoutDashboard, Package, ShoppingCart, Users, BarChart3, Settings, LogOut } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  BarChart3,
+  Settings,
+  LogOut,
+} from "lucide-react";
 
 interface AdminSidebarProps {
-  activeTab: string
-  setActiveTab: (tab: string) => void
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
 export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
@@ -16,7 +24,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
     { id: "customers", label: "Khách hàng", icon: Users },
     { id: "analytics", label: "Thống kê", icon: BarChart3 },
     { id: "settings", label: "Cài đặt", icon: Settings },
-  ]
+  ];
 
   return (
     <div className="w-64 bg-white border-r border-[#5A3E2B]/10 flex flex-col">
@@ -27,8 +35,10 @@ export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
             <span className="text-white font-bold text-sm">CM</span>
           </div>
           <div>
-            <span className="font-serif text-lg text-[#5A3E2B] font-medium">Admin Panel</span>
-            <p className="text-xs text-[#5A3E2B]/70">Cà Mau Travel</p>
+            <span className="font-serif text-lg text-[#5A3E2B] font-medium">
+              Admin Panel
+            </span>
+            <p className="text-xs text-[#5A3E2B]/70">TayNgang Studio</p>
           </div>
         </div>
       </div>
@@ -36,7 +46,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item) => {
-          const Icon = item.icon
+          const Icon = item.icon;
           return (
             <Button
               key={item.id}
@@ -51,17 +61,20 @@ export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
               <Icon className="w-4 h-4 mr-3" />
               {item.label}
             </Button>
-          )
+          );
         })}
       </nav>
 
       {/* Logout */}
       <div className="p-4 border-t border-[#5A3E2B]/10">
-        <Button variant="ghost" className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700">
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700"
+        >
           <LogOut className="w-4 h-4 mr-3" />
           Đăng xuất
         </Button>
       </div>
     </div>
-  )
+  );
 }
