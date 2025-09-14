@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import HomeImage from "@/public/assets/home/hero-image.jpg";
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -32,8 +34,9 @@ export function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
               >
-                Khám phá vẻ đẹp hoang sơ của miền Tây Nam Bộ qua những trang sổ tay được thiết kế tinh tế, lưu giữ từng
-                khoảnh khắc đáng nhớ trong hành trình của bạn.
+                Khám phá vẻ đẹp hoang sơ của miền Tây Nam Bộ qua những trang sổ
+                tay được thiết kế tinh tế, lưu giữ từng khoảnh khắc đáng nhớ
+                trong hành trình của bạn.
               </motion.p>
             </div>
 
@@ -84,8 +87,8 @@ export function Hero() {
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              <img
-                src="/elegant-travel-notebook-with-c--mau-landscape-sket.jpg"
+              <Image
+                src={HomeImage}
                 alt="Sổ tay du lịch Cà Mau"
                 className="w-full h-full object-cover"
               />
@@ -119,5 +122,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }
