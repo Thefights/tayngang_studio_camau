@@ -1,42 +1,55 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Star, Heart, Share2, Minus, Plus, ShoppingCart, Truck, Shield, RotateCcw } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Star,
+  Heart,
+  Share2,
+  Minus,
+  Plus,
+  ShoppingCart,
+  Truck,
+  Shield,
+  RotateCcw,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 interface Product {
-  id: string
-  name: string
-  price: number
-  originalPrice?: number
-  images: string[]
-  rating: number
-  reviews: number
-  description: string
-  features: string[]
-  specifications: Record<string, string>
-  inStock: boolean
-  stockQuantity: number
-  category: string
-  tags: string[]
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  images: string[];
+  rating: number;
+  reviews: number;
+  description: string;
+  features: string[];
+  specifications: Record<string, string>;
+  inStock: boolean;
+  stockQuantity: number;
+  category: string;
+  tags: string[];
 }
 
 interface ProductDetailProps {
-  product: Product
+  product: Product;
 }
 
 export function ProductDetail({ product }: ProductDetailProps) {
-  const [selectedImage, setSelectedImage] = useState(0)
-  const [quantity, setQuantity] = useState(1)
-  const [isWishlisted, setIsWishlisted] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const discount = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0
+    ? Math.round(
+        ((product.originalPrice - product.price) / product.originalPrice) * 100
+      )
+    : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -74,13 +87,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 key={index}
                 onClick={() => setSelectedImage(index)}
                 className={`aspect-square bg-white rounded-lg overflow-hidden shadow-md transition-all ${
-                  selectedImage === index ? "ring-2 ring-[#5A3E2B] ring-offset-2" : "hover:shadow-lg"
+                  selectedImage === index
+                    ? "ring-2 ring-[#5A3E2B] ring-offset-2"
+                    : "hover:shadow-lg"
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <img
+                <Image
                   src={image || "/placeholder.svg"}
                   alt={`${product.name} ${index + 1}`}
                   className="w-full h-full object-cover"
@@ -110,7 +125,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
               )}
             </div>
 
-            <h1 className="text-3xl lg:text-4xl font-serif text-[#5A3E2B] text-balance">{product.name}</h1>
+            <h1 className="text-3xl lg:text-4xl font-serif text-[#5A3E2B] text-balance">
+              {product.name}
+            </h1>
 
             {/* Rating */}
             <div className="flex items-center gap-4">
@@ -119,7 +136,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   <Star
                     key={i}
                     className={`w-5 h-5 ${
-                      i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                      i < Math.floor(product.rating)
+                        ? "text-yellow-400 fill-current"
+                        : "text-gray-300"
                     }`}
                   />
                 ))}
@@ -133,25 +152,34 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Price */}
           <div className="space-y-2">
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-[#5A3E2B]">{product.price.toLocaleString("vi-VN")}₫</span>
+              <span className="text-3xl font-bold text-[#5A3E2B]">
+                {product.price.toLocaleString("vi-VN")}₫
+              </span>
               {product.originalPrice && (
                 <span className="text-xl text-[#5A3E2B]/50 line-through">
                   {product.originalPrice.toLocaleString("vi-VN")}₫
                 </span>
               )}
             </div>
-            <p className="text-sm text-[#5A3E2B]/70">Đã bao gồm VAT. Miễn phí vận chuyển cho đơn hàng trên 500.000₫</p>
+            <p className="text-sm text-[#5A3E2B]/70">
+              Đã bao gồm VAT. Miễn phí vận chuyển cho đơn hàng trên 500.000₫
+            </p>
           </div>
 
           {/* Description */}
-          <p className="text-[#5A3E2B]/80 leading-relaxed">{product.description}</p>
+          <p className="text-[#5A3E2B]/80 leading-relaxed">
+            {product.description}
+          </p>
 
           {/* Quantity & Actions */}
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <span className="text-[#5A3E2B] font-medium">Số lượng:</span>
               <div className="flex items-center border border-[#5A3E2B]/20 rounded-lg">
-                <motion.div whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+                <motion.div
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
                   <Button
                     variant="ghost"
                     size="sm"
@@ -170,18 +198,25 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 >
                   {quantity}
                 </motion.span>
-                <motion.div whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+                <motion.div
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                >
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setQuantity(Math.min(product.stockQuantity, quantity + 1))}
+                    onClick={() =>
+                      setQuantity(Math.min(product.stockQuantity, quantity + 1))
+                    }
                     className="text-[#5A3E2B] hover:bg-[#5A3E2B]/10 transition-colors duration-200"
                   >
                     <Plus className="w-4 h-4" />
                   </Button>
                 </motion.div>
               </div>
-              <span className="text-sm text-[#5A3E2B]/60">({product.stockQuantity} sản phẩm có sẵn)</span>
+              <span className="text-sm text-[#5A3E2B]/60">
+                ({product.stockQuantity} sản phẩm có sẵn)
+              </span>
             </div>
 
             <div className="flex gap-4">
@@ -209,11 +244,20 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   size="lg"
                   onClick={() => setIsWishlisted(!isWishlisted)}
                   className={`border-[#5A3E2B] transition-all duration-300 ${
-                    isWishlisted ? "bg-[#5A3E2B] text-white" : "text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white"
+                    isWishlisted
+                      ? "bg-[#5A3E2B] text-white"
+                      : "text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white"
                   }`}
                 >
-                  <motion.div animate={{ scale: isWishlisted ? [1, 1.3, 1] : 1 }} transition={{ duration: 0.3 }}>
-                    <Heart className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`} />
+                  <motion.div
+                    animate={{ scale: isWishlisted ? [1, 1.3, 1] : 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Heart
+                      className={`w-5 h-5 ${
+                        isWishlisted ? "fill-current" : ""
+                      }`}
+                    />
                   </motion.div>
                 </Button>
               </motion.div>
@@ -235,10 +279,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
           {/* Features */}
           <Card className="p-6 bg-white border-[#5A3E2B]/10">
-            <h3 className="font-serif text-lg text-[#5A3E2B] mb-4">Đặc điểm nổi bật</h3>
+            <h3 className="font-serif text-lg text-[#5A3E2B] mb-4">
+              Đặc điểm nổi bật
+            </h3>
             <ul className="space-y-2">
               {product.features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-2 text-[#5A3E2B]/80">
+                <li
+                  key={index}
+                  className="flex items-start gap-2 text-[#5A3E2B]/80"
+                >
                   <div className="w-1.5 h-1.5 bg-[#A5C6A1] rounded-full mt-2 flex-shrink-0" />
                   {feature}
                 </li>
@@ -280,7 +329,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
             >
               Thông số kỹ thuật
             </TabsTrigger>
-            <TabsTrigger value="reviews" className="data-[state=active]:bg-[#5A3E2B] data-[state=active]:text-white">
+            <TabsTrigger
+              value="reviews"
+              className="data-[state=active]:bg-[#5A3E2B] data-[state=active]:text-white"
+            >
               Đánh giá ({product.reviews})
             </TabsTrigger>
           </TabsList>
@@ -290,12 +342,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
               <div className="prose prose-lg max-w-none text-[#5A3E2B]/80">
                 <p className="leading-relaxed">{product.description}</p>
                 <p className="leading-relaxed mt-4">
-                  Sản phẩm được thiết kế đặc biệt cho những người yêu thích du lịch và khám phá. Mỗi chi tiết đều được
-                  chăm chút tỉ mỉ để mang lại trải nghiệm tốt nhất cho người sử dụng.
+                  Sản phẩm được thiết kế đặc biệt cho những người yêu thích du
+                  lịch và khám phá. Mỗi chi tiết đều được chăm chút tỉ mỉ để
+                  mang lại trải nghiệm tốt nhất cho người sử dụng.
                 </p>
                 <p className="leading-relaxed mt-4">
-                  Với chất lượng cao cấp và thiết kế tinh tế, đây là món quà hoàn hảo cho bản thân hoặc những người thân
-                  yêu của bạn.
+                  Với chất lượng cao cấp và thiết kế tinh tế, đây là món quà
+                  hoàn hảo cho bản thân hoặc những người thân yêu của bạn.
                 </p>
               </div>
             </Card>
@@ -305,7 +358,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <Card className="p-6 bg-white">
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center py-2 border-b border-[#5A3E2B]/10">
+                  <div
+                    key={key}
+                    className="flex justify-between items-center py-2 border-b border-[#5A3E2B]/10"
+                  >
                     <span className="font-medium text-[#5A3E2B]">{key}:</span>
                     <span className="text-[#5A3E2B]/80">{value}</span>
                   </div>
@@ -317,12 +373,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <TabsContent value="reviews" className="mt-6">
             <Card className="p-6 bg-white">
               <div className="text-center py-8">
-                <p className="text-[#5A3E2B]/60">Tính năng đánh giá sẽ được cập nhật sớm</p>
+                <p className="text-[#5A3E2B]/60">
+                  Tính năng đánh giá sẽ được cập nhật sớm
+                </p>
               </div>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

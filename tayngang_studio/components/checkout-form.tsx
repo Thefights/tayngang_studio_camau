@@ -1,18 +1,19 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, CreditCard, Mail } from "lucide-react"
-import Link from "next/link"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import { ArrowLeft, CreditCard, Mail } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Mock cart data for checkout
 const cartItems = [
@@ -30,11 +31,11 @@ const cartItems = [
     quantity: 1,
     image: "/premium-blue-travel-journal-with-golden-details.jpg",
   },
-]
+];
 
 export function CheckoutForm() {
-  const [paymentMethod, setPaymentMethod] = useState("cod")
-  const [shippingMethod, setShippingMethod] = useState("standard")
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [shippingMethod, setShippingMethod] = useState("standard");
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
@@ -46,28 +47,41 @@ export function CheckoutForm() {
     ward: "",
     postalCode: "",
     notes: "",
-  })
+  });
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shippingCost = shippingMethod === "express" ? 50000 : subtotal >= 500000 ? 0 : 30000
-  const total = subtotal + shippingCost
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shippingCost =
+    shippingMethod === "express" ? 50000 : subtotal >= 500000 ? 0 : 30000;
+  const total = subtotal + shippingCost;
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Handle order submission
-    console.log("Order submitted:", { formData, paymentMethod, shippingMethod, cartItems })
+    console.log("Order submitted:", {
+      formData,
+      paymentMethod,
+      shippingMethod,
+      cartItems,
+    });
     // Redirect to success page
-    window.location.href = "/checkout/success"
-  }
+    window.location.href = "/checkout/success";
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <Button variant="ghost" asChild className="text-[#5A3E2B] hover:text-[#87C1D8] p-0">
+        <Button
+          variant="ghost"
+          asChild
+          className="text-[#5A3E2B] hover:text-[#87C1D8] p-0"
+        >
           <Link href="/cart">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Quay lại giỏ hàng
@@ -83,7 +97,9 @@ export function CheckoutForm() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-3xl font-serif text-[#5A3E2B]">Thông tin thanh toán</h1>
+          <h1 className="text-3xl font-serif text-[#5A3E2B]">
+            Thông tin thanh toán
+          </h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Contact Information */}
@@ -95,7 +111,9 @@ export function CheckoutForm() {
               <Card className="p-6 bg-white border-[#5A3E2B]/10">
                 <div className="flex items-center gap-2 mb-4">
                   <Mail className="w-5 h-5 text-[#87C1D8]" />
-                  <h2 className="text-xl font-serif text-[#5A3E2B]">Thông tin liên hệ</h2>
+                  <h2 className="text-xl font-serif text-[#5A3E2B]">
+                    Thông tin liên hệ
+                  </h2>
                 </div>
                 <div className="space-y-4">
                   <div>
@@ -107,7 +125,9 @@ export function CheckoutForm() {
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                       placeholder="your@email.com"
                     />
@@ -120,7 +140,9 @@ export function CheckoutForm() {
                       id="firstName"
                       required
                       value={formData.firstName}
-                      onChange={(e) => handleInputChange("firstName", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("firstName", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                     />
                   </div>
@@ -132,7 +154,9 @@ export function CheckoutForm() {
                       id="lastName"
                       required
                       value={formData.lastName}
-                      onChange={(e) => handleInputChange("lastName", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("lastName", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                     />
                   </div>
@@ -145,7 +169,9 @@ export function CheckoutForm() {
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("phone", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                       placeholder="0123 456 789"
                     />
@@ -158,7 +184,9 @@ export function CheckoutForm() {
                       id="address"
                       required
                       value={formData.address}
-                      onChange={(e) => handleInputChange("address", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("address", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                       placeholder="Số nhà, tên đường"
                     />
@@ -171,7 +199,9 @@ export function CheckoutForm() {
                       id="city"
                       required
                       value={formData.city}
-                      onChange={(e) => handleInputChange("city", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("city", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                     />
                   </div>
@@ -183,7 +213,9 @@ export function CheckoutForm() {
                       id="district"
                       required
                       value={formData.district}
-                      onChange={(e) => handleInputChange("district", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("district", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                     />
                   </div>
@@ -194,7 +226,9 @@ export function CheckoutForm() {
                     <Input
                       id="notes"
                       value={formData.notes}
-                      onChange={(e) => handleInputChange("notes", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("notes", e.target.value)
+                      }
                       className="border-[#5A3E2B]/20 focus:border-[#5A3E2B] focus:ring-2 focus:ring-[#5A3E2B]/20 transition-all duration-300"
                       placeholder="Ghi chú về đơn hàng, ví dụ: giao hàng giờ hành chính"
                     />
@@ -210,15 +244,24 @@ export function CheckoutForm() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Card className="p-6 bg-white border-[#5A3E2B]/10">
-                <h2 className="text-xl font-serif text-[#5A3E2B] mb-4">Phương thức vận chuyển</h2>
-                <RadioGroup value={shippingMethod} onValueChange={setShippingMethod}>
+                <h2 className="text-xl font-serif text-[#5A3E2B] mb-4">
+                  Phương thức vận chuyển
+                </h2>
+                <RadioGroup
+                  value={shippingMethod}
+                  onValueChange={setShippingMethod}
+                >
                   <div className="flex items-center space-x-2 p-3 border border-[#5A3E2B]/20 rounded-lg">
                     <RadioGroupItem value="standard" id="standard" />
                     <Label htmlFor="standard" className="flex-1 cursor-pointer">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-medium text-[#5A3E2B]">Giao hàng tiêu chuẩn</p>
-                          <p className="text-sm text-[#5A3E2B]/70">3-5 ngày làm việc</p>
+                          <p className="font-medium text-[#5A3E2B]">
+                            Giao hàng tiêu chuẩn
+                          </p>
+                          <p className="text-sm text-[#5A3E2B]/70">
+                            3-5 ngày làm việc
+                          </p>
                         </div>
                         <span className="text-[#5A3E2B] font-medium">
                           {subtotal >= 500000 ? "Miễn phí" : "30.000₫"}
@@ -231,10 +274,16 @@ export function CheckoutForm() {
                     <Label htmlFor="express" className="flex-1 cursor-pointer">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-medium text-[#5A3E2B]">Giao hàng nhanh</p>
-                          <p className="text-sm text-[#5A3E2B]/70">1-2 ngày làm việc</p>
+                          <p className="font-medium text-[#5A3E2B]">
+                            Giao hàng nhanh
+                          </p>
+                          <p className="text-sm text-[#5A3E2B]/70">
+                            1-2 ngày làm việc
+                          </p>
                         </div>
-                        <span className="text-[#5A3E2B] font-medium">50.000₫</span>
+                        <span className="text-[#5A3E2B] font-medium">
+                          50.000₫
+                        </span>
                       </div>
                     </Label>
                   </div>
@@ -251,15 +300,24 @@ export function CheckoutForm() {
               <Card className="p-6 bg-white border-[#5A3E2B]/10">
                 <div className="flex items-center gap-2 mb-4">
                   <CreditCard className="w-5 h-5 text-[#87C1D8]" />
-                  <h2 className="text-xl font-serif text-[#5A3E2B]">Phương thức thanh toán</h2>
+                  <h2 className="text-xl font-serif text-[#5A3E2B]">
+                    Phương thức thanh toán
+                  </h2>
                 </div>
-                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+                <RadioGroup
+                  value={paymentMethod}
+                  onValueChange={setPaymentMethod}
+                >
                   <div className="flex items-center space-x-2 p-3 border border-[#5A3E2B]/20 rounded-lg">
                     <RadioGroupItem value="cod" id="cod" />
                     <Label htmlFor="cod" className="flex-1 cursor-pointer">
                       <div>
-                        <p className="font-medium text-[#5A3E2B]">Thanh toán khi nhận hàng (COD)</p>
-                        <p className="text-sm text-[#5A3E2B]/70">Thanh toán bằng tiền mặt khi nhận hàng</p>
+                        <p className="font-medium text-[#5A3E2B]">
+                          Thanh toán khi nhận hàng (COD)
+                        </p>
+                        <p className="text-sm text-[#5A3E2B]/70">
+                          Thanh toán bằng tiền mặt khi nhận hàng
+                        </p>
                       </div>
                     </Label>
                   </div>
@@ -267,8 +325,12 @@ export function CheckoutForm() {
                     <RadioGroupItem value="bank" id="bank" />
                     <Label htmlFor="bank" className="flex-1 cursor-pointer">
                       <div>
-                        <p className="font-medium text-[#5A3E2B]">Chuyển khoản ngân hàng</p>
-                        <p className="text-sm text-[#5A3E2B]/70">Chuyển khoản trước khi giao hàng</p>
+                        <p className="font-medium text-[#5A3E2B]">
+                          Chuyển khoản ngân hàng
+                        </p>
+                        <p className="text-sm text-[#5A3E2B]/70">
+                          Chuyển khoản trước khi giao hàng
+                        </p>
                       </div>
                     </Label>
                   </div>
@@ -284,9 +346,15 @@ export function CheckoutForm() {
             >
               <div className="flex items-center space-x-2">
                 <Checkbox id="terms" required />
-                <Label htmlFor="terms" className="text-sm text-[#5A3E2B]/80 cursor-pointer">
+                <Label
+                  htmlFor="terms"
+                  className="text-sm text-[#5A3E2B]/80 cursor-pointer"
+                >
                   Tôi đồng ý với{" "}
-                  <Link href="/terms" className="text-[#87C1D8] hover:underline">
+                  <Link
+                    href="/terms"
+                    className="text-[#87C1D8] hover:underline"
+                  >
                     điều khoản và điều kiện
                   </Link>{" "}
                   của cửa hàng
@@ -304,7 +372,9 @@ export function CheckoutForm() {
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           <Card className="p-6 bg-white border-[#5A3E2B]/10 sticky top-8">
-            <h2 className="text-xl font-serif text-[#5A3E2B] mb-4">Đơn hàng của bạn</h2>
+            <h2 className="text-xl font-serif text-[#5A3E2B] mb-4">
+              Đơn hàng của bạn
+            </h2>
 
             {/* Cart Items */}
             <motion.div
@@ -316,18 +386,25 @@ export function CheckoutForm() {
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex gap-3">
                     <div className="w-16 h-16 bg-[#EAEAEA]/30 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
+                      <Image
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-medium text-[#5A3E2B] text-sm">{item.name}</h3>
+                      <h3 className="font-medium text-[#5A3E2B] text-sm">
+                        {item.name}
+                      </h3>
                       <div className="flex justify-between items-center mt-1">
-                        <span className="text-sm text-[#5A3E2B]/70">Số lượng: {item.quantity}</span>
+                        <span className="text-sm text-[#5A3E2B]/70">
+                          Số lượng: {item.quantity}
+                        </span>
                         <span className="font-medium text-[#5A3E2B]">
-                          {(item.price * item.quantity).toLocaleString("vi-VN")}₫
+                          {(item.price * item.quantity).toLocaleString("vi-VN")}
+                          ₫
                         </span>
                       </div>
                     </div>
@@ -351,7 +428,11 @@ export function CheckoutForm() {
                 </div>
                 <div className="flex justify-between text-[#5A3E2B]/80">
                   <span>Phí vận chuyển:</span>
-                  <span>{shippingCost === 0 ? "Miễn phí" : `${shippingCost.toLocaleString("vi-VN")}₫`}</span>
+                  <span>
+                    {shippingCost === 0
+                      ? "Miễn phí"
+                      : `${shippingCost.toLocaleString("vi-VN")}₫`}
+                  </span>
                 </div>
                 <Separator className="bg-[#5A3E2B]/10" />
                 <div className="flex justify-between text-lg font-bold text-[#5A3E2B]">
@@ -379,5 +460,5 @@ export function CheckoutForm() {
         </motion.div>
       </div>
     </div>
-  )
+  );
 }

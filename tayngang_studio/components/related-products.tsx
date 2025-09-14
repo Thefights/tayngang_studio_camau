@@ -1,7 +1,8 @@
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { Star } from "lucide-react"
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Star } from "lucide-react";
+import Image from "next/image";
 
 // Mock related products data
 const relatedProducts = [
@@ -41,20 +42,24 @@ const relatedProducts = [
     rating: 4.8,
     reviews: 45,
   },
-]
+];
 
 interface RelatedProductsProps {
-  currentProductId: string
+  currentProductId: string;
 }
 
 export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
-  const filteredProducts = relatedProducts.filter((product) => product.id !== currentProductId)
+  const filteredProducts = relatedProducts.filter(
+    (product) => product.id !== currentProductId
+  );
 
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-serif text-[#5A3E2B] mb-4">Sản phẩm liên quan</h2>
+          <h2 className="text-3xl font-serif text-[#5A3E2B] mb-4">
+            Sản phẩm liên quan
+          </h2>
           <p className="text-[#5A3E2B]/70 max-w-2xl mx-auto">
             Khám phá thêm những sản phẩm tương tự có thể bạn quan tâm
           </p>
@@ -67,14 +72,17 @@ export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
               className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <div className="relative aspect-square overflow-hidden bg-[#EAEAEA]/30">
-                <img
+                <Image
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <Button asChild className="bg-white text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white">
+                  <Button
+                    asChild
+                    className="bg-white text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white"
+                  >
                     <Link href={`/products/${product.id}`}>Xem chi tiết</Link>
                   </Button>
                 </div>
@@ -87,7 +95,9 @@ export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
                       <Star
                         key={i}
                         className={`w-3 h-3 ${
-                          i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                          i < Math.floor(product.rating)
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300"
                         }`}
                       />
                     ))}
@@ -97,10 +107,14 @@ export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
                   </span>
                 </div>
 
-                <h3 className="font-serif text-base text-[#5A3E2B] font-medium text-balance">{product.name}</h3>
+                <h3 className="font-serif text-base text-[#5A3E2B] font-medium text-balance">
+                  {product.name}
+                </h3>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-[#5A3E2B]">{product.price.toLocaleString("vi-VN")}₫</span>
+                  <span className="text-lg font-bold text-[#5A3E2B]">
+                    {product.price.toLocaleString("vi-VN")}₫
+                  </span>
                   {product.originalPrice && (
                     <span className="text-sm text-[#5A3E2B]/50 line-through">
                       {product.originalPrice.toLocaleString("vi-VN")}₫
@@ -108,7 +122,10 @@ export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
                   )}
                 </div>
 
-                <Button className="w-full bg-[#5A3E2B] hover:bg-[#5A3E2B]/90 text-white" size="sm">
+                <Button
+                  className="w-full bg-[#5A3E2B] hover:bg-[#5A3E2B]/90 text-white"
+                  size="sm"
+                >
                   Thêm vào giỏ hàng
                 </Button>
               </div>
@@ -117,5 +134,5 @@ export function RelatedProducts({ currentProductId }: RelatedProductsProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }
