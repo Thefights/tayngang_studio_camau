@@ -1,0 +1,78 @@
+name: Build & Deploy ASP.NET Core API to EC2
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'tayngangstudio_sever/**'
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  PROJECT_PATH: "tayngangstudio_sever/tayngangstudio_sever.csproj"
+  PUBLISH_DIR: "publish"
+  RUNTIME: "linux-x64"
+  SERVICE_NAME: "tayngangstudio"
+  EC2_APP_DIR: "/var/www/tayngangstudio_sever"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      - name: Publish self-contained (single file, ReadyToRun)
+        run: |
+          dotnet publish ${{ env.PROJECT_PATH }} \
+            -c Release -o ${{ env.PUBLISH_DIR }} \
+            -r ${{ env.RUNTIME }} --self-contained true \
+            /p:PublishSingleFile=true /p:PublishReadyToRun=true
+          chmod +x ${{ env.PUBLISH_DIR }}/tayngangstudio_sever || true
+
+      - name: Package app
+        run: tar -C ${{ env.PUBLISH_DIR }} -czf webapi.tar.gz .
+
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_KEY }}" > ~/.ssh/ec2_key
+          chmod 600 ~/.ssh/ec2_key
+
+      - name: Copy package to EC2
+        run: |
+          scp -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no webapi.tar.gz \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/tmp/
+
+      - name: Deploy on EC2
+        run: |
+          ssh -i ~/.ssh/ec2_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<'EOSSH'
+          set -e
+          APP_DIR="${{ env.EC2_APP_DIR }}"
+          SERVICE="${{ env.SERVICE_NAME }}"
+          TS=$(date +'%Y%m%d%H%M%S')
+
+          mkdir -p "$APP_DIR/releases/$TS"
+          tar -xzf /tmp/webapi.tar.gz -C "$APP_DIR/releases/$TS"
+          rm -f /tmp/webapi.tar.gz
+
+          ln -sfn "$APP_DIR/releases/$TS" "$APP_DIR/current"
+          sudo systemctl restart "$SERVICE"
+          sleep 2
+          sudo systemctl status "$SERVICE" --no-pager || true
+
+          cd "$APP_DIR/releases"
+          ls -1t | tail -n +6 | xargs -r rm -rf
+          EOSSH
