@@ -9,7 +9,7 @@ on:
 
 env:
   DOTNET_VERSION: "8.0.x"
-  PROJECT_PATH: "tayngangstudio_sever/tayngangstudio_sever.csproj"
+  PROJECT_PATH: "tayngangstudio_sever/tayngangstudio_sever/tayngangstudio_sever.csproj"
   PUBLISH_DIR: "publish"
   RUNTIME: "linux-x64"
   SERVICE_NAME: "tayngangstudio"
