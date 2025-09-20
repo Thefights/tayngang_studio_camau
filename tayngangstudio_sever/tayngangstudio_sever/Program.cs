@@ -13,7 +13,6 @@ builder.Services.AddControllers()
      .AddJsonOptions(options =>
      {
          options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-         //Ignore object cycle
          options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
      });
 
@@ -51,7 +50,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScopeService();
-builder.Services.AddAWSService<Amazon.S3.IAmazonS3>();
+builder.Services.AddAWSService(builder.Configuration);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -12,13 +12,11 @@ namespace BusinessLogicLayer.Implements.Base
         public Task<GetDTO> GetByIdAsync(int id);
         public Task<IEnumerable<GetDTO>> GetAllAsync();
         public Task<CreateDTO> CreateAsync(CreateDTO dto);
-        public Task<CreateDTO> CreateWithImageAsync(CreateDTO dto);
         public Task UpdateAsync(UpdateDTO dto);
-        public Task UpdateWithImageAsync(UpdateDTO dto);
         public Task DeleteAsync(int id);
     }
 
-    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService = null, string[] _includes = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageUploadService? _imageUploadService = null, string[]? _includes = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
         where CreateDTO : BaseDTO
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO
@@ -39,10 +37,25 @@ namespace BusinessLogicLayer.Implements.Base
         public async Task<CreateDTO> CreateAsync(CreateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
+
+            // Check if entity is ImageEntity and handle image upload automatically
+            if (entity is ImageEntity imageEntity && _imageUploadService != null)
+            {
+                var dtoType = typeof(CreateDTO);
+                var imageFileProp = dtoType.GetProperty("ImageFile");
+                var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
+
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
+                    imageEntity.ImageUrl = uploadResult.PublicUrl;
+                }
+            }
+
             await _unitOfWork.Repository<T>().CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
 
-            return dto;
+            return _mapper.Map<CreateDTO>(entity);
         }
 
         public async Task<CreateDTO> CreateWithImageAsync(CreateDTO dto)
@@ -54,14 +67,14 @@ namespace BusinessLogicLayer.Implements.Base
 
             var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
 
-            if (imageFile != null && imageFile.Length > 0)
+            if (imageFile != null && imageFile.Length > 0 && _imageUploadService != null)
             {
-                var imageUrlResult = await _imageService.UploadImageAsync(imageFile, "chaolong-bucket");
+                var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
 
                 var imageProperty = typeof(T).GetProperty("ImageUrl");
                 if (imageProperty != null && imageProperty.PropertyType == typeof(string))
                 {
-                    imageProperty.SetValue(entity, imageUrlResult);
+                    imageProperty.SetValue(entity, uploadResult.PublicUrl);
                 }
             }
 
@@ -74,25 +87,21 @@ namespace BusinessLogicLayer.Implements.Base
         public async Task UpdateAsync(UpdateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
-            _unitOfWork.Repository<T>().Update(entity);
-            await _unitOfWork.SaveChangesAsync();
-        }
 
-        public async Task UpdateWithImageAsync(UpdateDTO dto)
-        {
-            var entity = _mapper.Map<T>(dto);
-            var dtoType = typeof(UpdateDTO);
-            var imageFileProp = dtoType.GetProperty("ImageFile");
-            var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
-            if (imageFile != null && imageFile.Length > 0)
+            // Check if entity is ImageEntity and handle image upload automatically
+            if (entity is ImageEntity imageEntity && _imageUploadService != null)
             {
-                var imageUrlResult = await _imageService.UploadImageAsync(imageFile, "chaolong-bucket");
-                var imageProperty = typeof(T).GetProperty("ImageUrl");
-                if (imageProperty != null && imageProperty.PropertyType == typeof(string))
+                var dtoType = typeof(UpdateDTO);
+                var imageFileProp = dtoType.GetProperty("ImageFile");
+                var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
+
+                if (imageFile != null && imageFile.Length > 0)
                 {
-                    imageProperty.SetValue(entity, imageUrlResult);
+                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
+                    imageEntity.ImageUrl = uploadResult.PublicUrl;
                 }
             }
+
             _unitOfWork.Repository<T>().Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }
