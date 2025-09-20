@@ -1,13 +1,11 @@
-﻿using BusinessLogicLayer.Helpers;
-using BusinessLogicLayer.Utils;
+﻿using BusinessLogicLayer.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using static BusinessLogicLayer.Implements.Services.UserService;
 
 namespace BusinessLogicLayer.Middlewares
 {
-    public class JwtMiddleware(RequestDelegate _next, IOptions<AppSettings> _appSettings)
+    public class JwtMiddleware(RequestDelegate _next)
     {
         public async Task InvokeAsync(HttpContext context, IUserService _userService, JwtUtils jwtUtils)
         {

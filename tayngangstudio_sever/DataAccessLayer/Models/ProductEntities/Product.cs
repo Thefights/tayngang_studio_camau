@@ -1,7 +1,6 @@
 ﻿using DataAccessLayer.Models.AbstractEntities;
 using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Models.ProductEntities
 {
@@ -9,7 +8,6 @@ namespace DataAccessLayer.Models.ProductEntities
     {
         public ICollection<OrderDetail> OrderDetails { get; set; } = [];
 
-        [Column(TypeName = "VARCHAR")]
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
@@ -17,7 +15,6 @@ namespace DataAccessLayer.Models.ProductEntities
 
         public double Price { get; set; }
 
-        [Column(TypeName = "VARCHAR")]
         [MaxLength(1000)]
         public string Description { get; set; } = string.Empty;
 
