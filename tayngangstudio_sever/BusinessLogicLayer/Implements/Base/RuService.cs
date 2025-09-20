@@ -44,7 +44,7 @@ namespace BusinessLogicLayer.Implements.Base
 
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
+                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile);
                     imageEntity.ImageUrl = uploadResult.PublicUrl;
                 }
             }

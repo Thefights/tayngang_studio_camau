@@ -47,7 +47,7 @@ namespace BusinessLogicLayer.Implements.Base
 
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
+                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile);
                     imageEntity.ImageUrl = uploadResult.PublicUrl;
                 }
             }
@@ -69,7 +69,7 @@ namespace BusinessLogicLayer.Implements.Base
 
             if (imageFile != null && imageFile.Length > 0 && _imageUploadService != null)
             {
-                var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
+                var uploadResult = await _imageUploadService.UploadImageAsync(imageFile);
 
                 var imageProperty = typeof(T).GetProperty("ImageUrl");
                 if (imageProperty != null && imageProperty.PropertyType == typeof(string))
@@ -97,7 +97,7 @@ namespace BusinessLogicLayer.Implements.Base
 
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile, "chaolong-bucket");
+                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile);
                     imageEntity.ImageUrl = uploadResult.PublicUrl;
                 }
             }
