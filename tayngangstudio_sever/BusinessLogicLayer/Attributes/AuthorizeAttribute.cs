@@ -11,7 +11,8 @@ namespace BusinessLogicLayer.Attributes
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
+            // Fix: Check for AllowAnonymousAttribute in the filter pipeline instead of EndpointMetadata
+            var allowAnonymous = context.Filters.OfType<AllowAnonymousAttribute>().Any();
             if (allowAnonymous) return;
 
             var user = context.HttpContext.User;
