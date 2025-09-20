@@ -11,10 +11,11 @@ namespace tayngangstudio_sever.Extenstions
         {
             _services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            _services.AddScoped<IImageService, ImageService>();
+            _services.AddScoped<IImageUploadService, ImageUploadService>();
             _services.AddScoped<IProductService, ProductService>();
             _services.AddScoped<IUserService, UserService>();
             _services.AddScoped<IOrderService, OrderService>();
+            _services.AddScoped<IProductCategoryService, ProductCategoryService>();
             //_services.AddScoped<IAuthService, AuthService>();
 
             _services.AddScoped<JwtUtils>();

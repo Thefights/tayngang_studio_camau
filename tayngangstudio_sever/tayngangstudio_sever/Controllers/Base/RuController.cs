@@ -1,5 +1,4 @@
 ﻿using BusinessLogicLayer.DTO.Abstract.Base;
-using BusinessLogicLayer.DTO.Abstract.ImageDTO;
 using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models.AbstractEntities;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ namespace tayngangstudio_sever.Controllers.Base
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RuController<GetDTO, UpdateDTO, T>(IRuService<GetDTO, UpdateDTO, T> _crudService) : ControllerBase
+    public class RuController<GetDTO, UpdateDTO, T>(IRuService<GetDTO, UpdateDTO, T> _ruService) : ControllerBase
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO
         where T : BaseEntity
@@ -16,7 +15,7 @@ namespace tayngangstudio_sever.Controllers.Base
         [HttpGet]
         public virtual async Task<IActionResult> GetAllAsync()
         {
-            var entities = await _crudService.GetAllAsync();
+            var entities = await _ruService.GetAllAsync();
 
             if (entities == null || !entities.Any())
             {
@@ -34,15 +33,7 @@ namespace tayngangstudio_sever.Controllers.Base
                 return BadRequest("Entity is null or ID mismatch.");
             }
 
-            if (dto is UpdateImageDTO imageDTO)
-            {
-                await _crudService.UpdateWithImageAsync(dto);
-            }
-            else
-            {
-                await _crudService.UpdateAsync(dto);
-            }
-
+            await _ruService.UpdateAsync(dto);
             return Ok(new { Message = "Update record successfully", Data = dto });
         }
     }

@@ -12,10 +12,9 @@ namespace BusinessLogicLayer.Implements.Base
         public Task<GetDTO> GetByIdAsync(int id);
         public Task<IEnumerable<GetDTO>> GetAllAsync();
         public Task UpdateAsync(UpdateDTO dto);
-        public Task UpdateWithImageAsync(UpdateDTO dto);
     }
 
-    public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[] _includes = null, IImageService? _imageService = null) : IRuService<GetDTO, UpdateDTO, T>
+    public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[]? _includes = null, IImageUploadService? _imageUploadService = null) : IRuService<GetDTO, UpdateDTO, T>
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO
         where T : BaseEntity
@@ -35,25 +34,21 @@ namespace BusinessLogicLayer.Implements.Base
         public async Task UpdateAsync(UpdateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
-            _unitOfWork.Repository<T>().Update(entity);
-            await _unitOfWork.SaveChangesAsync();
-        }
 
-        public async Task UpdateWithImageAsync(UpdateDTO dto)
-        {
-            var entity = _mapper.Map<T>(dto);
-            var dtoType = typeof(UpdateDTO);
-            var imageFileProp = dtoType.GetProperty("ImageFile");
-            var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
-            if (imageFile != null && imageFile.Length > 0)
+            // Check if entity is ImageEntity and handle image upload automatically
+            if (entity is ImageEntity imageEntity && _imageUploadService != null)
             {
-                var imageUrlResult = await _imageService.UploadImageAsync(imageFile, "chaolong-bucket");
-                var imageProperty = typeof(T).GetProperty("ImageUrl");
-                if (imageProperty != null && imageProperty.PropertyType == typeof(string))
+                var dtoType = typeof(UpdateDTO);
+                var imageFileProp = dtoType.GetProperty("ImageFile");
+                var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
+
+                if (imageFile != null && imageFile.Length > 0)
                 {
-                    imageProperty.SetValue(entity, imageUrlResult);
+                    var uploadResult = await _imageUploadService.UploadImageAsync(imageFile);
+                    imageEntity.ImageUrl = uploadResult.PublicUrl;
                 }
             }
+
             _unitOfWork.Repository<T>().Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }
