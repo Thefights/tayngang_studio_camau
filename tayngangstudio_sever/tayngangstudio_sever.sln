@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36429.23 d17.14
+VisualStudioVersion = 17.14.36429.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tayngangstudio_sever", "tayngangstudio_sever\tayngangstudio_sever.csproj", "{C36D1E64-3C3F-40C8-B688-6B461993E0A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{AFB88613-F38B-4FE7-91B1-F0D5ED555FBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{AD09748F-80F3-4829-915D-A4A857358899}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{C36D1E64-3C3F-40C8-B688-6B461993E0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C36D1E64-3C3F-40C8-B688-6B461993E0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C36D1E64-3C3F-40C8-B688-6B461993E0A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB88613-F38B-4FE7-91B1-F0D5ED555FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB88613-F38B-4FE7-91B1-F0D5ED555FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB88613-F38B-4FE7-91B1-F0D5ED555FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB88613-F38B-4FE7-91B1-F0D5ED555FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD09748F-80F3-4829-915D-A4A857358899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD09748F-80F3-4829-915D-A4A857358899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD09748F-80F3-4829-915D-A4A857358899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD09748F-80F3-4829-915D-A4A857358899}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

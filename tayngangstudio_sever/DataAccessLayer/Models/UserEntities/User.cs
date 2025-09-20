@@ -1,0 +1,25 @@
+﻿using DataAccessLayer.Enums;
+using DataAccessLayer.Models.AbstractEntities;
+using System.ComponentModel.DataAnnotations;
+
+namespace DataAccessLayer.Models.UserEntities
+{
+    public class User : BaseEntity
+    {
+        [MaxLength(100)]
+        public string Name { get; set; } = string.Empty;
+
+        public string Email { get; set; } = string.Empty;
+
+        public string Phone { get; set; } = string.Empty;
+
+        [MinLength(6)]
+        public string Password { get; set; } = string.Empty;
+
+        public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
+
+        public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+
+        public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
+    }
+}
