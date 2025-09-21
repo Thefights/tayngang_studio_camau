@@ -1,13 +1,8 @@
+"use client";
+
 import { ProductGallery } from "@/components/product-gallery";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Sản phẩm - Sổ tay du lịch Cà Mau",
-  description:
-    "Khám phá bộ sưu tập sổ tay du lịch Cà Mau cao cấp với thiết kế độc đáo và chất lượng tuyệt vời.",
-};
 
 export default function ProductsPage() {
   return (

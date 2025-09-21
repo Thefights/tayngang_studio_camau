@@ -28,12 +28,12 @@ export const mockProducts = [
   },
 ];
 
-export function ProductGallery() {
+export function ProductFeatureGallery() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const loadProducts = async () => {
-      const data = await productData.getProducts();
+      const data = await productData.getProductFeatures();
       setProducts(data);
     };
     loadProducts();
