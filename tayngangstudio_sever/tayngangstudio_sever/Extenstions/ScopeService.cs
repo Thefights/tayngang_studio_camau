@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.Implements.Services;
+using BusinessLogicLayer.Implements.Services.ManagementService;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Repository.Base;
-using static BusinessLogicLayer.Implements.Services.UserService;
 
 namespace tayngangstudio_sever.Extenstions
 {
@@ -12,10 +12,11 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             _services.AddScoped<IImageUploadService, ImageUploadService>();
-            _services.AddScoped<IProductService, ProductService>();
+            _services.AddScoped<IProductManagementService, ProductManagementService>();
             _services.AddScoped<IUserService, UserService>();
             _services.AddScoped<IOrderService, OrderService>();
             _services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            _services.AddScoped<IProductService, ProductService>();
             //_services.AddScoped<IAuthService, AuthService>();
 
             _services.AddScoped<JwtUtils>();
