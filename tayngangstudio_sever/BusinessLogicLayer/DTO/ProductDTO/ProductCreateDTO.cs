@@ -21,6 +21,9 @@ namespace BusinessLogicLayer.DTO.ProductDTO
         public string Description { get; set; } = string.Empty;
 
         [Required]
+        public double Rating { get; set; }
+
+        [Required]
         public int ProductCategoryId { get; set; }
     }
 }

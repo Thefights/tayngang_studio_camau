@@ -47,6 +47,24 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OrderDate = new DateTime(2025, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
+                            TotalAmount = 50000000.0,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OrderDate = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 0,
+                            TotalAmount = 20000000.0,
+                            UserId = 3
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.OrderDetail", b =>
@@ -71,6 +89,24 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetail");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 1,
+                            Quantity = 2,
+                            Total = 50000000.0,
+                            UnitPrice = 25000000.0
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 2,
+                            Quantity = 1,
+                            Total = 20000000.0,
+                            UnitPrice = 20000000.0
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.Product", b =>
@@ -103,11 +139,49 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductCategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Điện thoại Apple",
+                            ImageUrl = "iphone14.jpg",
+                            Name = "iPhone 14",
+                            Price = 25000000.0,
+                            ProductCategoryId = 1,
+                            Quantity = 50,
+                            Rating = 4.5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Điện thoại Samsung",
+                            ImageUrl = "s23.jpg",
+                            Name = "Samsung S23",
+                            Price = 20000000.0,
+                            ProductCategoryId = 1,
+                            Quantity = 40,
+                            Rating = 4.2000000000000002
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Laptop Apple",
+                            ImageUrl = "macbook.jpg",
+                            Name = "Macbook Pro",
+                            Price = 45000000.0,
+                            ProductCategoryId = 2,
+                            Quantity = 20,
+                            Rating = 4.7999999999999998
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.ProductCategory", b =>
@@ -131,6 +205,26 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Các loại smartphone",
+                            Name = "Điện thoại"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Máy tính xách tay",
+                            Name = "Laptop"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Máy tính bảng",
+                            Name = "Tablet"
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserEntities.User", b =>
@@ -170,6 +264,41 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@example.com",
+                            Name = "Admin",
+                            Password = "123456",
+                            Phone = "0123456789",
+                            Role = 0,
+                            UpdateAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "alice@example.com",
+                            Name = "Alice",
+                            Password = "123456",
+                            Phone = "0987654321",
+                            Role = 1,
+                            UpdateAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "bob@example.com",
+                            Name = "Bob",
+                            Password = "123456",
+                            Phone = "0911222333",
+                            Role = 1,
+                            UpdateAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.Order", b =>
