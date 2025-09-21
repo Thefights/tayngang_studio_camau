@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250921151430_A")]
+    [Migration("20250921171246_A")]
     partial class A
     {
         /// <inheritdoc />
@@ -170,7 +170,7 @@ namespace DataAccessLayer.Migrations
                             ImageUrl = "s23.jpg",
                             Name = "Samsung S23",
                             Price = 20000000.0,
-                            ProductCategoryId = 1,
+                            ProductCategoryId = 2,
                             Quantity = 40,
                             Rating = 4.2000000000000002
                         },
@@ -181,7 +181,7 @@ namespace DataAccessLayer.Migrations
                             ImageUrl = "macbook.jpg",
                             Name = "Macbook Pro",
                             Price = 45000000.0,
-                            ProductCategoryId = 2,
+                            ProductCategoryId = 3,
                             Quantity = 20,
                             Rating = 4.7999999999999998
                         });
@@ -214,19 +214,19 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = 1,
                             Description = "Các loại smartphone",
-                            Name = "Điện thoại"
+                            Name = "Sổ Tay Xứ Mũi"
                         },
                         new
                         {
                             Id = 2,
                             Description = "Máy tính xách tay",
-                            Name = "Laptop"
+                            Name = "Móc khoá"
                         },
                         new
                         {
                             Id = 3,
                             Description = "Máy tính bảng",
-                            Name = "Tablet"
+                            Name = "Sản phẩm combo"
                         });
                 });
 

@@ -15,12 +15,12 @@ export const getProductFeatures = async () => {
   return response.data;
 };
 
-export const getProductCategories = async () => {
-  const response = await productService.fetchProductCategories();
+export const getProductCategories = async (categoryName: string) => {
+  const response = await productService.fetchProductByCategory(categoryName);
   return response.data;
 };
 
 export const getProductByName = async (name: string) => {
-  const response = await productService.fetchProductByName(name);
+  const response = await productService.searchProduct(name);
   return response.data;
 };

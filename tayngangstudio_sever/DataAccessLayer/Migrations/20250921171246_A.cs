@@ -125,9 +125,9 @@ namespace DataAccessLayer.Migrations
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Các loại smartphone", "Điện thoại" },
-                    { 2, "Máy tính xách tay", "Laptop" },
-                    { 3, "Máy tính bảng", "Tablet" }
+                    { 1, "Các loại smartphone", "Sổ Tay Xứ Mũi" },
+                    { 2, "Máy tính xách tay", "Móc khoá" },
+                    { 3, "Máy tính bảng", "Sản phẩm combo" }
                 });
 
             migrationBuilder.InsertData(
@@ -155,8 +155,8 @@ namespace DataAccessLayer.Migrations
                 values: new object[,]
                 {
                     { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 25000000.0, 1, 50, 4.5 },
-                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 1, 40, 4.2000000000000002 },
-                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 2, 20, 4.7999999999999998 }
+                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 2, 40, 4.2000000000000002 },
+                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 3, 20, 4.7999999999999998 }
                 });
 
             migrationBuilder.InsertData(

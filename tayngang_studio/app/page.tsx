@@ -1,4 +1,4 @@
-import { Hero } from "@/components/hero";
+import { Hero } from "@/components/common/hero";
 import { ProductFeatureGallery } from "@/components/product-feature-gallery";
 
 export default function HomePage() {
