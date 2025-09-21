@@ -2,43 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import * as productData from "@/data/other/product.data";
-import { Product } from "@/model/product";
 import { motion } from "framer-motion";
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export const mockProducts = [
-  {
-    rating: 4.5,
-    reviews: 120,
-  },
-  {
-    rating: 4.2,
-    reviews: 85,
-  },
-  {
-    rating: 4.8,
-    reviews: 230,
-  },
-  {
-    rating: 4.0,
-    reviews: 65,
-  },
-];
-
-export function ProductGallery() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      const data = await productData.getProducts();
-      setProducts(data);
-    };
-    loadProducts();
-  }, []);
-
+export function ProductGallery({ products }: { products: any[] }) {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -148,7 +116,7 @@ export function ProductGallery() {
 
                 <div className="p-6 space-y-4">
                   {/* Rating */}
-                  <div className="flex items-center gap-2">
+                  {/* <div className="flex items-center gap-2">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <Star
@@ -165,7 +133,7 @@ export function ProductGallery() {
                       {mockProducts[index].rating} (
                       {mockProducts[index].reviews})
                     </span>
-                  </div>
+                  </div> */}
                   {/* Product Name */}
                   <h3 className="font-serif text-lg text-[#5A3E2B] font-medium text-balance">
                     {product.name}

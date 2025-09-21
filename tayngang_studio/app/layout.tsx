@@ -1,5 +1,6 @@
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { Footer } from "@/components/common/footer";
+import { Header } from "@/components/common/header";
+import { LoadingProvider } from "@/context/loading-context";
 import { Analytics } from "@vercel/analytics/next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
@@ -32,10 +33,12 @@ export default function RootLayout({
       <body
         className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}
       >
-        <Header />
-        <Suspense fallback={null}>{children}</Suspense>
-        <Analytics />
-        <Footer />
+        <LoadingProvider>
+          <Header />
+          <Suspense fallback={null}>{children}</Suspense>
+          <Analytics />
+          <Footer />
+        </LoadingProvider>
       </body>
     </html>
   );

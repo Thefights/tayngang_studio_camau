@@ -20,8 +20,21 @@ namespace tayngangstudio_sever.Controllers.Customer
             return Ok(product);
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var products = await _service.GetAllProducts();
+
+            if (products == null || !products.Any())
+            {
+                return NotFound("No products found.");
+            }
+
+            return Ok(products);
+        }
+
         [HttpGet("features")]
-        public async Task<IActionResult> GetFeatureProductsBaseOrder()
+        public async Task<IActionResult> GetFeatureProduct()
         {
             var products = await _service.GetFeatureProductsBaseOrder();
 
@@ -33,10 +46,10 @@ namespace tayngangstudio_sever.Controllers.Customer
             return Ok(products);
         }
 
-        [HttpGet("category/{productCategoryId}")]
-        public async Task<IActionResult> GetProductsByCategory(int productCategoryId)
+        [HttpGet("category/{name}")]
+        public async Task<IActionResult> GetProductsByCategory(string name)
         {
-            var products = await _service.GetProductsByCategory(productCategoryId);
+            var products = await _service.GetProductsByCategory(name);
 
             if (products == null || !products.Any())
             {
@@ -46,23 +59,10 @@ namespace tayngangstudio_sever.Controllers.Customer
             return Ok(products);
         }
 
-        [HttpGet("name")]
-        public async Task<IActionResult> GetProductByname()
+        [HttpGet("search/{searchTerm}")]
+        public async Task<IActionResult> SearchProduct(string searchTerm)
         {
-            var products = await _service.GetProductByname();
-
-            if (products == null || !products.Any())
-            {
-                return NotFound("No products found.");
-            }
-
-            return Ok(products);
-        }
-
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAllProducts()
-        {
-            var products = await _service.GetAllProducts();
+            var products = await _service.SearchProduct(searchTerm);
 
             if (products == null || !products.Any())
             {

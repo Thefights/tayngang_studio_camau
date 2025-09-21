@@ -1,10 +1,34 @@
 "use client";
 
 import { ProductGallery } from "@/components/product-gallery";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useLoading } from "@/context/loading-context";
+import * as productData from "@/data/other/product.data";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
+  const { setLoading } = useLoading();
+
+  const fetchProductsByCategory = async (category: string) => {
+    setLoading(true);
+    const products = await productData.getProductCategories(category);
+    setProducts(products);
+    setLoading(false);
+  };
+
+  const fetchAllProducts = async () => {
+    setLoading(true);
+    const products = await productData.getProducts();
+    setProducts(products);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -44,30 +68,34 @@ export default function ProductsPage() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap gap-3 justify-center">
-            <Badge
+            <Button
               variant="default"
               className="bg-[#5A3E2B] hover:bg-[#5A3E2B]/90 px-4 py-2"
+              onClick={fetchAllProducts}
             >
               Tất cả sản phẩm
-            </Badge>
-            <Badge
+            </Button>
+            <Button
               variant="outline"
               className="px-4 py-2 cursor-pointer hover:bg-[#87C1D8]/10"
+              onClick={() => fetchProductsByCategory("Sổ Tay Xứ Mũi")}
             >
               Sổ Tay Xứ Mũi
-            </Badge>
-            <Badge
+            </Button>
+            <Button
               variant="outline"
               className="px-4 py-2 cursor-pointer hover:bg-[#87C1D8]/10"
+              onClick={() => fetchProductsByCategory("Móc khoá")}
             >
               Móc khoá
-            </Badge>
-            <Badge
+            </Button>
+            <Button
               variant="outline"
               className="px-4 py-2 cursor-pointer hover:bg-[#87C1D8]/10"
+              onClick={() => fetchProductsByCategory("Sản phẩm combo")}
             >
               Sản phẩm combo
-            </Badge>
+            </Button>
           </div>
         </div>
       </section>
@@ -75,7 +103,7 @@ export default function ProductsPage() {
       {/* Products Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <ProductGallery />
+          <ProductGallery products={products} />
         </div>
       </section>
     </div>

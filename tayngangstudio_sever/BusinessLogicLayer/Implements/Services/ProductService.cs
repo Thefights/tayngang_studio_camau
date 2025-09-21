@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.ProductDTO;
+using DataAccessLayer.Data;
 using DataAccessLayer.Models.ProductEntities;
 using DataAccessLayer.Repository.Base;
 
@@ -8,14 +9,16 @@ namespace BusinessLogicLayer.Implements.Services
     public interface IProductService
     {
         Task<ProductGetDTO> GetProductById(int id);
-        Task<IEnumerable<ProductGetDTO>> GetFeatureProductsBaseOrder();
-        Task<IEnumerable<ProductGetDTO>> GetProductsByCategory(int productCategoryId);
-        Task<IEnumerable<ProductGetDTO>> GetProductByname();
         Task<IEnumerable<ProductGetDTO>> GetAllProducts();
+        Task<IEnumerable<ProductGetDTO>> GetFeatureProductsBaseOrder();
+        Task<IEnumerable<ProductGetDTO>> GetProductsByCategory(string name);
+        Task<IEnumerable<ProductGetDTO>> SearchProduct(string searchTerm);
     }
 
-    public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper) : IProductService
+    public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper, ApplicationDbContext _dbContext) : IProductService
     {
+        string[]? _include = ["ProductCategory"];
+
         public async Task<IEnumerable<ProductGetDTO>> GetAllProducts()
         {
             var products = await _unitOfWork.Repository<Product>().GetAllAsync();
@@ -42,22 +45,23 @@ namespace BusinessLogicLayer.Implements.Services
             return _mapper.Map<IEnumerable<ProductGetDTO>>(featureProducts);
         }
 
-        public async Task<IEnumerable<ProductGetDTO>> GetProductsByCategory(int productCategoryId)
+        public async Task<IEnumerable<ProductGetDTO>> GetProductsByCategory(string name)
         {
-            var products = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
             var categoryProducts = products
-                .Where(p => p.ProductCategoryId == productCategoryId);
+                .Where(p => p.ProductCategory?.Name == name).ToList();
+
 
             return _mapper.Map<IEnumerable<ProductGetDTO>>(categoryProducts);
         }
 
-        public async Task<IEnumerable<ProductGetDTO>> GetProductByname()
+        public async Task<IEnumerable<ProductGetDTO>> SearchProduct(string searchTerm)
         {
             var products = await _unitOfWork.Repository<Product>().GetAllAsync();
 
             var nameProducts = products
-                .OrderBy(p => p.Name);
+                .Where(p => p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
 
             return _mapper.Map<IEnumerable<ProductGetDTO>>(nameProducts);
         }
