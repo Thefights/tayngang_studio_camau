@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Customer
     public class ProductsController(IProductService _service) : ControllerBase
     {
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductById(int id, IWebHostEnvironment env)
         {
             var product = await _service.GetProductById(id);
 
@@ -17,7 +17,7 @@ namespace tayngangstudio_sever.Controllers.Customer
                 return NotFound("Product not found.");
             }
 
-            return Ok(new { Message = "Get product successfully", Data = product });
+            return Ok(product);
         }
 
         [HttpGet("features")]
@@ -30,7 +30,7 @@ namespace tayngangstudio_sever.Controllers.Customer
                 return NotFound("No feature products found.");
             }
 
-            return Ok(new { Message = "Get feature products successfully", Data = products });
+            return Ok(products);
         }
 
         [HttpGet("category/{productCategoryId}")]
@@ -43,7 +43,7 @@ namespace tayngangstudio_sever.Controllers.Customer
                 return NotFound("No products found in this category.");
             }
 
-            return Ok(new { Message = "Get products by category successfully", Data = products });
+            return Ok(products);
         }
 
         [HttpGet("name")]
@@ -56,7 +56,7 @@ namespace tayngangstudio_sever.Controllers.Customer
                 return NotFound("No products found.");
             }
 
-            return Ok(new { Message = "Get products by name successfully", Data = products });
+            return Ok(products);
         }
 
         [HttpGet("all")]
@@ -69,7 +69,7 @@ namespace tayngangstudio_sever.Controllers.Customer
                 return NotFound("No products found.");
             }
 
-            return Ok(new { Message = "Get all products successfully", Data = products });
+            return Ok(products);
         }
     }
 }
