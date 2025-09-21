@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Manager
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductCategoryManagementController(IProductCategoryService _productCategoryService)
+    public class ProductCategoryManagementController(IProductCategoryManagementService _productCategoryService)
         : CrudController<ProductCategoryCreateDTO,
             ProductCategoryUpdateDTO,
             ProductCategoryGetDTO,

@@ -10,6 +10,7 @@ namespace DataAccessLayer.Repository.Base
         public Task<List<T>> GetAllAsync(string[]? _include = null);
         public Task<T?> GetByIdAsync(int id, string[]? _include = null);
         public Task<T?> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
+        public Task<List<T>> GetListByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
         public Task<T> CreateAsync(T entity);
         public T Update(T entity);
         public void Delete(T entity);
@@ -35,11 +36,18 @@ namespace DataAccessLayer.Repository.Base
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
+        public async Task<T?> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
         {
             var entity = await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(predicate);
 
             return entity;
+        }
+
+        public async Task<List<T>> GetListByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
+        {
+            var entities = await ApplyIncludes(_dbContext.Set<T>(), _include).Where(predicate).ToListAsync();
+
+            return entities;
         }
 
         public async Task<T> CreateAsync(T entity)

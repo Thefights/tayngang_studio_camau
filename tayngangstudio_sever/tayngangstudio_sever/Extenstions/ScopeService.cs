@@ -14,10 +14,13 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<IImageUploadService, ImageUploadService>();
             _services.AddScoped<IProductManagementService, ProductManagementService>();
             _services.AddScoped<IUserService, UserService>();
-            _services.AddScoped<IOrderService, OrderService>();
-            _services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            _services.AddScoped<IOrderManagementService, OrderManagementService>();
+            _services.AddScoped<IProductCategoryManagementService, ProductCategoryManagementService>();
             _services.AddScoped<IProductService, ProductService>();
-            //_services.AddScoped<IAuthService, AuthService>();
+            _services.AddScoped<IAuthService, AuthService>();
+            _services.AddScoped<IEmailService, EmailService>();
+            _services.AddScoped<ICustomerService, CustomerService>();
+
 
             _services.AddScoped<JwtUtils>();
             _services.AddScoped<CryptoUtil>();
