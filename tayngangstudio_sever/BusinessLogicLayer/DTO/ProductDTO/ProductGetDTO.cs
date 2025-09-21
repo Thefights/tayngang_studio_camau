@@ -14,6 +14,8 @@ namespace BusinessLogicLayer.DTO.ProductDTO
 
         public double Rating { get; set; }
 
+        public int Review { get; set; }
+
         public int ProductCategoryId { get; set; }
     }
 }

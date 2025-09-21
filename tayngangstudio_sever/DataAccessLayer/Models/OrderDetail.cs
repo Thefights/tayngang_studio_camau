@@ -1,5 +1,4 @@
-﻿using DataAccessLayer.Models.AbstractEntities;
-using DataAccessLayer.Models.ProductEntities;
+using DataAccessLayer.Models.AbstractEntities;
 
 namespace DataAccessLayer.Models.OrderEntities
 {

@@ -2,7 +2,7 @@
 using DataAccessLayer.Models.AbstractEntities;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models.UserEntities
+namespace DataAccessLayer.Models
 {
     public class User : BaseEntity
     {
