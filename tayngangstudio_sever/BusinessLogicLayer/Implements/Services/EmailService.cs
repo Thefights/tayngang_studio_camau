@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Options;
+using BusinessLogicLayer.Helpers;
 using System.Net;
 using System.Net.Mail;
 
@@ -9,26 +9,19 @@ namespace BusinessLogicLayer.Implements.Services
         Task SendEmailAsync(string toEmail, string subject, string message);
     }
 
-    public class EmailService : IEmailService
+    public class EmailService(AppConfiguration configuration) : IEmailService
     {
-        private readonly SmtpSettings _smtpSettings;
-
-        public EmailService(IOptions<SmtpSettings> smtpSettings)
-        {
-            _smtpSettings = smtpSettings.Value;
-        }
-
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            var client = new SmtpClient(_smtpSettings.Server, _smtpSettings.Port)
+            var client = new SmtpClient(configuration.SmtpSettings.Server, configuration.SmtpSettings.Port)
             {
-                Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
-                EnableSsl = _smtpSettings.EnableSsl,
+                Credentials = new NetworkCredential(configuration.SmtpSettings.Username, configuration.SmtpSettings.Password),
+                EnableSsl = configuration.SmtpSettings.EnableSsl,
             };
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(_smtpSettings.FromAddress),
+                From = new MailAddress(configuration.SmtpSettings.Username, configuration.SmtpSettings.FromAddress),
                 Subject = subject,
                 Body = message,
                 IsBodyHtml = true,
@@ -37,15 +30,5 @@ namespace BusinessLogicLayer.Implements.Services
 
             await client.SendMailAsync(mailMessage);
         }
-    }
-
-    public class SmtpSettings
-    {
-        public string Server { get; set; }
-        public int Port { get; set; }
-        public string FromAddress { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public bool EnableSsl { get; set; }
     }
 }

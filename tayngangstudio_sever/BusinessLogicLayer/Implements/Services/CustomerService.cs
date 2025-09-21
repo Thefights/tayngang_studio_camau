@@ -20,21 +20,12 @@ namespace BusinessLogicLayer.Implements.Services
         public async Task<UserGetDTO> GetUserProfileAsync(int userId)
         {
             var user = await unitOfWork.Repository<User>().GetByIdAsync(userId);
-            if (user == null)
-            {
-                throw new AppException("User not found.");
-            }
-            return mapper.Map<UserGetDTO>(user);
+            return user == null ? throw new AppException("User not found.") : mapper.Map<UserGetDTO>(user);
         }
 
         public async Task UpdateUserProfileAsync(int userId, UserUpdateDTO userUpdateDTO)
         {
-            var user = await unitOfWork.Repository<User>().GetByIdAsync(userId);
-            if (user == null)
-            {
-                throw new AppException("User not found.");
-            }
-
+            var user = await unitOfWork.Repository<User>().GetByIdAsync(userId) ?? throw new AppException("User not found.");
             mapper.Map(userUpdateDTO, user);
             unitOfWork.Repository<User>().Update(user);
             await unitOfWork.SaveChangesAsync();
@@ -42,7 +33,7 @@ namespace BusinessLogicLayer.Implements.Services
 
         public async Task<IEnumerable<OrderGetDTO>> GetUserOrdersAsync(int userId)
         {
-            var orders = await unitOfWork.Repository<Order>().GetListByCondition(o => o.UserId == userId, new[] { "OrderDetails" });
+            var orders = await unitOfWork.Repository<Order>().GetListByCondition(o => o.UserId == userId, ["OrderDetails"]);
             return mapper.Map<IEnumerable<OrderGetDTO>>(orders);
         }
     }

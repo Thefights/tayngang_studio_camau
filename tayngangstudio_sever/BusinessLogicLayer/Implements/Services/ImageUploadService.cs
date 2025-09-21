@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
         Task<UploadResultDto> UploadImageAsync(IFormFile file, string? folder = null);
     }
 
-    public class ImageUploadService(IAmazonS3 _s3Client, R2Config _r2Config) : IImageUploadService
+    public class ImageUploadService(IAmazonS3 _s3Client, AppConfiguration configuration) : IImageUploadService
     {
         public async Task<UploadResultDto> UploadImageAsync(IFormFile file, string? folder = null)
         {
@@ -31,7 +31,7 @@ namespace BusinessLogicLayer.Implements.Services
             return new UploadResultDto
             {
                 FileName = fileName,
-                PublicUrl = $"{_r2Config.PublicBaseUrl}/{fileName}",
+                PublicUrl = $"{configuration.R2Config.PublicBaseUrl}/{fileName}",
                 FileSizeBytes = fileSizeBytes
             };
         }
@@ -40,7 +40,7 @@ namespace BusinessLogicLayer.Implements.Services
         {
             var request = new PutObjectRequest
             {
-                BucketName = _r2Config.Bucket,
+                BucketName = configuration.R2Config.Bucket,
                 Key = fileName,
                 InputStream = fileStream,
                 ContentType = "image/webp",

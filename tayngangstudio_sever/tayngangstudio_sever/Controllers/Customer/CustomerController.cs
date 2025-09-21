@@ -3,26 +3,25 @@ using BusinessLogicLayer.DTO.UserDTO;
 using BusinessLogicLayer.Implements.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class CustomerController : ControllerBase
+    [Authorize(Roles = "Customer")]
+    public class CustomerController(ICustomerService customerService) : ControllerBase
     {
-        private readonly ICustomerService _customerService;
-
-        public CustomerController(ICustomerService customerService)
-        {
-            _customerService = customerService;
-        }
+        private readonly ICustomerService _customerService = customerService;
 
         [HttpGet("profile")]
         public async Task<IActionResult> GetUserProfile()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdClaim = User.FindFirst("id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized("User ID claim not found.");
+            }
+            var userId = int.Parse(userIdClaim.Value);
             var user = await _customerService.GetUserProfileAsync(userId);
             return Ok(user);
         }
@@ -30,7 +29,12 @@ namespace tayngangstudio_sever.Controllers.Customer
         [HttpPut("profile")]
         public async Task<IActionResult> UpdateUserProfile([FromBody] UserUpdateDTO userUpdateDTO)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdClaim = User.FindFirst("id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized("User ID claim not found.");
+            }
+            var userId = int.Parse(userIdClaim.Value);
             await _customerService.UpdateUserProfileAsync(userId, userUpdateDTO);
             return Ok("Profile updated successfully.");
         }
@@ -38,7 +42,12 @@ namespace tayngangstudio_sever.Controllers.Customer
         [HttpGet("orders")]
         public async Task<IActionResult> GetUserOrders()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userIdClaim = User.FindFirst("id");
+            if (userIdClaim == null)
+            {
+                return Unauthorized("User ID claim not found.");
+            }
+            var userId = int.Parse(userIdClaim.Value);
             var orders = await _customerService.GetUserOrdersAsync(userId);
             return Ok(orders);
         }

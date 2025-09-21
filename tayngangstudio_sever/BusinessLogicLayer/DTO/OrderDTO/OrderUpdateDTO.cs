@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.DTO.Abstract.Base;
+using BusinessLogicLayer.DTO.OrderDetailDTO;
 using DataAccessLayer.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,8 +20,6 @@ namespace BusinessLogicLayer.DTO.OrderDTO
         [Required]
         public int UserId { get; set; }
 
-        public int? VoucherId { get; set; }
-
-        public List<OrderGetDTO> OrderDetails { get; set; } = [];
+        public List<OrderDetailGetDTO> OrderDetails { get; set; } = [];
     }
 }
