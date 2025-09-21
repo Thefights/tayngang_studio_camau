@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.DTO.ProductDTO;
-using BusinessLogicLayer.Implements.Services;
+using BusinessLogicLayer.Implements.Services.ManagementService;
 using DataAccessLayer.Models.ProductEntities;
 using Microsoft.AspNetCore.Mvc;
 using tayngangstudio_sever.Controllers.Base;
@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Manager
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductManagementController(IProductService _productService)
+    public class ProductManagementController(IProductManagementService _productService)
         : CrudController<ProductCreateDTO,
             ProductUpdateDTO,
             ProductGetDTO,

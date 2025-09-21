@@ -1,8 +1,7 @@
-﻿using BusinessLogicLayer.Utils;
+﻿using BusinessLogicLayer.Implements.Services;
+using BusinessLogicLayer.Utils;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using static BusinessLogicLayer.Implements.Services.UserService;
-
 namespace BusinessLogicLayer.Middlewares
 {
     public class JwtMiddleware(RequestDelegate _next)

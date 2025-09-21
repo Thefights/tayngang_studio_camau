@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.DTO;
-using BusinessLogicLayer.Implements.Services;
+using BusinessLogicLayer.Implements.Services.ManagementService;
 using DataAccessLayer.Models.ProductEntities;
 using Microsoft.AspNetCore.Mvc;
 using tayngangstudio_sever.Controllers.Base;

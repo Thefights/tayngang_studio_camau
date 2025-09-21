@@ -4,7 +4,7 @@ using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models.ProductEntities;
 using DataAccessLayer.Repository.Base;
 
-namespace BusinessLogicLayer.Implements.Services
+namespace BusinessLogicLayer.Implements.Services.ManagementService
 {
     public interface IProductCategoryService
         : ICrudService<ProductCategoryCreateDTO,
