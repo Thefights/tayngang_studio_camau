@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.DTO.Abstract.Base;
-using DataAccessLayer.Models.UserEntities;
+using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
 {

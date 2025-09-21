@@ -1,7 +1,5 @@
 ﻿using DataAccessLayer.Data.Seeds;
-using DataAccessLayer.Models.OrderEntities;
-using DataAccessLayer.Models.ProductEntities;
-using DataAccessLayer.Models.UserEntities;
+using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data

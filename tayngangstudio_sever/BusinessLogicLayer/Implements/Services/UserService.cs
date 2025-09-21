@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Models.UserEntities;
+﻿using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services

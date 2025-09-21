@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.Attributes;
 using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.Implements.Services.ManagementService;
-using DataAccessLayer.Models.OrderEntities;
+using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using tayngangstudio_sever.Controllers.Base;
 

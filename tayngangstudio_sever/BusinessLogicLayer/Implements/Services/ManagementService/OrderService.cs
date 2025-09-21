@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.Implements.Base;
-using DataAccessLayer.Models.OrderEntities;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services.ManagementService

@@ -1,6 +1,4 @@
-﻿using DataAccessLayer.Models.ProductEntities;
-
-namespace DataAccessLayer.Models.OrderEntities
+﻿namespace DataAccessLayer.Models
 {
     public class OrderDetail
     {

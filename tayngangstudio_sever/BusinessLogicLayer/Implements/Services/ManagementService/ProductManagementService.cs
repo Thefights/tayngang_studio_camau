@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.Implements.Base;
-using DataAccessLayer.Models.ProductEntities;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services.ManagementService

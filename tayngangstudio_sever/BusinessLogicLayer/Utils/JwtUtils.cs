@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.Helpers;
 using DataAccessLayer.Data;
-using DataAccessLayer.Models.UserEntities;
+using DataAccessLayer.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
