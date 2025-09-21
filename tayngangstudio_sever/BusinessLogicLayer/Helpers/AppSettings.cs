@@ -2,9 +2,6 @@
 {
     public class AppSettings
     {
-        public string Secret { get; set; }
-
-        //In days
-        public int RefreshTokenTTL { get; set; }
+        public string SecretKey { get; set; }
     }
 }
