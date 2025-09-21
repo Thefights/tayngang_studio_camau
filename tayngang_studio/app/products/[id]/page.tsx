@@ -1,5 +1,5 @@
-import { ProductDetail } from "@/components/product-detail";
-import { RelatedProducts } from "@/components/related-products";
+import { ProductDetail } from "@/components/product/product-detail";
+import { RelatedProducts } from "@/components/product/related-products";
 import { notFound } from "next/navigation";
 
 // Mock product data - in real app this would come from database

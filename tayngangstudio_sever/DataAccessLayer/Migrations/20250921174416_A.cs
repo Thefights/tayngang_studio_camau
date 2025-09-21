@@ -57,6 +57,7 @@ namespace DataAccessLayer.Migrations
                     Price = table.Column<double>(type: "float", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Rating = table.Column<double>(type: "float", nullable: false),
+                    Review = table.Column<int>(type: "int", nullable: false),
                     ProductCategoryId = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -151,12 +152,12 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "Description", "ImageUrl", "Name", "Price", "ProductCategoryId", "Quantity", "Rating" },
+                columns: new[] { "Id", "Description", "ImageUrl", "Name", "Price", "ProductCategoryId", "Quantity", "Rating", "Review" },
                 values: new object[,]
                 {
-                    { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 25000000.0, 1, 50, 4.5 },
-                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 2, 40, 4.2000000000000002 },
-                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 3, 20, 4.7999999999999998 }
+                    { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 25000000.0, 1, 50, 4.5, 120 },
+                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 2, 40, 4.2000000000000002, 95 },
+                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 3, 20, 4.7999999999999998, 210 }
                 });
 
             migrationBuilder.InsertData(

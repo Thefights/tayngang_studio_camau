@@ -1,4 +1,4 @@
-import { AccountDashboard } from "@/components/account-dashboard";
+import { AccountDashboard } from "@/components/admin/account-dashboard";
 
 export default function AccountPage() {
   return (

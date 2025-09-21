@@ -1,8 +1,7 @@
 ﻿using DataAccessLayer.Models.AbstractEntities;
-using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models.ProductEntities
+namespace DataAccessLayer.Models
 {
     public class Product : ImageEntity
     {
@@ -19,6 +18,8 @@ namespace DataAccessLayer.Models.ProductEntities
         public string Description { get; set; } = string.Empty;
 
         public double Rating { get; set; }
+
+        public int Review { get; set; }
 
         public int ProductCategoryId { get; set; }
 

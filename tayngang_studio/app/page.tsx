@@ -1,5 +1,5 @@
 import { Hero } from "@/components/common/hero";
-import { ProductFeatureGallery } from "@/components/product-feature-gallery";
+import { ProductFeatureGallery } from "@/components/product/product-feature-gallery";
 
 export default function HomePage() {
   return (

@@ -1,7 +1,7 @@
 ﻿using DataAccessLayer.Models.AbstractEntities;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models.ProductEntities
+namespace DataAccessLayer.Models
 {
     public class ProductCategory : BaseEntity
     {
