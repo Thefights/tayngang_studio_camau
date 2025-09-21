@@ -70,7 +70,7 @@ namespace BusinessLogicLayer.Implements.Services
                 throw new AppException("User not found.");
             }
 
-            var newPassword = Path.GetRandomFileName().Replace(".", "").Substring(0, 8);
+            var newPassword = StringUtil.GenerateSecurePassword(12);
             user.Password = CryptoUtil.EncryptPassword(newPassword);
 
             _unitOfWork.Repository<User>().Update(user);

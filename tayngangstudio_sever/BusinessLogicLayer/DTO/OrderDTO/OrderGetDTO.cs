@@ -14,8 +14,6 @@ namespace BusinessLogicLayer.DTO.OrderDTO
 
         public int UserId { get; set; }
 
-        public int? VoucherId { get; set; }
-
         public List<OrderDetailGetDTO> OrderDetails { get; set; }
     }
 }

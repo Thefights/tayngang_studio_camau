@@ -20,6 +20,7 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<IAuthService, AuthService>();
             _services.AddScoped<IEmailService, EmailService>();
             _services.AddScoped<ICustomerService, CustomerService>();
+            _services.AddScoped<IStatisticService, StatisticService>();
 
 
             _services.AddScoped<JwtUtils>();

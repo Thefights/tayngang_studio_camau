@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Helpers;
+using DataAccessLayer.Models.UserEntities;
 using DataAccessLayer.Data;
 using DataAccessLayer.Models;
 using Microsoft.Extensions.Options;
@@ -9,9 +10,9 @@ using System.Text;
 
 namespace BusinessLogicLayer.Utils
 {
-    public class JwtUtils(ApplicationDbContext context, IOptions<AppSettings> appSettings)
+    public class JwtUtils(AppConfiguration appConfiguration)
     {
-        private readonly AppSettings _appSettings = appSettings.Value;
+        private readonly AppSettings _appSettings = appConfiguration.AppSettings;
 
         public string GenerateJwtToken(User user)
         {
@@ -20,9 +21,10 @@ namespace BusinessLogicLayer.Utils
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
-                    new Claim("id", user.Id.ToString()),
+                    new Claim("id", user.Id.ToString()),              // custom id claim
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // standard id claim
+                    new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Role, user.Role.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(15),
@@ -34,8 +36,13 @@ namespace BusinessLogicLayer.Utils
 
         public int? ValidateJwtToken(string token)
         {
-            if (token == null)
+            if (string.IsNullOrWhiteSpace(token))
                 return null;
+
+            if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            {
+                token = token[7..].Trim();
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);

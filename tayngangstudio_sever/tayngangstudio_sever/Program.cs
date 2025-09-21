@@ -9,6 +9,9 @@ using tayngangstudio_sever.Extenstions;
 var builder = WebApplication.CreateBuilder(args);
 var QuachKhangOrigin = "QuachKhangPolicy";
 
+var configuration = builder.Configuration.Get<AppConfiguration>()!;
+builder.Services.AddSingleton(configuration);
+
 builder.Services.AddControllers()
      .AddJsonOptions(options =>
      {
@@ -18,7 +21,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TayNgangDb"));
+    options.UseSqlServer(configuration.ConnectionStrings.TayNgangDb);
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
@@ -29,7 +32,8 @@ builder.Services.AddSwaggerGen(c =>
     {
         In = ParameterLocation.Header,
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
         Scheme = "Bearer",
     });
 
@@ -50,7 +54,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScopeService();
-builder.Services.AddAWSService(builder.Configuration);
+builder.Services.AddAWSService(configuration);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -68,7 +72,6 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-//var secret = app.Configuration["AppSettings:Secret"];
 
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ErrorHandlerMiddleware>();

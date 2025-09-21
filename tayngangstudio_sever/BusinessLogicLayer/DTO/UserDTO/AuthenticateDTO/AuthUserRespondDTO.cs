@@ -7,7 +7,7 @@ namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
     {
         public string Name { get; set; } = user.Name;
         public string Email { get; set; } = user.Email;
-        public string Role { get; set; } = string.Empty;
+        public string Role { get; set; } = user.Role.ToString();
 
         public string AccessToken { get; set; } = jwtToken;
     }
