@@ -4,7 +4,7 @@ using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models.OrderEntities;
 using DataAccessLayer.Repository.Base;
 
-namespace BusinessLogicLayer.Implements.Services
+namespace BusinessLogicLayer.Implements.Services.ManagementService
 {
     public interface IOrderService : IRuService<OrderGetDTO, OrderUpdateDTO, Order>
     {
