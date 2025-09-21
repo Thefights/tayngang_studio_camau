@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { ProductGallery } from "@/components/product-gallery";
+import { ProductGallery } from "@/components/product/product-gallery";
 import { Button } from "@/components/ui/button";
 import { useLoading } from "@/context/loading-context";
 import * as productData from "@/data/other/product.data";

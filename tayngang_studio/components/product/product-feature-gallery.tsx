@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import * as productData from "@/data/other/product.data";
-import { Product } from "@/model/product";
 import { motion } from "framer-motion";
 import { Heart, Star } from "lucide-react";
 import Link from "next/link";
@@ -29,7 +28,7 @@ export const mockProducts = [
 ];
 
 export function ProductFeatureGallery() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
     const loadProducts = async () => {
