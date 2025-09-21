@@ -3,22 +3,12 @@ using DataAccessLayer.Models.UserEntities;
 
 namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
 {
-    public class AuthUserRespondDTO : BaseDTO
+    public class AuthUserRespondDTO(User user, string jwtToken) : BaseDTO
     {
-        public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
+        public string Name { get; set; } = user.Name;
+        public string Email { get; set; } = user.Email;
         public string Role { get; set; } = string.Empty;
 
-        public string AccessToken { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
-
-        public AuthUserRespondDTO(User user, string jwtToken, string refreshToken)
-        {
-            //Id = user.Id;
-            Email = user.Email;
-            Name = user.Name;
-            AccessToken = jwtToken;
-            RefreshToken = refreshToken;
-        }
+        public string AccessToken { get; set; } = jwtToken;
     }
 }

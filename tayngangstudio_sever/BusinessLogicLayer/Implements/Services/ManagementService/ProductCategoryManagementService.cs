@@ -6,7 +6,7 @@ using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services.ManagementService
 {
-    public interface IProductCategoryService
+    public interface IProductCategoryManagementService
         : ICrudService<ProductCategoryCreateDTO,
             ProductCategoryGetDTO,
             ProductCategoryUpdateDTO,
@@ -14,11 +14,11 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
     {
     }
 
-    public class ProductCategoryService(IUnitOfWork unitOfWork, IMapper mapper)
+    public class ProductCategoryManagementService(IUnitOfWork unitOfWork, IMapper mapper)
         : CrudService<ProductCategoryCreateDTO,
             ProductCategoryGetDTO,
             ProductCategoryUpdateDTO,
-            ProductCategory>(unitOfWork, mapper), IProductCategoryService
+            ProductCategory>(unitOfWork, mapper), IProductCategoryManagementService
     {
     }
 }
