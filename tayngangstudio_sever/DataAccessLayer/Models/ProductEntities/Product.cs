@@ -18,6 +18,8 @@ namespace DataAccessLayer.Models.ProductEntities
         [MaxLength(1000)]
         public string Description { get; set; } = string.Empty;
 
+        public double Rating { get; set; }
+
         public int ProductCategoryId { get; set; }
 
         public ProductCategory? ProductCategory { get; set; }

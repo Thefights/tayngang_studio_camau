@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models.OrderEntities;
+﻿using DataAccessLayer.Data.Seeds;
+using DataAccessLayer.Models.OrderEntities;
 using DataAccessLayer.Models.ProductEntities;
 using DataAccessLayer.Models.UserEntities;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,13 @@ namespace DataAccessLayer.Data
                 .HasOne(od => od.Product)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(od => od.ProductId);
+
+            // Seed initial data
+            OrderDataSeeds.Seed(modelBuilder);
+            OrderDetailDataSeeds.Seed(modelBuilder);
+            ProductCategoryDataSeeds.Seed(modelBuilder);
+            ProductDataSeeds.Seed(modelBuilder);
+            UserDataSeeds.Seed(modelBuilder);
         }
     }
 }

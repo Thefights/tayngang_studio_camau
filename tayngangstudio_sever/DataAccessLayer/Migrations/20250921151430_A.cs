@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
@@ -54,6 +56,7 @@ namespace DataAccessLayer.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Rating = table.Column<double>(type: "float", nullable: false),
                     ProductCategoryId = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -115,6 +118,54 @@ namespace DataAccessLayer.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductCategories",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Các loại smartphone", "Điện thoại" },
+                    { 2, "Máy tính xách tay", "Laptop" },
+                    { 3, "Máy tính bảng", "Tablet" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "CreateAt", "Email", "Name", "Password", "Phone", "Role", "UpdateAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@example.com", "Admin", "123456", "0123456789", 0, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "alice@example.com", "Alice", "123456", "0987654321", 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "bob@example.com", "Bob", "123456", "0911222333", 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "Id", "OrderDate", "Status", "TotalAmount", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 50000000.0, 2 },
+                    { 2, new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 20000000.0, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Description", "ImageUrl", "Name", "Price", "ProductCategoryId", "Quantity", "Rating" },
+                values: new object[,]
+                {
+                    { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 25000000.0, 1, 50, 4.5 },
+                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 1, 40, 4.2000000000000002 },
+                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 2, 20, 4.7999999999999998 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderDetail",
+                columns: new[] { "OrderId", "ProductId", "Quantity", "Total", "UnitPrice" },
+                values: new object[,]
+                {
+                    { 1, 1, 2, 50000000.0, 25000000.0 },
+                    { 2, 2, 1, 20000000.0, 20000000.0 }
                 });
 
             migrationBuilder.CreateIndex(
