@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.DTO.OrderDTO
 {
-    public class OrderUpdateDTO : BaseDTO
+    public class OrderUpdateDTO : BaseUpdateDTO
     {
         [Required]
         public DateTime OrderDate { get; set; }

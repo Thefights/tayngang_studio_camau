@@ -6,41 +6,17 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Heart,
   Minus,
   Plus,
   RotateCcw,
-  Share2,
   Shield,
   ShoppingCart,
   Star,
   Truck,
 } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  images: string[];
-  rating: number;
-  reviews: number;
-  description: string;
-  features: string[];
-  specifications: Record<string, string>;
-  inStock: boolean;
-  stockQuantity: number;
-  category: string;
-  tags: string[];
-}
-
-interface ProductDetailProps {
-  product: Product;
-}
-
-export function ProductDetail({ product }: ProductDetailProps) {
+export function ProductDetail({ product }: { product: any }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -69,7 +45,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <AnimatePresence mode="wait">
               <motion.img
                 key={selectedImage}
-                src={product.images[selectedImage] || "/placeholder.svg"}
+                src={product.imageUrl[selectedImage] || "/placeholder.svg"}
                 alt={product.name}
                 className="w-full h-full object-cover"
                 initial={{ opacity: 0, scale: 1.1 }}
@@ -81,7 +57,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
           </motion.div>
 
           {/* Thumbnail Images */}
-          <div className="grid grid-cols-4 gap-4">
+          {/* <div className="grid grid-cols-4 gap-4">
             {product.images.map((image, index) => (
               <motion.button
                 key={index}
@@ -104,7 +80,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 />
               </motion.button>
             ))}
-          </div>
+          </div> */}
         </motion.div>
 
         {/* Product Info */}
@@ -118,7 +94,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Badge variant="secondary" className="bg-[#A5C6A1] text-white">
-                {product.category}
+                {product.productCategoryName}
               </Badge>
               {discount > 0 && (
                 <Badge variant="destructive" className="bg-red-500 text-white">
@@ -168,11 +144,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </p>
           </div>
 
-          {/* Description */}
-          <p className="text-[#5A3E2B]/80 leading-relaxed">
-            {product.description}
-          </p>
-
           {/* Quantity & Actions */}
           <div className="space-y-4">
             <div className="flex items-center gap-4">
@@ -208,7 +179,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                     variant="ghost"
                     size="sm"
                     onClick={() =>
-                      setQuantity(Math.min(product.stockQuantity, quantity + 1))
+                      setQuantity(Math.min(product.quantity, quantity + 1))
                     }
                     className="text-[#5A3E2B] hover:bg-[#5A3E2B]/10 transition-colors duration-200"
                   >
@@ -240,62 +211,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`border-[#5A3E2B] transition-all duration-300 ${
-                    isWishlisted
-                      ? "bg-[#5A3E2B] text-white"
-                      : "text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white"
-                  }`}
-                >
-                  <motion.div
-                    animate={{ scale: isWishlisted ? [1, 1.3, 1] : 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Heart
-                      className={`w-5 h-5 ${
-                        isWishlisted ? "fill-current" : ""
-                      }`}
-                    />
-                  </motion.div>
-                </Button>
-              </motion.div>
+              ></motion.div>
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent transition-all duration-300"
-                >
-                  <Share2 className="w-5 h-5" />
-                </Button>
-              </motion.div>
+              ></motion.div>
             </div>
           </div>
-
-          {/* Features */}
-          <Card className="p-6 bg-white border-[#5A3E2B]/10">
-            <h3 className="font-serif text-lg text-[#5A3E2B] mb-4">
-              Đặc điểm nổi bật
-            </h3>
-            <ul className="space-y-2">
-              {product.features.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-2 text-[#5A3E2B]/80"
-                >
-                  <div className="w-1.5 h-1.5 bg-[#A5C6A1] rounded-full mt-2 flex-shrink-0" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </Card>
 
           {/* Guarantees */}
           <div className="grid grid-cols-3 gap-4">
@@ -318,24 +241,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
       {/* Product Details Tabs */}
       <div className="mt-16">
         <Tabs defaultValue="description" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white border border-[#5A3E2B]/10">
+          <TabsList className="grid w-full grid-cols-1 bg-white border border-[#5A3E2B]/10">
             <TabsTrigger
               value="description"
               className="data-[state=active]:bg-[#5A3E2B] data-[state=active]:text-white"
             >
               Mô tả chi tiết
-            </TabsTrigger>
-            <TabsTrigger
-              value="specifications"
-              className="data-[state=active]:bg-[#5A3E2B] data-[state=active]:text-white"
-            >
-              Thông số kỹ thuật
-            </TabsTrigger>
-            <TabsTrigger
-              value="reviews"
-              className="data-[state=active]:bg-[#5A3E2B] data-[state=active]:text-white"
-            >
-              Đánh giá ({product.reviews})
             </TabsTrigger>
           </TabsList>
 
@@ -355,23 +266,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </div>
             </Card>
           </TabsContent>
-
-          <TabsContent value="specifications" className="mt-6">
-            <Card className="p-6 bg-white">
-              <div className="grid md:grid-cols-2 gap-6">
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className="flex justify-between items-center py-2 border-b border-[#5A3E2B]/10"
-                  >
-                    <span className="font-medium text-[#5A3E2B]">{key}:</span>
-                    <span className="text-[#5A3E2B]/80">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </TabsContent>
-
           <TabsContent value="reviews" className="mt-6">
             <Card className="p-6 bg-white">
               <div className="text-center py-8">

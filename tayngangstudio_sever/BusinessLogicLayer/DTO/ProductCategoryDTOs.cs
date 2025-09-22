@@ -7,7 +7,7 @@ namespace BusinessLogicLayer.DTO
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
-    public class ProductCategoryUpdateDTO : BaseDTO
+    public class ProductCategoryUpdateDTO : BaseUpdateDTO
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

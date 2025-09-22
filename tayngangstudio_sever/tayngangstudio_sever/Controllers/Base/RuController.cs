@@ -9,7 +9,7 @@ namespace tayngangstudio_sever.Controllers.Base
     [ApiController]
     public class RuController<GetDTO, UpdateDTO, T>(IRuService<GetDTO, UpdateDTO, T> _ruService) : ControllerBase
         where GetDTO : BaseDTO
-        where UpdateDTO : BaseDTO
+        where UpdateDTO : BaseUpdateDTO
         where T : BaseEntity
     {
         [HttpGet]
