@@ -2,8 +2,7 @@ using AutoMapper;
 using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.DTO.UserDTO;
 using BusinessLogicLayer.Helpers;
-using DataAccessLayer.Models.OrderEntities;
-using DataAccessLayer.Models.UserEntities;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services

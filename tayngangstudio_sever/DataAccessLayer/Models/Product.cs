@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Models.AbstractEntities;
+using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Models

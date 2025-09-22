@@ -16,6 +16,6 @@ namespace BusinessLogicLayer.DTO.ProductDTO
 
         public int Review { get; set; }
 
-        public int ProductCategoryId { get; set; }
+        public string ProductCategoryName { get; set; } = string.Empty;
     }
 }
