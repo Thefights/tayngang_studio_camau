@@ -9,7 +9,7 @@ namespace tayngangstudio_sever.Controllers.Base
     public abstract class CrudController<CreateDTO, UpdateDTO, GetDTO, T>(ICrudService<CreateDTO, GetDTO, UpdateDTO, T> _crudService) : ControllerBase
         where CreateDTO : BaseDTO
         where GetDTO : BaseDTO
-        where UpdateDTO : BaseDTO
+        where UpdateDTO : BaseUpdateDTO
         where T : BaseEntity
     {
         [HttpGet]

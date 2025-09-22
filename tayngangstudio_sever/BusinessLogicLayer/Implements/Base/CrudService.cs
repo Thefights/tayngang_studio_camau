@@ -19,7 +19,7 @@ namespace BusinessLogicLayer.Implements.Base
     public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageUploadService? _imageUploadService = null, string[]? _includes = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
         where CreateDTO : BaseDTO
         where GetDTO : BaseDTO
-        where UpdateDTO : BaseDTO
+        where UpdateDTO : BaseUpdateDTO
         where T : BaseEntity
     {
         public async Task<GetDTO> GetByIdAsync(int id)
