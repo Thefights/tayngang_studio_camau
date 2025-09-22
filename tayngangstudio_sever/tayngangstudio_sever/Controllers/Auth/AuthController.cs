@@ -1,6 +1,5 @@
 ﻿using BusinessLogicLayer.Attributes;
-using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
-using BusinessLogicLayer.DTO.UserDTO.LoginDTO;
+using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Implements.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +11,7 @@ namespace tayngangstudio_sever.Controllers.Auth
     {
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AuthUserRequestDTO dto)
+        public async Task<IActionResult> Register(RegisterDTO dto)
         {
             var user = await _authService.RegisterAsync(dto);
             return Ok("Registration successful");
@@ -20,7 +19,7 @@ namespace tayngangstudio_sever.Controllers.Auth
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO dto)
+        public async Task<IActionResult> Login(LoginRequestDTO dto)
         {
             var authResponse = await _authService.LoginAsync(dto);
             return Ok(new { Message = "Login successful", Data = authResponse });

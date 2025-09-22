@@ -1,11 +1,10 @@
 using AutoMapper;
-using BusinessLogicLayer.DTO.OrderDTO;
-using BusinessLogicLayer.DTO.UserDTO;
+using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Helpers;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
-namespace BusinessLogicLayer.Implements.Services
+namespace BusinessLogicLayer.Implements.Services.ManagementService
 {
     public interface ICustomerService
     {

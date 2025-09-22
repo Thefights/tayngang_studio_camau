@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.DTO.Abstract.Base;
+﻿using BusinessLogicLayer.DTO.Abstract;
 using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models.AbstractEntities;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +7,9 @@ namespace tayngangstudio_sever.Controllers.Base
 {
     [ApiController]
     public abstract class CrudController<CreateDTO, UpdateDTO, GetDTO, T>(ICrudService<CreateDTO, GetDTO, UpdateDTO, T> _crudService) : ControllerBase
-        where CreateDTO : BaseDTO
-        where GetDTO : BaseDTO
-        where UpdateDTO : BaseUpdateDTO
+        where CreateDTO : class
+        where GetDTO : BaseGetDTO
+        where UpdateDTO : class
         where T : BaseEntity
     {
         [HttpGet]

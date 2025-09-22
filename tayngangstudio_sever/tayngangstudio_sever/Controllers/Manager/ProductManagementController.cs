@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.Attributes;
-using BusinessLogicLayer.DTO.ProductDTO;
+using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Implements.Services.ManagementService;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;

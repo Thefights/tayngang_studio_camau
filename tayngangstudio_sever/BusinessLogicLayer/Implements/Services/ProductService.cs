@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO.ProductDTO;
+using BusinessLogicLayer.DTO;
 using DataAccessLayer.Data;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;

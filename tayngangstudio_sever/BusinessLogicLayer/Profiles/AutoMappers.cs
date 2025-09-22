@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO;
-using BusinessLogicLayer.DTO.OrderDetailDTO;
-using BusinessLogicLayer.DTO.OrderDTO;
-using BusinessLogicLayer.DTO.ProductDTO;
-using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
 using DataAccessLayer.Models;
-using DataAccessLayer.Models.OrderEntities;
 
 namespace BusinessLogicLayer.Profiles
 {
@@ -31,8 +26,8 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<OrderDetail, OrderDetailGetDTO>().ReverseMap();
 
             //User
-            CreateMap<User, AuthUserRequestDTO>().ReverseMap();
-            CreateMap<User, AuthUserRespondDTO>().ReverseMap();
+            CreateMap<User, LoginRequestDTO>().ReverseMap();
+            CreateMap<User, LoginResponDTO>().ReverseMap();
         }
     }
 }

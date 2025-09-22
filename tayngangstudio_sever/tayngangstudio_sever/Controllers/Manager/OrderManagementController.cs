@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.Attributes;
-using BusinessLogicLayer.DTO.OrderDTO;
+using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Implements.Services.ManagementService;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class OrderManagementController(IOrderManagementService _orderService) : RuController<OrderGetDTO, OrderUpdateDTO, Order>(_orderService)
+    public class OrderManagementController(IOrderManagementService _orderService) : CrudController<OrderCreateDTO, OrderUpdateDTO, OrderGetDTO, Order>(_orderService)
     {
     }
 }

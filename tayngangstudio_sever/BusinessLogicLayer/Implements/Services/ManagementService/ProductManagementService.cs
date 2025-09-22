@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.DTO.ProductDTO;
+﻿using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
