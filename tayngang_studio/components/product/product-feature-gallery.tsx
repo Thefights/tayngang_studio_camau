@@ -2,42 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import * as productData from "@/data/other/product.data";
 import { motion } from "framer-motion";
 import { Heart, Star } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export const mockProducts = [
-  {
-    rating: 4.5,
-    reviews: 120,
-  },
-  {
-    rating: 4.2,
-    reviews: 85,
-  },
-  {
-    rating: 4.8,
-    reviews: 230,
-  },
-  {
-    rating: 4.0,
-    reviews: 65,
-  },
-];
-
-export function ProductFeatureGallery() {
-  const [products, setProducts] = useState<any[]>([]);
-
-  useEffect(() => {
-    const loadProducts = async () => {
-      const data = await productData.getProductFeatures();
-      setProducts(data);
-    };
-    loadProducts();
-  }, []);
-
+export function ProductFeatureGallery({ products }: { products: any[] }) {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -153,7 +122,7 @@ export function ProductFeatureGallery() {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Math.floor(mockProducts[index].rating)
+                            i < Math.floor(product.rating)
                               ? "text-yellow-400 fill-current"
                               : "text-gray-300"
                           }`}
@@ -161,8 +130,7 @@ export function ProductFeatureGallery() {
                       ))}
                     </div>
                     <span className="text-sm text-[#5A3E2B]/60">
-                      {mockProducts[index].rating} (
-                      {mockProducts[index].reviews})
+                      {product.rating} ({product.review})
                     </span>
                   </div>
                   {/* Product Name */}

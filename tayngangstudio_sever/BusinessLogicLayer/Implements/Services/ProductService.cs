@@ -21,7 +21,7 @@ namespace BusinessLogicLayer.Implements.Services
 
         public async Task<IEnumerable<ProductGetDTO>> GetAllProducts()
         {
-            var products = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
             var validProduct = products.Where(p => p.Quantity > 0);
 
@@ -30,13 +30,13 @@ namespace BusinessLogicLayer.Implements.Services
 
         public async Task<ProductGetDTO> GetProductById(int id)
         {
-            var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id);
+            var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id, _include);
             return _mapper.Map<ProductGetDTO>(product);
         }
 
         public async Task<IEnumerable<ProductGetDTO>> GetFeatureProductsBaseOrder()
         {
-            var products = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
             var featureProducts = products
                 .OrderByDescending(p => p.OrderDetails.Count)
@@ -58,7 +58,7 @@ namespace BusinessLogicLayer.Implements.Services
 
         public async Task<IEnumerable<ProductGetDTO>> SearchProduct(string searchTerm)
         {
-            var products = await _unitOfWork.Repository<Product>().GetAllAsync();
+            var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
             var nameProducts = products
                 .Where(p => p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));

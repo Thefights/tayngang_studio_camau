@@ -5,6 +5,7 @@ using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
 using DataAccessLayer.Models;
+using DataAccessLayer.Models.OrderEntities;
 
 namespace BusinessLogicLayer.Profiles
 {

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import Link from "next/link";
 
 export function ProductGallery({ products }: { products: any[] }) {
@@ -57,21 +57,19 @@ export function ProductGallery({ products }: { products: any[] }) {
 
                   {/* Badges */}
                   <div className="absolute top-3 left-3 flex flex-col gap-2">
-                    {product.productCategoryId && (
-                      <motion.span
-                        className="bg-[#A5C6A1] text-white text-xs font-medium px-2 py-1 rounded-full"
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{
-                          delay: 0.3,
-                          type: "spring",
-                          stiffness: 500,
-                          damping: 30,
-                        }}
-                      >
-                        Mới
-                      </motion.span>
-                    )}
+                    <motion.span
+                      className="bg-[#A5C6A1] text-white text-xs font-medium px-2 py-1 rounded-full"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{
+                        delay: 0.3,
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                      }}
+                    >
+                      {product.productCategoryName}
+                    </motion.span>
                   </div>
 
                   {/* Wishlist Button */}
@@ -116,13 +114,13 @@ export function ProductGallery({ products }: { products: any[] }) {
 
                 <div className="p-6 space-y-4">
                   {/* Rating */}
-                  {/* <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < Math.floor(mockProducts[index].rating)
+                            i < Math.floor(product.rating)
                               ? "text-yellow-400 fill-current"
                               : "text-gray-300"
                           }`}
@@ -130,10 +128,9 @@ export function ProductGallery({ products }: { products: any[] }) {
                       ))}
                     </div>
                     <span className="text-sm text-[#5A3E2B]/60">
-                      {mockProducts[index].rating} (
-                      {mockProducts[index].reviews})
+                      {product.rating} ({product.review})
                     </span>
-                  </div> */}
+                  </div>
                   {/* Product Name */}
                   <h3 className="font-serif text-lg text-[#5A3E2B] font-medium text-balance">
                     {product.name}

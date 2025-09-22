@@ -3,7 +3,7 @@ using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
 using BusinessLogicLayer.DTO.UserDTO.LoginDTO;
 using BusinessLogicLayer.Helpers;
 using BusinessLogicLayer.Utils;
-using DataAccessLayer.Models.UserEntities;
+using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
