@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
+  const [keyword, setKeyword] = useState("");
   const { setLoading } = useLoading();
 
   const fetchProductsByCategory = async (category: string) => {
@@ -24,6 +25,14 @@ export default function ProductsPage() {
     const products = await productData.getProducts();
     console.log(products);
     setProducts(products);
+    setLoading(false);
+  };
+
+  const handleSearch = async () => {
+    setLoading(true);
+    const results = await productData.getProductByName(keyword);
+    setProducts(results);
+    setKeyword("");
     setLoading(false);
   };
 
@@ -58,7 +67,14 @@ export default function ProductsPage() {
                 <input
                   type="text"
                   placeholder="Tìm kiếm sản phẩm..."
+                  value={keyword}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5A3E2B] focus:border-transparent"
+                  onChange={(e) => setKeyword(e.currentTarget.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
                 />
               </div>
             </div>
