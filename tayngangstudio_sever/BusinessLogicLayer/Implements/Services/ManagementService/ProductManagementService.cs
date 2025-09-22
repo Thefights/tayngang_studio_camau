@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BusinessLogicLayer.DTO.ProductDTO;
+﻿using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
@@ -11,11 +10,11 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
     {
     }
 
-    public class ProductManagementService(IUnitOfWork unitOfWork, IImageUploadService imageUploadService, IMapper mapper)
+    public class ProductManagementService(IUnitOfWork unitOfWork)
         : CrudService<ProductCreateDTO,
             ProductGetDTO,
             ProductUpdateDTO,
-            Product>(unitOfWork, mapper, imageUploadService), IProductManagementService
+            Product>(unitOfWork), IProductManagementService
     {
     }
 }

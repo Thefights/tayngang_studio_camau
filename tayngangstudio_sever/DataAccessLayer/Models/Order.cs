@@ -10,7 +10,7 @@ namespace DataAccessLayer.Models
 
         public double TotalAmount { get; set; }
 
-        public OrderStatusEnum Status { get; set; }
+        public OrderStatusEnum Status { get; set; } = OrderStatusEnum.Pending;
 
         public int UserId { get; set; }
 

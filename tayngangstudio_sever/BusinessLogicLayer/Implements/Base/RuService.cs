@@ -14,7 +14,7 @@ namespace BusinessLogicLayer.Implements.Base
         public Task UpdateAsync(UpdateDTO dto);
     }
 
-    public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[]? _includes = null, IImageUploadService? _imageUploadService = null) : IRuService<GetDTO, UpdateDTO, T>
+    public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, string[]? _includes = null, IMapper? _mapper = null, IImageUploadService? _imageUploadService = null) : IRuService<GetDTO, UpdateDTO, T>
         where GetDTO : BaseDTO
         where UpdateDTO : BaseUpdateDTO
         where T : BaseEntity
