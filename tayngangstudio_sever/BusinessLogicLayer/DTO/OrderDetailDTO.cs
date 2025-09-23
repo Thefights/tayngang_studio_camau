@@ -8,8 +8,6 @@
 
         public double Total { get; set; } = 0;
 
-        public int OrderId { get; set; }
-
         public int ProductId { get; set; }
     }
 }
