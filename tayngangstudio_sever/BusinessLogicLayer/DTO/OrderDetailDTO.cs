@@ -1,8 +1,6 @@
-﻿using BusinessLogicLayer.DTO.Abstract;
-
-namespace BusinessLogicLayer.DTO
+﻿namespace BusinessLogicLayer.DTO
 {
-    public class OrderDetailGetDTO : BaseGetDTO
+    public class OrderDetailGetDTO
     {
         public int Quantity { get; set; }
 

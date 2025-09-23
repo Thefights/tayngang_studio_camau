@@ -16,14 +16,8 @@ namespace BusinessLogicLayer.Implements.Base
         public Task DeleteAsync(int id);
     }
 
-    public interface IRuService<GetDTO, UpdateDTO, T>
-    {
-        public Task<GetDTO> GetByIdAsync(int id);
-        public Task<IEnumerable<GetDTO>> GetAllAsync();
-        public Task UpdateAsync(UpdateDTO dto);
-    }
 
-    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, string[]? _includes = null, IMapper? _mapper = null, IImageUploadService? _imageUploadService = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[]? _includes = null, IImageUploadService? _imageUploadService = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
         where CreateDTO : class
         where GetDTO : BaseGetDTO
         where UpdateDTO : class
