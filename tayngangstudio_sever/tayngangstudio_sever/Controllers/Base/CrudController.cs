@@ -26,14 +26,21 @@ namespace tayngangstudio_sever.Controllers.Base
         }
 
         [HttpPost("create")]
-        public virtual async Task<IActionResult> CreateAsync([FromForm] CreateDTO dto)
+        public virtual async Task<IActionResult> CreateAsync([FromBody] CreateDTO dto)
         {
             await _crudService.CreateAsync(dto);
             return Ok(new { Message = "Create new record successfully", Data = dto });
         }
 
+        //[HttpPost("create/image")]
+        //public virtual async Task<IActionResult> CreateWithImageAsync([FromForm] CreateDTO dto)
+        //{
+        //    await _crudService.CreateAsync(dto);
+        //    return Ok(new { Message = "Create new record with image successfully", Data = dto });
+        //}
+
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> UpdateAsync([FromForm] UpdateDTO dto)
+        public virtual async Task<IActionResult> UpdateAsync([FromBody] UpdateDTO dto)
         {
             if (dto == null)
             {
@@ -43,6 +50,17 @@ namespace tayngangstudio_sever.Controllers.Base
             await _crudService.UpdateAsync(dto);
             return Ok(new { Message = "Update record successfully", Data = dto });
         }
+
+        //[HttpPut("update/image/{id}")]
+        //public virtual async Task<IActionResult> UpdateWithImageAsync([FromForm] UpdateDTO dto)
+        //{
+        //    if (dto == null)
+        //    {
+        //        return BadRequest("Entity is null or ID mismatch.");
+        //    }
+        //    await _crudService.UpdateAsync(dto);
+        //    return Ok(new { Message = "Update record with image successfully", Data = dto });
+        //}
 
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> DeleteAsync(int id)

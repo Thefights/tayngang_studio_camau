@@ -16,11 +16,11 @@ namespace tayngangstudio_sever.Controllers.Manager
             return Ok(revenue);
         }
 
-        [HttpGet("sales-by-product")]
-        public async Task<IActionResult> GetSalesByProduct([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
-        {
-            var sales = await statisticService.GetSalesByProductAsync(startDate, endDate);
-            return Ok(sales);
-        }
+        //[HttpGet("sales-by-product")]
+        //public async Task<IActionResult> GetSalesByProduct([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        //{
+        //    var sales = await statisticService.GetSalesByProductAsync(startDate, endDate);
+        //    return Ok(sales);
+        //}
     }
 }

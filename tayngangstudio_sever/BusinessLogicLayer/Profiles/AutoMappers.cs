@@ -19,6 +19,7 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<ProductCategory, ProductCategoryGetDTO>().ReverseMap();
 
             //Order
+            CreateMap<Order, OrderCreateDTO>().ReverseMap();
             CreateMap<Order, OrderUpdateDTO>().ReverseMap();
             CreateMap<Order, OrderGetDTO>().ReverseMap();
 
@@ -26,6 +27,7 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<OrderDetail, OrderDetailGetDTO>().ReverseMap();
 
             //User
+            CreateMap<User, RegisterDTO>().ReverseMap();
             CreateMap<User, LoginRequestDTO>().ReverseMap();
             CreateMap<User, LoginResponDTO>().ReverseMap();
         }
