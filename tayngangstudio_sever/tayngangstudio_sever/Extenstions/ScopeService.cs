@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Implements.Services;
+﻿using BusinessLogicLayer.Implements;
+using BusinessLogicLayer.Implements.Services;
 using BusinessLogicLayer.Implements.Services.ManagementService;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Repository.Base;
@@ -21,6 +22,7 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<IEmailService, EmailService>();
             _services.AddScoped<ICustomerService, CustomerService>();
             _services.AddScoped<IStatisticService, StatisticService>();
+            _services.AddScoped<IOrderService, OrderService>();
 
 
             _services.AddScoped<JwtUtils>();

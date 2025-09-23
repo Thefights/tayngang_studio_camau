@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO.Abstract.Base;
+using BusinessLogicLayer.DTO.Abstract;
 using BusinessLogicLayer.Implements.Services;
 using DataAccessLayer.Models.AbstractEntities;
 using DataAccessLayer.Repository.Base;
@@ -16,10 +16,11 @@ namespace BusinessLogicLayer.Implements.Base
         public Task DeleteAsync(int id);
     }
 
-    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageUploadService? _imageUploadService = null, string[]? _includes = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
-        where CreateDTO : BaseDTO
-        where GetDTO : BaseDTO
-        where UpdateDTO : BaseUpdateDTO
+
+    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[]? _includes = null, IImageUploadService? _imageUploadService = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+        where CreateDTO : class
+        where GetDTO : BaseGetDTO
+        where UpdateDTO : class
         where T : BaseEntity
     {
         public async Task<GetDTO> GetByIdAsync(int id)

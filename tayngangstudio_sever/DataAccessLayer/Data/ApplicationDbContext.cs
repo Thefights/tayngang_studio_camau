@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Data.Seeds;
 using DataAccessLayer.Models;
-using DataAccessLayer.Models.OrderEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data
@@ -11,6 +10,7 @@ namespace DataAccessLayer.Data
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

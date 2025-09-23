@@ -1,11 +1,11 @@
-﻿using BusinessLogicLayer.DTO.Abstract.Base;
-using DataAccessLayer.Enums;
+﻿using DataAccessLayer.Enums;
+using DataAccessLayer.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
+namespace BusinessLogicLayer.DTO
 {
-    public class AuthUserRequestDTO : BaseDTO
+    public class RegisterDTO
     {
         [Required]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]
@@ -25,5 +25,27 @@ namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
 
         [JsonIgnore]
         public UserRoleEnum Role { get; set; } = UserRoleEnum.Admin;
+    }
+
+    public class LoginRequestDTO
+    {
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid {0}")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", ErrorMessage = "{0} must be between 6 and 20 characters and contain one uppercase letter, one lowercase letter, one digit and one special character.")]
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class LoginResponDTO(User user, string jwtToken)
+    {
+        public string Name { get; set; } = user.Name;
+
+        public string Email { get; set; } = user.Email;
+
+        public string Role { get; set; } = user.Role.ToString();
+
+        public string AccessToken { get; set; } = jwtToken;
     }
 }

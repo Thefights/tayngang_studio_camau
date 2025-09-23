@@ -14,11 +14,11 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
     {
     }
 
-    public class ProductCategoryManagementService(IUnitOfWork unitOfWork, IMapper mapper)
+    public class ProductCategoryManagementService(IUnitOfWork _unitOfWork, IMapper _mapper)
         : CrudService<ProductCategoryCreateDTO,
             ProductCategoryGetDTO,
             ProductCategoryUpdateDTO,
-            ProductCategory>(unitOfWork, mapper), IProductCategoryManagementService
+            ProductCategory>(_unitOfWork, _mapper), IProductCategoryManagementService
     {
     }
 }

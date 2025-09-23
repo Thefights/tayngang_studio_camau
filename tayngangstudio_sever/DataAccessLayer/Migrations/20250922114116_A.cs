@@ -95,7 +95,7 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetail",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false),
@@ -106,15 +106,15 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetail", x => new { x.OrderId, x.ProductId });
+                    table.PrimaryKey("PK_OrderDetails", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Orders_OrderId",
+                        name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Products_ProductId",
+                        name: "FK_OrderDetails_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -161,7 +161,7 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "OrderDetail",
+                table: "OrderDetails",
                 columns: new[] { "OrderId", "ProductId", "Quantity", "Total", "UnitPrice" },
                 values: new object[,]
                 {
@@ -170,8 +170,8 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_ProductId",
-                table: "OrderDetail",
+                name: "IX_OrderDetails_ProductId",
+                table: "OrderDetails",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -189,7 +189,7 @@ namespace DataAccessLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderDetail");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "Orders");

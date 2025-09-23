@@ -1,8 +1,7 @@
 using BusinessLogicLayer.Attributes;
-using BusinessLogicLayer.DTO.UserDTO;
-using BusinessLogicLayer.Implements.Services;
+using BusinessLogicLayer.DTO;
+using BusinessLogicLayer.Implements.Services.ManagementService;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace tayngangstudio_sever.Controllers.Customer
 {

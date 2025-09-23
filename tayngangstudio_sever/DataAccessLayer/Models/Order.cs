@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Enums;
 using DataAccessLayer.Models.AbstractEntities;
-using DataAccessLayer.Models.OrderEntities;
 
 namespace DataAccessLayer.Models
 {
@@ -10,7 +9,7 @@ namespace DataAccessLayer.Models
 
         public double TotalAmount { get; set; }
 
-        public OrderStatusEnum Status { get; set; }
+        public OrderStatusEnum Status { get; set; } = OrderStatusEnum.Pending;
 
         public int UserId { get; set; }
 

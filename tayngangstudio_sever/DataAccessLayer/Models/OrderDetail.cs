@@ -1,8 +1,6 @@
-using DataAccessLayer.Models.AbstractEntities;
-
-namespace DataAccessLayer.Models.OrderEntities
+namespace DataAccessLayer.Models
 {
-    public class OrderDetail : BaseEntity
+    public class OrderDetail
     {
         public int Quantity { get; set; }
 

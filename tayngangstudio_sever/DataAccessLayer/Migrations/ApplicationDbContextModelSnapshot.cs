@@ -88,7 +88,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetails");
 
                     b.HasData(
                         new

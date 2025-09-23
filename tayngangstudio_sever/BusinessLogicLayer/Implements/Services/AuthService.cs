@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
-using BusinessLogicLayer.DTO.UserDTO.LoginDTO;
+using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Helpers;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Models;
@@ -10,14 +9,14 @@ namespace BusinessLogicLayer.Implements.Services
 {
     public interface IAuthService
     {
-        public Task<User> RegisterAsync(AuthUserRequestDTO dto);
-        public Task<AuthUserRespondDTO> LoginAsync(LoginDTO dto);
+        public Task<User> RegisterAsync(RegisterDTO dto);
+        public Task<LoginResponDTO> LoginAsync(LoginRequestDTO dto);
         public Task ForgotPasswordAsync(string email);
     }
 
     public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper, IEmailService _emailService) : IAuthService
     {
-        public async Task<User> RegisterAsync(AuthUserRequestDTO dto)
+        public async Task<User> RegisterAsync(RegisterDTO dto)
         {
             var existEmail = await GetUserByEmailAsync(dto.Email);
             var existPhone = await GetUserByPhone(dto.Phone);
@@ -41,7 +40,7 @@ namespace BusinessLogicLayer.Implements.Services
             return entity;
         }
 
-        public async Task<AuthUserRespondDTO> LoginAsync(LoginDTO dto)
+        public async Task<LoginResponDTO> LoginAsync(LoginRequestDTO dto)
         {
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == dto.Email);
 
@@ -59,7 +58,7 @@ namespace BusinessLogicLayer.Implements.Services
             _unitOfWork.Repository<User>().Update(user);
             await _unitOfWork.SaveChangesAsync();
 
-            return new AuthUserRespondDTO(user, jwtToken);
+            return new LoginResponDTO(user, jwtToken);
         }
 
         public async Task ForgotPasswordAsync(string email)
