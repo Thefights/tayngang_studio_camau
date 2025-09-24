@@ -24,7 +24,7 @@ namespace BusinessLogicLayer.DTO
         public string Password { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public UserRoleEnum Role { get; set; } = UserRoleEnum.Admin;
+        public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
     }
 
     public class LoginRequestDTO

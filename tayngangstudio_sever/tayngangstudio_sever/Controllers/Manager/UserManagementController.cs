@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Attributes;
+using BusinessLogicLayer.Attributes;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Implements.Services.ManagementService;
 using DataAccessLayer.Models;
@@ -10,11 +10,11 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class ProductCategoryManagementController(IProductCategoryManagementService _productCategoryService)
-        : CrudController<ProductCategoryCreateDTO,
-            ProductCategoryGetDTO,
-            ProductCategoryUpdateDTO,
-            ProductCategory>(_productCategoryService)
+    public class UserManagementController(IUserManagementService _userManagementService) : CrudController<
+            UserCreateDTO,
+            UserGetDTO,
+            UserUpdateDTO, User>(_userManagementService)
     {
+
     }
 }

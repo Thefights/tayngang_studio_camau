@@ -7,7 +7,7 @@ namespace tayngangstudio_sever.Controllers.Base
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CrudControllerWithImage<CreateDTO, UpdateDTO, GetDTO, T>(ICrudService<CreateDTO, GetDTO, UpdateDTO, T> _crudService) : ControllerBase
+    public class CrudControllerWithImage<CreateDTO, GetDTO, UpdateDTO, T>(ICrudService<CreateDTO, GetDTO, UpdateDTO, T> _crudService) : ControllerBase
         where CreateDTO : class
         where GetDTO : BaseGetDTO
         where UpdateDTO : class
@@ -26,15 +26,26 @@ namespace tayngangstudio_sever.Controllers.Base
             return Ok(new { Message = "Get all records successfully", Data = entities });
         }
 
+        [HttpGet("{id}")]
+        public virtual async Task<IActionResult> GetById(int id)
+        {
+            var entity = await _crudService.GetByIdAsync(id);
+            if (entity == null)
+            {
+                return NotFound("Entity not found.");
+            }
 
-        [HttpPost("create")]
+            return Ok(new { Message = "Get record by ID successfully", Data = entity });
+        }
+
+        [HttpPost]
         public virtual async Task<IActionResult> CreateWithImageAsync([FromForm] CreateDTO dto)
         {
             await _crudService.CreateAsync(dto);
             return Ok(new { Message = "Create new record with image successfully", Data = dto });
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}")]
         public virtual async Task<IActionResult> UpdateWithImageAsync([FromForm] UpdateDTO dto)
         {
             if (dto == null)

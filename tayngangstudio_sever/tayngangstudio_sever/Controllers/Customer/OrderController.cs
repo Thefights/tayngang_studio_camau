@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController(IOrderService _orderService) : CrudController<OrderCreateDTO, OrderUpdateDTO, OrderGetDTO, Order>(_orderService)
+    public class OrderController(IOrderService _orderService) : CrudController<OrderCreateDTO, OrderGetDTO, OrderUpdateDTO, Order>(_orderService)
     {
     }
 }

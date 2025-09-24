@@ -10,7 +10,7 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class OrderManagementController(IOrderManagementService _orderService) : CrudController<OrderCreateDTO, OrderUpdateDTO, OrderGetDTO, Order>(_orderService)
+    public class OrderManagementController(IOrderManagementService _orderService) : CrudController<OrderCreateDTO, OrderGetDTO, OrderUpdateDTO, Order>(_orderService)
     {
     }
 }

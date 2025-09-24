@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController(ICartService _cartService) : CrudController<CreateCartDTO, UpdateCartDTO, GetCartDTO, Cart>(_cartService)
+    public class CartController(ICartService _cartService) : CrudController<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>(_cartService)
     {
     }
 }
