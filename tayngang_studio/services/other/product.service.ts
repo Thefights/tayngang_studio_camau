@@ -2,7 +2,7 @@ import axiosInstance from "@/axios.config";
 
 export const fetchProductById = async (id: number | string) => {
   try {
-    return await axiosInstance.get(`products/${id}`);
+    return await axiosInstance.get(`product/${id}`);
   } catch (error) {
     console.error(`Error fetching product with id ${id}:`, error);
     throw error;
@@ -11,7 +11,7 @@ export const fetchProductById = async (id: number | string) => {
 
 export const fetchAllProducts = async () => {
   try {
-    return await axiosInstance.get("products/all");
+    return await axiosInstance.get("product/all");
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
@@ -20,7 +20,7 @@ export const fetchAllProducts = async () => {
 
 export const fetchProductFeatures = async () => {
   try {
-    return await axiosInstance.get("products/features");
+    return await axiosInstance.get("product/features");
   } catch (error) {
     console.error("Error fetching product features:", error);
     throw error;
@@ -29,7 +29,7 @@ export const fetchProductFeatures = async () => {
 
 export const fetchProductByCategory = async (categoryName: string) => {
   try {
-    return await axiosInstance.get(`products/category/${categoryName}`);
+    return await axiosInstance.get(`product/category/${categoryName}`);
   } catch (error) {
     console.error("Error fetching product categories:", error);
     throw error;
@@ -38,7 +38,7 @@ export const fetchProductByCategory = async (categoryName: string) => {
 
 export const searchProduct = async (name: string) => {
   try {
-    return await axiosInstance.get(`products/search/${name}`);
+    return await axiosInstance.get(`product/search/${name}`);
   } catch (error) {
     console.error(`Error fetching product with name ${name}:`, error);
     throw error;

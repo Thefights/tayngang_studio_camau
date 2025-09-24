@@ -5,7 +5,7 @@ namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController(IProductService _service) : ControllerBase
+    public class ProductController(IProductService _service) : ControllerBase
     {
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id, IWebHostEnvironment env)
