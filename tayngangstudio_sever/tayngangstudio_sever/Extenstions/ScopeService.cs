@@ -23,6 +23,7 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<ICustomerService, CustomerService>();
             _services.AddScoped<IStatisticService, StatisticService>();
             _services.AddScoped<IOrderService, OrderService>();
+            _services.AddScoped<ICartService, CartService>();
 
 
             _services.AddScoped<JwtUtils>();
