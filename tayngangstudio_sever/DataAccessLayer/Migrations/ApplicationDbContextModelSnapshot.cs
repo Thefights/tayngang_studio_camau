@@ -22,6 +22,45 @@ namespace DataAccessLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DataAccessLayer.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Cart");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.CartItem", b =>
+                {
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("CartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItem");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -78,9 +117,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
                     b.Property<double>("UnitPrice")
                         .HasColumnType("float");
 
@@ -96,7 +132,6 @@ namespace DataAccessLayer.Migrations
                             OrderId = 1,
                             ProductId = 1,
                             Quantity = 2,
-                            Total = 50000000.0,
                             UnitPrice = 25000000.0
                         },
                         new
@@ -104,7 +139,6 @@ namespace DataAccessLayer.Migrations
                             OrderId = 2,
                             ProductId = 2,
                             Quantity = 1,
-                            Total = 20000000.0,
                             UnitPrice = 20000000.0
                         });
                 });
@@ -307,6 +341,36 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Cart", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.CartItem", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.Product", "Product")
+                        .WithMany("CartItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.User", "User")
@@ -348,6 +412,11 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("ProductCategory");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -355,6 +424,8 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Product", b =>
                 {
+                    b.Navigation("CartItems");
+
                     b.Navigation("OrderDetails");
                 });
 
