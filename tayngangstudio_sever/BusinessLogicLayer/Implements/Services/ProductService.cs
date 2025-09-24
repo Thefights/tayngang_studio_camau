@@ -8,33 +8,33 @@ namespace BusinessLogicLayer.Implements.Services
 {
     public interface IProductService
     {
-        Task<ProductGetDTO> GetProductById(int id);
-        Task<IEnumerable<ProductGetDTO>> GetAllProducts();
-        Task<IEnumerable<ProductGetDTO>> GetFeatureProductsBaseOrder();
-        Task<IEnumerable<ProductGetDTO>> GetProductsByCategory(string name);
-        Task<IEnumerable<ProductGetDTO>> SearchProduct(string searchTerm);
+        Task<GetProductDTO> GetProductById(int id);
+        Task<IEnumerable<GetProductDTO>> GetAllProducts();
+        Task<IEnumerable<GetProductDTO>> GetFeatureProductsBaseOrder();
+        Task<IEnumerable<GetProductDTO>> GetProductsByCategory(string name);
+        Task<IEnumerable<GetProductDTO>> SearchProduct(string searchTerm);
     }
 
     public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper, ApplicationDbContext _dbContext) : IProductService
     {
         string[]? _include = ["ProductCategory"];
 
-        public async Task<IEnumerable<ProductGetDTO>> GetAllProducts()
+        public async Task<IEnumerable<GetProductDTO>> GetAllProducts()
         {
             var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
             var validProduct = products.Where(p => p.Quantity > 0);
 
-            return _mapper.Map<IEnumerable<ProductGetDTO>>(validProduct);
+            return _mapper.Map<IEnumerable<GetProductDTO>>(validProduct);
         }
 
-        public async Task<ProductGetDTO> GetProductById(int id)
+        public async Task<GetProductDTO> GetProductById(int id)
         {
             var product = await _unitOfWork.Repository<Product>().GetByIdAsync(id, _include);
-            return _mapper.Map<ProductGetDTO>(product);
+            return _mapper.Map<GetProductDTO>(product);
         }
 
-        public async Task<IEnumerable<ProductGetDTO>> GetFeatureProductsBaseOrder()
+        public async Task<IEnumerable<GetProductDTO>> GetFeatureProductsBaseOrder()
         {
             var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
@@ -42,10 +42,10 @@ namespace BusinessLogicLayer.Implements.Services
                 .OrderByDescending(p => p.OrderDetails.Count)
                 .Take(4);
 
-            return _mapper.Map<IEnumerable<ProductGetDTO>>(featureProducts);
+            return _mapper.Map<IEnumerable<GetProductDTO>>(featureProducts);
         }
 
-        public async Task<IEnumerable<ProductGetDTO>> GetProductsByCategory(string name)
+        public async Task<IEnumerable<GetProductDTO>> GetProductsByCategory(string name)
         {
             var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
@@ -53,17 +53,17 @@ namespace BusinessLogicLayer.Implements.Services
                 .Where(p => p.ProductCategory?.Name == name).ToList();
 
 
-            return _mapper.Map<IEnumerable<ProductGetDTO>>(categoryProducts);
+            return _mapper.Map<IEnumerable<GetProductDTO>>(categoryProducts);
         }
 
-        public async Task<IEnumerable<ProductGetDTO>> SearchProduct(string searchTerm)
+        public async Task<IEnumerable<GetProductDTO>> SearchProduct(string searchTerm)
         {
             var products = await _unitOfWork.Repository<Product>().GetAllAsync(_include);
 
             var nameProducts = products
                 .Where(p => p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
 
-            return _mapper.Map<IEnumerable<ProductGetDTO>>(nameProducts);
+            return _mapper.Map<IEnumerable<GetProductDTO>>(nameProducts);
         }
     }
 }

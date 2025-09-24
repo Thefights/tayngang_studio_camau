@@ -8,7 +8,7 @@ namespace BusinessLogicLayer.DTO
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public List<CartItemGetDTO> CartItems { get; set; } = [];
+        public List<GetCartItemDTO> CartItems { get; set; } = [];
     }
 
     public class GetCartDTO : BaseGetDTO
@@ -16,7 +16,7 @@ namespace BusinessLogicLayer.DTO
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public List<CartItemGetDTO> CartItems { get; set; } = [];
+        public List<GetCartItemDTO> CartItems { get; set; } = [];
     }
 
     public class UpdateCartDTO
@@ -24,6 +24,6 @@ namespace BusinessLogicLayer.DTO
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public List<CartItemGetDTO> CartItems { get; set; } = [];
+        public List<GetCartItemDTO> CartItems { get; set; } = [];
     }
 }

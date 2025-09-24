@@ -9,22 +9,22 @@ namespace BusinessLogicLayer.Profiles
         public AutoMappers()
         {
             //Product
-            CreateMap<Product, ProductCreateDTO>().ReverseMap();
-            CreateMap<Product, ProductUpdateDTO>().ReverseMap();
-            CreateMap<Product, ProductGetDTO>().ReverseMap();
+            CreateMap<Product, CreateProductDTO>().ReverseMap();
+            CreateMap<Product, UpdateProductDTO>().ReverseMap();
+            CreateMap<Product, GetProductDTO>().ReverseMap();
 
             //ProductCategory
-            CreateMap<ProductCategory, ProductCategoryCreateDTO>().ReverseMap();
-            CreateMap<ProductCategory, ProductCategoryUpdateDTO>().ReverseMap();
-            CreateMap<ProductCategory, ProductCategoryGetDTO>().ReverseMap();
+            CreateMap<ProductCategory, CreateProductCategoryDTO>().ReverseMap();
+            CreateMap<ProductCategory, UpdateProductCategoryDTO>().ReverseMap();
+            CreateMap<ProductCategory, GetProductCategoryDTO>().ReverseMap();
 
             //Order
-            CreateMap<Order, OrderCreateDTO>().ReverseMap();
-            CreateMap<Order, OrderUpdateDTO>().ReverseMap();
-            CreateMap<Order, OrderGetDTO>().ReverseMap();
+            CreateMap<Order, CreateOrderDTO>().ReverseMap();
+            CreateMap<Order, UpdateOrderDTO>().ReverseMap();
+            CreateMap<Order, GetOrderDTO>().ReverseMap();
 
             //OrderDetail
-            CreateMap<OrderDetail, OrderDetailGetDTO>().ReverseMap();
+            CreateMap<OrderDetail, GetOrderDetailDTO>().ReverseMap();
 
             //Cart
             CreateMap<Cart, GetCartDTO>().ReverseMap();
@@ -32,17 +32,17 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<Cart, CreateCartDTO>().ReverseMap();
 
             //CartItem
-            CreateMap<CartItem, CartItemGetDTO>().ReverseMap();
+            CreateMap<CartItem, GetCartItemDTO>().ReverseMap();
 
 
             //User
             CreateMap<User, RegisterDTO>().ReverseMap();
             CreateMap<User, LoginRequestDTO>().ReverseMap();
-            CreateMap<User, LoginResponDTO>().ReverseMap();
+            CreateMap<User, LoginRespondDTO>().ReverseMap();
 
-            CreateMap<User, UserGetDTO>().ReverseMap();
-            CreateMap<User, UserUpdateDTO>().ReverseMap();
-            CreateMap<User, UserCreateDTO>().ReverseMap();
+            CreateMap<User, GetUserDTO>().ReverseMap();
+            CreateMap<User, UpdateUserDTO>().ReverseMap();
+            CreateMap<User, CreateUserDTO>().ReverseMap();
         }
     }
 }

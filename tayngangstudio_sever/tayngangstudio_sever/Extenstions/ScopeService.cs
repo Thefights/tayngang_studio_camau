@@ -1,5 +1,4 @@
-﻿using BusinessLogicLayer.Implements;
-using BusinessLogicLayer.Implements.Services;
+﻿using BusinessLogicLayer.Implements.Services;
 using BusinessLogicLayer.Implements.Services.ManagementService;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Repository.Base;

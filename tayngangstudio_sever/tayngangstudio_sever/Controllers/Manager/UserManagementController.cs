@@ -11,9 +11,9 @@ namespace tayngangstudio_sever.Controllers.Manager
     [ApiController]
     [Authorize(Roles = "Admin")]
     public class UserManagementController(IUserManagementService _userManagementService) : CrudController<
-            UserCreateDTO,
-            UserGetDTO,
-            UserUpdateDTO, User>(_userManagementService)
+            CreateUserDTO,
+            GetUserDTO,
+            UpdateUserDTO, User>(_userManagementService)
     {
 
     }

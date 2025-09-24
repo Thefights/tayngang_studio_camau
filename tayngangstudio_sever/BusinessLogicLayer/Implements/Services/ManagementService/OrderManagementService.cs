@@ -6,11 +6,11 @@ using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services.ManagementService
 {
-    public interface IOrderManagementService : ICrudService<OrderCreateDTO, OrderGetDTO, OrderUpdateDTO, Order>
+    public interface IOrderManagementService : ICrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>
     {
     }
 
-    public class OrderManagementService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<OrderCreateDTO, OrderGetDTO, OrderUpdateDTO, Order>(_unitOfWork, _mapper, ["OrderDetails"]), IOrderManagementService
+    public class OrderManagementService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails"]), IOrderManagementService
     {
     }
 }
