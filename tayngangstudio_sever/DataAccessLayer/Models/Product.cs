@@ -5,8 +5,6 @@ namespace DataAccessLayer.Models
 {
     public class Product : ImageEntity
     {
-        public ICollection<OrderDetail> OrderDetails { get; set; } = [];
-
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
@@ -24,5 +22,9 @@ namespace DataAccessLayer.Models
         public int ProductCategoryId { get; set; }
 
         public ProductCategory? ProductCategory { get; set; }
+
+        public ICollection<OrderDetail> OrderDetails { get; set; } = [];
+        public ICollection<CartItem> CartItems { get; set; } = [];
+
     }
 }

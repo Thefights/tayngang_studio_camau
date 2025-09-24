@@ -28,6 +28,21 @@ namespace DataAccessLayer.Data
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(od => od.ProductId);
 
+            // Configure composite keys and relationships for CartItem
+            modelBuilder.Entity<CartItem>()
+                .HasKey(od => new { od.CartId, od.ProductId });
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(od => od.Cart)
+                .WithMany(o => o.CartItems)
+                .HasForeignKey(od => od.CartId);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(od => od.Product)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(od => od.ProductId);
+
+
             // Seed initial data
             OrderDataSeeds.Seed(modelBuilder);
             OrderDetailDataSeeds.Seed(modelBuilder);

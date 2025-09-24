@@ -23,19 +23,19 @@ namespace BusinessLogicLayer.Implements.Base
         where UpdateDTO : class
         where T : BaseEntity
     {
-        public async Task<GetDTO> GetByIdAsync(int id)
+        public virtual async Task<GetDTO> GetByIdAsync(int id)
         {
             var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id, _includes);
             return _mapper.Map<GetDTO>(entity);
         }
 
-        public async Task<IEnumerable<GetDTO>> GetAllAsync()
+        public virtual async Task<IEnumerable<GetDTO>> GetAllAsync()
         {
             var entities = await _unitOfWork.Repository<T>().GetAllAsync(_includes);
             return _mapper.Map<IEnumerable<GetDTO>>(entities);
         }
 
-        public async Task<CreateDTO> CreateAsync(CreateDTO dto)
+        public virtual async Task<CreateDTO> CreateAsync(CreateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
 
@@ -59,7 +59,7 @@ namespace BusinessLogicLayer.Implements.Base
             return _mapper.Map<CreateDTO>(entity);
         }
 
-        public async Task<CreateDTO> CreateWithImageAsync(CreateDTO dto)
+        public virtual async Task<CreateDTO> CreateWithImageAsync(CreateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
 
@@ -85,7 +85,7 @@ namespace BusinessLogicLayer.Implements.Base
             return _mapper.Map<CreateDTO>(entity);
         }
 
-        public async Task UpdateAsync(UpdateDTO dto)
+        public virtual async Task UpdateAsync(UpdateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
 
@@ -107,7 +107,7 @@ namespace BusinessLogicLayer.Implements.Base
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(int id)
         {
             var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id, _includes);
 
