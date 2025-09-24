@@ -20,7 +20,7 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<IProductService, ProductService>();
             _services.AddScoped<IAuthService, AuthService>();
             _services.AddScoped<IEmailService, EmailService>();
-            _services.AddScoped<ICustomerService, CustomerService>();
+            _services.AddScoped<IUserManagementService, UserManagementService>();
             _services.AddScoped<IStatisticService, StatisticService>();
             _services.AddScoped<IOrderService, OrderService>();
             _services.AddScoped<ICartService, CartService>();

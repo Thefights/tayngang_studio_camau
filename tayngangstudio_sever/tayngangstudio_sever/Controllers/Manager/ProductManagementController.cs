@@ -12,8 +12,8 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Authorize(Roles = "Admin")]
     public class ProductManagementController(IProductManagementService _productService)
         : CrudControllerWithImage<ProductCreateDTO,
-            ProductUpdateDTO,
             ProductGetDTO,
+            ProductUpdateDTO,
             Product>(_productService)
     {
     }

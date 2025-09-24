@@ -1,19 +1,18 @@
 ﻿using DataAccessLayer.Data;
-using DataAccessLayer.Models.AbstractEntities;
 
 namespace DataAccessLayer.Repository.Base
 {
     public interface IUnitOfWork
     {
         public Task<int> SaveChangesAsync();
-        IGenericRepository<T> Repository<T>() where T : BaseEntity;
+        IGenericRepository<T> Repository<T>() where T : class;
     }
 
     public class UnitOfWork(ApplicationDbContext _dbContext) : IUnitOfWork
     {
         private readonly Dictionary<Type, dynamic> _repositories = [];
 
-        public IGenericRepository<T> Repository<T>() where T : BaseEntity
+        public IGenericRepository<T> Repository<T>() where T : class
         {
             var entityType = typeof(T);
             if (_repositories.TryGetValue(entityType, out dynamic? repository))

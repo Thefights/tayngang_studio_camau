@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repository.Base
 {
-    public interface IGenericRepository<T> where T : BaseEntity
+    public interface IGenericRepository<T> where T : class
     {
         public Task<List<T>> GetAllAsync(string[]? _include = null);
         public Task<T?> GetByIdAsync(int id, string[]? _include = null);
@@ -19,7 +19,7 @@ namespace DataAccessLayer.Repository.Base
 
     public class GenericRepository<T>(ApplicationDbContext _dbContext)
     : IGenericRepository<T>
-       where T : BaseEntity
+       where T : class
     {
         public async Task<List<T>> GetAllAsync(string[]? _include)
         {
@@ -28,9 +28,14 @@ namespace DataAccessLayer.Repository.Base
 
         public async Task<T?> GetByIdAsync(int id, string[]? _include)
         {
+            if (!typeof(BaseEntity).IsAssignableFrom(typeof(T)))
+            {
+                return null;
+            }
+
             if (_include != null)
             {
-                return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => e.Id == id);
+                return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => (e as BaseEntity).Id == id);
             }
 
             return await _dbContext.Set<T>().FindAsync(id);

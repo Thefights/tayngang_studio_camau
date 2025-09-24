@@ -7,7 +7,7 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
     public interface IStatisticService
     {
         Task<IEnumerable<RevenueOverTimeDTO>> GetRevenueOverTimeAsync(DateTime startDate, DateTime endDate);
-        //Task<IEnumerable<SalesByProductDTO>> GetSalesByProductAsync(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<SalesByProductDTO>> GetSalesByProductAsync(DateTime startDate, DateTime endDate);
     }
     public class StatisticService(IUnitOfWork unitOfWork) : IStatisticService
     {
@@ -28,22 +28,22 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
             return revenue;
         }
 
-        //public async Task<IEnumerable<SalesByProductDTO>> GetSalesByProductAsync(DateTime startDate, DateTime endDate)
-        //{
-        //    var orderDetails = await unitOfWork.Repository<OrderDetail>()
-        //        .GetListByCondition(od => od.Order.OrderDate >= startDate && od.Order.OrderDate <= endDate, new[] { "Product", "Order" });
+        public async Task<IEnumerable<SalesByProductDTO>> GetSalesByProductAsync(DateTime startDate, DateTime endDate)
+        {
+            var orderDetails = await unitOfWork.Repository<OrderDetail>()
+                .GetListByCondition(od => od.Order.OrderDate >= startDate && od.Order.OrderDate <= endDate, new[] { "Product", "Order" });
 
-        //    var salesByProduct = orderDetails
-        //        .GroupBy(od => od.ProductId)
-        //        .Select(g => new SalesByProductDTO
-        //        {
-        //            ProductId = g.Key,
-        //            ProductName = g.First().Product?.Name ?? "N/A",
-        //            TotalQuantitySold = g.Sum(od => od.Quantity),
-        //            TotalRevenue = g.Sum(od => od.UnitPrice * od.Quantity)
-        //        });
+            var salesByProduct = orderDetails
+                .GroupBy(od => od.ProductId)
+                .Select(g => new SalesByProductDTO
+                {
+                    ProductId = g.Key,
+                    ProductName = g.First().Product?.Name ?? "N/A",
+                    TotalQuantitySold = g.Sum(od => od.Quantity),
+                    TotalRevenue = g.Sum(od => od.UnitPrice * od.Quantity)
+                });
 
-        //    return salesByProduct;
-        //}
+            return salesByProduct;
+        }
     }
 }
