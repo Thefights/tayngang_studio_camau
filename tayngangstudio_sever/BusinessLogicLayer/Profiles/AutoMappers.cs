@@ -26,6 +26,15 @@ namespace BusinessLogicLayer.Profiles
             //OrderDetail
             CreateMap<OrderDetail, OrderDetailGetDTO>().ReverseMap();
 
+            //Cart
+            CreateMap<Cart, GetCartDTO>().ReverseMap();
+            CreateMap<Cart, UpdateCartDTO>().ReverseMap();
+            CreateMap<Cart, CreateCartDTO>().ReverseMap();
+
+            //CartItem
+            CreateMap<CartItem, CartItemGetDTO>().ReverseMap();
+
+
             //User
             CreateMap<User, RegisterDTO>().ReverseMap();
             CreateMap<User, LoginRequestDTO>().ReverseMap();
