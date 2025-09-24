@@ -2,7 +2,7 @@
 
 namespace BusinessLogicLayer.DTO
 {
-    public class CartItemGetDTO
+    public class GetCartItemDTO
     {
         public int Quantity { get; set; }
 

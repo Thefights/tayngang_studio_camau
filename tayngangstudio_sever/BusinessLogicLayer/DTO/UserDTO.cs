@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.DTO
 {
-    public class UserCreateDTO
+    public class CreateUserDTO
     {
         [Required]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]
@@ -25,18 +25,19 @@ namespace BusinessLogicLayer.DTO
         public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
     }
 
-    public class UserGetDTO : BaseGetDTO
+    public class GetUserDTO : BaseGetDTO
     {
         public string Email { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public UserRoleEnum Role { get; set; } = UserRoleEnum.  ;
+        public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
     }
 
-    public class UserUpdateDTO
+    public class UpdateUserDTO
     {
         [Required]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]
         public string FullName { get; set; } = string.Empty;
 
         [Required]
@@ -45,5 +46,8 @@ namespace BusinessLogicLayer.DTO
 
         [Required]
         public string Address { get; set; } = string.Empty;
+
+        [Required]
+        public UserRoleEnum Role { get; set; }
     }
 }

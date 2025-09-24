@@ -7,14 +7,12 @@ using DataAccessLayer.Repository.Base;
 namespace BusinessLogicLayer.Implements.Services.ManagementService
 {
     public interface IProductManagementService
-        : ICrudService<ProductCreateDTO, ProductGetDTO, ProductUpdateDTO, Product>
+        : ICrudService<CreateProductDTO, GetProductDTO, UpdateProductDTO, Product>
     {
     }
 
     public class ProductManagementService(IUnitOfWork _unitOfWork, IMapper _mapper)
-        : CrudService<ProductCreateDTO,
-            ProductGetDTO,
-            ProductUpdateDTO,
+        : CrudService<CreateProductDTO, GetProductDTO, UpdateProductDTO,
             Product>(_unitOfWork, _mapper), IProductManagementService
     {
     }

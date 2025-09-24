@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.DTO
 {
-    public class ProductCreateDTO : CreateImageDTO
+    public class CreateProductDTO : CreateImageDTO
     {
         [Required]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]
@@ -30,7 +30,7 @@ namespace BusinessLogicLayer.DTO
         public int ProductCategoryId { get; set; }
     }
 
-    public class ProductGetDTO : GetImageDTO
+    public class GetProductDTO : GetImageDTO
     {
         public string Name { get; set; } = string.Empty;
 
@@ -47,7 +47,7 @@ namespace BusinessLogicLayer.DTO
         public string ProductCategoryName { get; set; } = string.Empty;
     }
 
-    public class ProductUpdateDTO : UpdateImageDTO
+    public class UpdateProductDTO : UpdateImageDTO
     {
         [Required]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]

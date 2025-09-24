@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogicLayer.DTO
 {
-    public class OrderDetailGetDTO
+    public class GetOrderDetailDTO
     {
         public int Quantity { get; set; }
 

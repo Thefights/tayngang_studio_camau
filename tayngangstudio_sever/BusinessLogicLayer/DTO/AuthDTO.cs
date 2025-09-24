@@ -38,7 +38,7 @@ namespace BusinessLogicLayer.DTO
         public string Password { get; set; } = string.Empty;
     }
 
-    public class LoginResponDTO(User user, string jwtToken)
+    public class LoginRespondDTO(User user, string jwtToken)
     {
         public string Name { get; set; } = user.Name;
 

@@ -9,9 +9,9 @@ namespace BusinessLogicLayer.Implements.Services
 {
     public interface IAuthService
     {
-        public Task<User> RegisterAsync(RegisterDTO dto);
-        public Task<LoginResponDTO> LoginAsync(LoginRequestDTO dto);
-        public Task ForgotPasswordAsync(string email);
+        Task<User> RegisterAsync(RegisterDTO dto);
+        Task<LoginRespondDTO> LoginAsync(LoginRequestDTO dto);
+        Task ForgotPasswordAsync(string email);
     }
 
     public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper, IEmailService _emailService) : IAuthService
@@ -40,7 +40,7 @@ namespace BusinessLogicLayer.Implements.Services
             return entity;
         }
 
-        public async Task<LoginResponDTO> LoginAsync(LoginRequestDTO dto)
+        public async Task<LoginRespondDTO> LoginAsync(LoginRequestDTO dto)
         {
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == dto.Email);
 
@@ -58,7 +58,7 @@ namespace BusinessLogicLayer.Implements.Services
             _unitOfWork.Repository<User>().Update(user);
             await _unitOfWork.SaveChangesAsync();
 
-            return new LoginResponDTO(user, jwtToken);
+            return new LoginRespondDTO(user, jwtToken);
         }
 
         public async Task ForgotPasswordAsync(string email)

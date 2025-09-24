@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.DTO
 {
-    public class OrderCreateDTO
+    public class CreateOrderDTO
     {
         [Required]
         public DateTime OrderDate { get; set; }
@@ -19,10 +19,10 @@ namespace BusinessLogicLayer.DTO
         [Required]
         public int UserId { get; set; }
 
-        public List<OrderDetailGetDTO> OrderDetails { get; set; } = [];
+        public List<GetOrderDetailDTO> OrderDetails { get; set; } = [];
     }
 
-    public class OrderGetDTO : BaseGetDTO
+    public class GetOrderDTO : BaseGetDTO
     {
         public DateTime OrderDate { get; set; }
 
@@ -32,10 +32,10 @@ namespace BusinessLogicLayer.DTO
 
         public int UserId { get; set; }
 
-        public List<OrderDetailGetDTO> OrderDetails { get; set; }
+        public List<GetOrderDetailDTO> OrderDetails { get; set; }
     }
 
-    public class OrderUpdateDTO
+    public class UpdateOrderDTO
     {
         [Required]
         public DateTime OrderDate { get; set; }
@@ -50,6 +50,6 @@ namespace BusinessLogicLayer.DTO
         [Required]
         public int UserId { get; set; }
 
-        public List<OrderDetailGetDTO> OrderDetails { get; set; } = [];
+        public List<GetOrderDetailDTO> OrderDetails { get; set; } = [];
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.DTO
 {
-    public class ProductCategoryCreateDTO
+    public class CreateProductCategoryDTO
     {
         [Required]
         public string Name { get; set; } = string.Empty;
@@ -12,13 +12,13 @@ namespace BusinessLogicLayer.DTO
         public string Description { get; set; } = string.Empty;
     }
 
-    public class ProductCategoryGetDTO : BaseGetDTO
+    public class GetProductCategoryDTO : BaseGetDTO
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
 
-    public class ProductCategoryUpdateDTO
+    public class UpdateProductCategoryDTO
     {
         [Required]
         public string Name { get; set; } = string.Empty;
