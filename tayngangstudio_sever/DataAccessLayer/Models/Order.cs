@@ -11,7 +11,7 @@ namespace DataAccessLayer.Models
 
         public OrderStatusEnum Status { get; set; } = OrderStatusEnum.Pending;
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public User User { get; set; }
 

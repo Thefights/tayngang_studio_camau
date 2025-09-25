@@ -20,16 +20,19 @@ namespace BusinessLogicLayer.Helpers
 
                 switch (error)
                 {
-                    case AppException e:
+                    case BadRequestException e:
                         // custom application error
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
-                    case KeyNotFoundException e:
+                    case NotFoundException e:
                         // not found error
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
-                    case UnauthorizedAccessException e:
+                    case UnauthorizedException e:
                         response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
+                    case ConflictException e:
+                        response.StatusCode = (int)HttpStatusCode.Conflict;
                         break;
                     default:
                         // unhandled error

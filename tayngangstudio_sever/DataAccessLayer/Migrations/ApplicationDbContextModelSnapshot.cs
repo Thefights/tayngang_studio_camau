@@ -38,6 +38,18 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Carts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            UserId = 3
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.CartItem", b =>
@@ -59,6 +71,29 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
+
+                    b.HasData(
+                        new
+                        {
+                            CartId = 1,
+                            ProductId = 1,
+                            Quantity = 2,
+                            UnitPrice = 25000000.0
+                        },
+                        new
+                        {
+                            CartId = 1,
+                            ProductId = 3,
+                            Quantity = 1,
+                            UnitPrice = 45000000.0
+                        },
+                        new
+                        {
+                            CartId = 2,
+                            ProductId = 2,
+                            Quantity = 1,
+                            UnitPrice = 20000000.0
+                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Order", b =>

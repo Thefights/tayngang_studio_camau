@@ -51,6 +51,8 @@ namespace DataAccessLayer.Data
             ProductCategoryDataSeeds.Seed(modelBuilder);
             ProductDataSeeds.Seed(modelBuilder);
             UserDataSeeds.Seed(modelBuilder);
+            CartDataSeeds.Seed(modelBuilder);
+            CartItemDataSeeds.Seed(modelBuilder);
         }
     }
 }

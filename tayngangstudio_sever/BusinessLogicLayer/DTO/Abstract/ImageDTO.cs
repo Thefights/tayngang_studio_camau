@@ -5,7 +5,7 @@ namespace BusinessLogicLayer.DTO.Abstract
 {
     public abstract class CreateImageDTO
     {
-        [Required]
+                [Required(ErrorMessage = "{0} is required")]
         public IFormFile? ImageFile { get; set; }
     }
 
