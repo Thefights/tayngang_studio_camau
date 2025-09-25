@@ -31,6 +31,7 @@ namespace BusinessLogicLayer.DTO
 		public int ProductCategoryId { get; set; }
 	}
 
+
 	public class GetProductDTO : GetImageDTO
 	{
 		public string Name { get; set; } = string.Empty;
@@ -50,7 +51,7 @@ namespace BusinessLogicLayer.DTO
 
 	public class UpdateProductDTO : UpdateImageDTO
 	{
-		[Required(ErrorMessage = "{0} is required")]
+		[Required]
 		[StringLength(100, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]
 		public string Name { get; set; } = string.Empty;
 

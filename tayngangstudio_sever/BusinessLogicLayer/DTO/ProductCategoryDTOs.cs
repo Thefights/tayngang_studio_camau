@@ -20,7 +20,7 @@ namespace BusinessLogicLayer.DTO
 
 	public class UpdateProductCategoryDTO
 	{
-		[Required(ErrorMessage = "{0} is required")]
+		[Required]
 		public string Name { get; set; } = string.Empty;
 
 		[Required(ErrorMessage = "{0} is required")]
