@@ -23,11 +23,11 @@ namespace BusinessLogicLayer.Implements.Services
 
             if (existEmail != null)
             {
-                throw new AppException("Email already exists.");
+                throw new ConflictException("Email already exists.");
             }
             else if (existPhone != null)
             {
-                throw new AppException("Phone number already exists.");
+                throw new ConflictException("Phone number already exists.");
             }
 
             var entity = _mapper.Map<User>(dto);
@@ -66,7 +66,7 @@ namespace BusinessLogicLayer.Implements.Services
             var user = await GetUserByEmailAsync(email);
             if (user == null)
             {
-                throw new AppException("User not found.");
+                throw new NotFoundException("User not found.");
             }
 
             var newPassword = StringUtil.GenerateSecurePassword(12);

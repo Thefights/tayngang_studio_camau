@@ -186,6 +186,15 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Carts",
+                columns: new[] { "Id", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 2 },
+                    { 2, 3 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "OrderDate", "Status", "TotalAmount", "UserId" },
                 values: new object[,]
@@ -202,6 +211,16 @@ namespace DataAccessLayer.Migrations
                     { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 25000000.0, 1, 50, 4.5, 120 },
                     { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 2, 40, 4.2000000000000002, 95 },
                     { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 3, 20, 4.7999999999999998, 210 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CartItems",
+                columns: new[] { "CartId", "ProductId", "Quantity", "UnitPrice" },
+                values: new object[,]
+                {
+                    { 1, 1, 2, 25000000.0 },
+                    { 1, 3, 1, 45000000.0 },
+                    { 2, 2, 1, 20000000.0 }
                 });
 
             migrationBuilder.InsertData(

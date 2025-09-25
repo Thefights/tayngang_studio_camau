@@ -1,9 +1,12 @@
 ﻿namespace BusinessLogicLayer.Helpers
 {
-    public class AppException : Exception
-    {
-        public AppException() : base() { }
-        public AppException(string message) : base(message) { }
-        public AppException(string message, Exception innerException) : base(message, innerException) { }
-    }
+    public class BadRequestException(string message) : Exception(message) { }
+
+    public class NotFoundException(string message) : Exception(message) { }
+
+    public class UnauthorizedException(string message) : Exception(message) { }
+
+    public class ForbiddenException(string message) : Exception(message) { }
+
+    public class ConflictException(string message) : Exception(message) { }
 }

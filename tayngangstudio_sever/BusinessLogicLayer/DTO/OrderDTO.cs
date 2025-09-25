@@ -6,18 +6,19 @@ namespace BusinessLogicLayer.DTO
 {
     public class CreateOrderDTO
     {
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
         public DateTime OrderDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
         [Range(0, double.MaxValue, ErrorMessage = "{0} must be a non-negative value.")]
         public double TotalAmount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
         public OrderStatusEnum Status { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "{0} is between {1} and {2}")]
+        public int? UserId { get; set; }
 
         public List<GetOrderDetailDTO> OrderDetails { get; set; } = [];
     }
@@ -30,25 +31,26 @@ namespace BusinessLogicLayer.DTO
 
         public OrderStatusEnum Status { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public List<GetOrderDetailDTO> OrderDetails { get; set; }
     }
 
     public class UpdateOrderDTO
     {
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
         public DateTime OrderDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
         [Range(0, double.MaxValue, ErrorMessage = "{0} must be a non-negative value.")]
         public double TotalAmount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "{0} is required")]
         public OrderStatusEnum Status { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "{0} is between {1} and {2}")]
+        public int? UserId { get; set; }
 
         public List<GetOrderDetailDTO> OrderDetails { get; set; } = [];
     }

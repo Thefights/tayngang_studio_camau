@@ -12,62 +12,74 @@ namespace tayngangstudio_sever.Controllers.Base
         where UpdateDTO : class
         where T : BaseEntity
     {
+
         [HttpGet]
         public virtual async Task<IActionResult> GetAllAsync()
         {
+            // Lấy tên controller, ví dụ "Cart" từ "CartController"
+            var entityName = ControllerContext.ActionDescriptor.ControllerName;
+
             var entities = await _crudService.GetAllAsync();
 
             if (entities == null || !entities.Any())
             {
-                return NotFound("No entities found.");
+                return NotFound($"{entityName} not found.");
             }
 
-            return Ok(new { Message = "Get all records successfully", Data = entities });
+            return Ok(new { Message = $"Get {entityName} successfully", Data = entities });
         }
 
         [HttpGet("{id}")]
         public virtual async Task<IActionResult> GetById(int id)
         {
+            var entityName = ControllerContext.ActionDescriptor.ControllerName;
+
             var entity = await _crudService.GetByIdAsync(id);
             if (entity == null)
             {
-                return NotFound("Entity not found.");
+                return NotFound($"{entityName} not found.");
             }
 
-            return Ok(new { Message = "Get record by ID successfully", Data = entity });
+            return Ok(new { Message = $"Get {entityName} by ID successfully", Data = entity });
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> CreateAsync([FromBody] CreateDTO dto)
         {
+            var entityName = ControllerContext.ActionDescriptor.ControllerName;
+
             await _crudService.CreateAsync(dto);
-            return Ok(new { Message = "Create new record successfully", Data = dto });
+            return Ok(new { Message = $"Create new {entityName} successfully", Data = dto });
         }
 
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> UpdateAsync([FromBody] UpdateDTO dto)
         {
+            var entityName = ControllerContext.ActionDescriptor.ControllerName;
+
             if (dto == null)
             {
-                return BadRequest("Entity is null or ID mismatch.");
+                return BadRequest($"{entityName} is null or ID mismatch.");
             }
 
             await _crudService.UpdateAsync(dto);
-            return Ok(new { Message = "Update record successfully", Data = dto });
+            return Ok(new { Message = $"Update {entityName} successfully", Data = dto });
         }
 
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> DeleteAsync(int id)
         {
+            var entityName = ControllerContext.ActionDescriptor.ControllerName;
+
             var existingEntity = await _crudService.GetByIdAsync(id);
 
             if (existingEntity == null)
             {
-                return NotFound("Entity not found.");
+                return NotFound($"{entityName} not found.");
             }
 
             await _crudService.DeleteAsync(id);
-            return Ok("Delete record successfully");
+            return Ok($"Delete {entityName} successfully");
         }
     }
 }

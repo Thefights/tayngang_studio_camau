@@ -8,7 +8,7 @@ namespace DataAccessLayer.Repository.Base
     public interface IGenericRepository<T> where T : class
     {
         public Task<List<T>> GetAllAsync(string[]? _include = null);
-        public Task<T?> GetByIdAsync(int id, string[]? _include = null);
+        public Task<T?> GetByIdAsync(int? id, string[]? _include = null);
         public Task<T?> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
         public Task<List<T>> GetListByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
         public Task<T> CreateAsync(T entity);
@@ -26,7 +26,7 @@ namespace DataAccessLayer.Repository.Base
             return await ApplyIncludes(_dbContext.Set<T>(), _include).ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id, string[]? _include)
+        public async Task<T?> GetByIdAsync(int? id, string[]? _include)
         {
             if (!typeof(BaseEntity).IsAssignableFrom(typeof(T)))
             {
