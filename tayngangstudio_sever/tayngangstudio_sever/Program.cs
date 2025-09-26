@@ -55,6 +55,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScopeService();
 builder.Services.AddAWSService(configuration);
+builder.Services.AddPaymentService(configuration);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

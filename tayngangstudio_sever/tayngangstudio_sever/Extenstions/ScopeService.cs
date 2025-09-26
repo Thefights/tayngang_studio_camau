@@ -28,6 +28,7 @@ namespace tayngangstudio_sever.Extenstions
             _services.AddScoped<JwtUtils>();
             _services.AddScoped<CryptoUtil>();
 
+
             return _services;
         }
     }
