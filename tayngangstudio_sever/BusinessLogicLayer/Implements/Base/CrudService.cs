@@ -39,7 +39,6 @@ namespace BusinessLogicLayer.Implements.Base
         {
             var entity = _mapper.Map<T>(dto);
 
-            // Check if entity is ImageEntity and handle image upload automatically
             if (entity is ImageEntity imageEntity && _imageUploadService != null)
             {
                 var dtoType = typeof(CreateDTO);
