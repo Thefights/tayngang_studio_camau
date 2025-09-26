@@ -6,6 +6,7 @@ namespace BusinessLogicLayer.Helpers
         public ConnectionStrings ConnectionStrings { get; set; } = null!;
         public R2Config R2Config { get; set; } = null!;
         public SmtpSettings SmtpSettings { get; set; } = null!;
+        public PayOSConfig PayOsConfig { get; set; } = null!;
     }
 
     public class AppSettings
@@ -38,5 +39,11 @@ namespace BusinessLogicLayer.Helpers
         public string Password { get; set; } = string.Empty;
         public bool EnableSsl { get; set; }
     }
-}
 
+    public class PayOSConfig
+    {
+        public string ClientId { get; set; } = string.Empty;
+        public string ApiKey { get; set; } = string.Empty;
+        public string ChecksumKey { get; set; } = string.Empty;
+    }
+}
