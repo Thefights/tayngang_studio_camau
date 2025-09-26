@@ -7,5 +7,7 @@
         public double UnitPrice { get; set; }
 
         public int ProductId { get; set; }
+
+        public ProductOrderDetailDTO? Product { get; set; }
     }
 }

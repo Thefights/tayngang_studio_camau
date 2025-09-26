@@ -12,6 +12,7 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<Product, CreateProductDTO>().ReverseMap();
             CreateMap<Product, UpdateProductDTO>().ReverseMap();
             CreateMap<Product, GetProductDTO>().ReverseMap();
+            CreateMap<Product, ProductOrderDetailDTO>().ReverseMap();
 
             //ProductCategory
             CreateMap<ProductCategory, CreateProductCategoryDTO>().ReverseMap();
@@ -21,10 +22,14 @@ namespace BusinessLogicLayer.Profiles
             //Order
             CreateMap<Order, CreateOrderDTO>().ReverseMap();
             CreateMap<Order, UpdateOrderDTO>().ReverseMap();
-            CreateMap<Order, GetOrderDTO>().ReverseMap();
+            CreateMap<Order, GetOrderDTO>()
+                .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));
+            CreateMap<GetOrderDTO, Order>();
 
             //OrderDetail
-            CreateMap<OrderDetail, GetOrderDetailDTO>().ReverseMap();
+            CreateMap<OrderDetail, GetOrderDetailDTO>()
+                .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
+            CreateMap<GetOrderDetailDTO, OrderDetail>();
 
             //Cart
             CreateMap<Cart, GetCartDTO>().ReverseMap();
@@ -40,7 +45,9 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<User, LoginRequestDTO>().ReverseMap();
             CreateMap<User, LoginRespondDTO>().ReverseMap();
 
-            CreateMap<User, GetUserDTO>().ReverseMap();
+            CreateMap<User, GetUserDTO>()
+                .ForMember(dest => dest.Orders, opt => opt.MapFrom(src => src.Orders));
+            CreateMap<GetUserDTO, User>();
             CreateMap<User, UpdateUserDTO>().ReverseMap();
             CreateMap<User, CreateUserDTO>().ReverseMap();
         }

@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
 
     public class UserManagementService(IUnitOfWork _unitOfWork, IMapper _mapper)
         : CrudService<CreateUserDTO, GetUserDTO, UpdateUserDTO,
-            User>(_unitOfWork, _mapper), IUserManagementService
+            User>(_unitOfWork, _mapper, ["Orders.OrderDetails.Product"]), IUserManagementService
     {
     }
 }
