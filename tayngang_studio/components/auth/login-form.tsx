@@ -38,11 +38,9 @@ export function LoginForm() {
 				email: formData.email,
 				password: formData.password,
 			})
-			console.log(response.data)
 
 			if (response.data?.accessToken) {
 				const role = response.data.role
-				console.log(role)
 				if (role === 'Admin') {
 					window.location.href = '/admin'
 				} else if (role === 'Customer') {
