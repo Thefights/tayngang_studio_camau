@@ -40,6 +40,8 @@ namespace BusinessLogicLayer.DTO
 
     public class LoginRespondDTO(User user, string jwtToken)
     {
+        public int Id { get; set; } = user.Id;
+
         public string Name { get; set; } = user.Name;
 
         public string Email { get; set; } = user.Email;
