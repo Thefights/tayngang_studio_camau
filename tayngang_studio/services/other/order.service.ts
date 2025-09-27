@@ -2,7 +2,7 @@ import axiosInstance from "@/axios.config";
 
 export const fetchAllOrders = async () => {
   try {
-    const respond = await axiosInstance.get("order/all");
+    const respond = await axiosInstance.get("order");
     return respond;
   } catch (error) {
     console.error("Error fetching orders:", error);
