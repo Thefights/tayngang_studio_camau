@@ -15,6 +15,7 @@ namespace DataAccessLayer.Repository.Base
         public T Update(T entity);
         public void Delete(T entity);
         public void DeleteRange(IEnumerable<T> entities);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
     }
 
     public class GenericRepository<T>(ApplicationDbContext _dbContext)
@@ -89,5 +90,9 @@ namespace DataAccessLayer.Repository.Base
             }
             return query;
         }
+
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>>? filter = null)
+         => await _dbContext.Set<T>().AnyAsync(filter ?? (_ => true));
+
     }
 }
