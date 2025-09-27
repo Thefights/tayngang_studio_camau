@@ -21,6 +21,7 @@ export function UsersManagement() {
 	const fetchUsers = async () => {
 		try {
 			const data = await getAllUsers()
+			console.log(data)
 			setUsers(data)
 		} catch (error) {
 			console.error('Failed to fetch users', error)
@@ -73,7 +74,7 @@ export function UsersManagement() {
 
 	const filteredUsers = users.filter(
 		(user) =>
-			user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			user.email.toLowerCase().includes(searchTerm.toLowerCase())
 	)
 
@@ -133,11 +134,11 @@ export function UsersManagement() {
 										<div className='flex items-center gap-3'>
 											<div className='w-10 h-10 bg-[#5A3E2B] rounded-full flex items-center justify-center'>
 												<span className='text-white font-medium text-sm'>
-													{user.fullName?.charAt(0) || user.email.charAt(0)}
+													{user.name?.charAt(0) || user.email.charAt(0)}
 												</span>
 											</div>
 											<div>
-												<p className='font-medium text-[#5A3E2B]'>{user.fullName || 'N/A'}</p>
+												<p className='font-medium text-[#5A3E2B]'>{user.name || 'N/A'}</p>
 												<p className='text-sm text-[#5A3E2B]/70'>ID: {user.id}</p>
 											</div>
 										</div>

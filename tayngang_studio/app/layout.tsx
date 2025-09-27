@@ -2,6 +2,7 @@
 
 import { Footer } from '@/components/common/footer'
 import { Header } from '@/components/common/header'
+import { Toaster } from '@/components/ui/sonner'
 import { LoadingProvider } from '@/context/loading-context'
 import { Analytics } from '@vercel/analytics/next'
 import { GeistMono } from 'geist/font/mono'
@@ -32,6 +33,7 @@ function RootLayoutClient({
 			<Suspense fallback={null}>{children}</Suspense>
 			<Analytics />
 			{!isAdminRoute && <Footer />}
+			<Toaster />
 		</LoadingProvider>
 	)
 }
