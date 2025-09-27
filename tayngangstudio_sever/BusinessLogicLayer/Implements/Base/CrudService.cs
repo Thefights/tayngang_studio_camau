@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Base
         public Task<GetDTO> GetByIdAsync(int id);
         public Task<IEnumerable<GetDTO>> GetAllAsync();
         public Task<CreateDTO> CreateAsync(CreateDTO dto);
-        public Task UpdateAsync(UpdateDTO dto);
+        public Task UpdateAsync(int id, UpdateDTO dto);
         public Task DeleteAsync(int id);
     }
 
@@ -39,7 +39,6 @@ namespace BusinessLogicLayer.Implements.Base
         {
             var entity = _mapper.Map<T>(dto);
 
-            // Check if entity is ImageEntity and handle image upload automatically
             if (entity is ImageEntity imageEntity && _imageUploadService != null)
             {
                 var dtoType = typeof(CreateDTO);
@@ -85,9 +84,10 @@ namespace BusinessLogicLayer.Implements.Base
             return _mapper.Map<CreateDTO>(entity);
         }
 
-        public virtual async Task UpdateAsync(UpdateDTO dto)
+        public virtual async Task UpdateAsync(int id, UpdateDTO dto)
         {
-            var entity = _mapper.Map<T>(dto);
+            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id) ?? throw new KeyNotFoundException($"Entity with ID {id} not found.");
+            _mapper.Map(dto, entity);
 
             // Check if entity is ImageEntity and handle image upload automatically
             if (entity is ImageEntity imageEntity && _imageUploadService != null)

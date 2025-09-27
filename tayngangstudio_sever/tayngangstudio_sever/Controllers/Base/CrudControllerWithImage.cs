@@ -46,13 +46,13 @@ namespace tayngangstudio_sever.Controllers.Base
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> UpdateWithImageAsync([FromForm] UpdateDTO dto)
+        public virtual async Task<IActionResult> UpdateWithImageAsync([FromRoute] int id, [FromForm] UpdateDTO dto)
         {
             if (dto == null)
             {
                 return BadRequest("Entity is null or ID mismatch.");
             }
-            await _crudService.UpdateAsync(dto);
+            await _crudService.UpdateAsync(id, dto);
             return Ok(new { Message = "Update record with image successfully", Data = dto });
         }
 

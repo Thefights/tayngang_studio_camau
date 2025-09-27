@@ -53,7 +53,7 @@ namespace tayngangstudio_sever.Controllers.Base
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> UpdateAsync([FromBody] UpdateDTO dto)
+        public virtual async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateDTO dto)
         {
             var entityName = ControllerContext.ActionDescriptor.ControllerName;
 
@@ -62,7 +62,7 @@ namespace tayngangstudio_sever.Controllers.Base
                 return BadRequest($"{entityName} is null or ID mismatch.");
             }
 
-            await _crudService.UpdateAsync(dto);
+            await _crudService.UpdateAsync(id, dto);
             return Ok(new { Message = $"Update {entityName} successfully", Data = dto });
         }
 

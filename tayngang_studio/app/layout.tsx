@@ -1,45 +1,53 @@
-import { Footer } from "@/components/common/footer";
-import { Header } from "@/components/common/header";
-import { LoadingProvider } from "@/context/loading-context";
-import { Analytics } from "@vercel/analytics/next";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
-import type { Metadata } from "next";
-import { Playfair_Display } from "next/font/google";
-import type React from "react";
-import { Suspense } from "react";
-import "./globals.css";
+'use client'
+
+import { Footer } from '@/components/common/footer'
+import { Header } from '@/components/common/header'
+import { LoadingProvider } from '@/context/loading-context'
+import { Analytics } from '@vercel/analytics/next'
+import { GeistMono } from 'geist/font/mono'
+import { GeistSans } from 'geist/font/sans'
+import { Playfair_Display } from 'next/font/google'
+import { usePathname } from 'next/navigation'
+import type React from 'react'
+import { Suspense } from 'react'
+import './globals.css'
 
 const playfair = Playfair_Display({
-  subsets: ["latin", "vietnamese"],
-  variable: "--font-playfair",
-  display: "swap",
-});
+	subsets: ['latin', 'vietnamese'],
+	variable: '--font-playfair',
+	display: 'swap',
+})
 
-export const metadata: Metadata = {
-  title: "Sổ Tay Du Lịch Cà Mau - Khám Phá Miền Tây Nam Bộ",
-  description:
-    "Khám phá vẻ đẹp hoang sơ của miền Tây Nam Bộ qua những trang sổ tay được thiết kế tinh tế. Sản phẩm chất lượng cao, giao hàng toàn quốc.",
-  generator: "v0.app",
-};
+function RootLayoutClient({
+	children,
+}: Readonly<{
+	children: React.ReactNode
+}>) {
+	const pathname = usePathname()
+	const isAdminRoute = pathname?.startsWith('/admin')
+
+	return (
+		<LoadingProvider>
+			{!isAdminRoute && <Header />}
+			<Suspense fallback={null}>{children}</Suspense>
+			<Analytics />
+			{!isAdminRoute && <Footer />}
+		</LoadingProvider>
+	)
+}
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-  return (
-    <html lang="vi">
-      <body
-        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}
-      >
-        <LoadingProvider>
-          <Header />
-          <Suspense fallback={null}>{children}</Suspense>
-          <Analytics />
-          <Footer />
-        </LoadingProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html lang='vi'>
+			<body
+				className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}
+			>
+				<RootLayoutClient>{children}</RootLayoutClient>
+			</body>
+		</html>
+	)
 }

@@ -77,7 +77,6 @@ export function AccountDashboard() {
   };
 
   const handleSave = () => {
-    console.log("Saving user data:", formData);
     setIsEditing(false);
   };
 

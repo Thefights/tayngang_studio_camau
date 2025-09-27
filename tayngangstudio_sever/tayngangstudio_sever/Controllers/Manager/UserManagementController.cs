@@ -10,11 +10,6 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class UserManagementController(IUserManagementService _userManagementService) : CrudController<
-            CreateUserDTO,
-            GetUserDTO,
-            UpdateUserDTO, User>(_userManagementService)
-    {
-
-    }
+    public class UserManagementController(IUserManagementService _userManagementService)
+        : CrudController<CreateUserDTO, GetUserDTO, UpdateUserDTO, User>(_userManagementService){}
 }
