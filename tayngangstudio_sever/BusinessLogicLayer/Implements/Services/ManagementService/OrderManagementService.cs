@@ -15,7 +15,7 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
         Task UpdateStatusAsync(int id, OrderStatusEnum status);
     }
 
-    public class OrderManagementService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails"]), IOrderManagementService
+    public class OrderManagementService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails.Product"]), IOrderManagementService
     {
         public async Task UpdateStatusAsync(int id, OrderStatusEnum status)
         {
