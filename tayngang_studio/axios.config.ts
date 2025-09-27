@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toast } from 'sonner'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -25,10 +26,8 @@ axiosInstance.interceptors.request.use(
 	}
 )
 
-// Response interceptor to handle token storage and errors
 axiosInstance.interceptors.response.use(
 	(response) => {
-		// If login response contains token, store it
 		if (response.data?.data?.accessToken) {
 			const { accessToken, role, name, email, id } = response.data.data
 			if (typeof window !== 'undefined') {
@@ -42,16 +41,27 @@ axiosInstance.interceptors.response.use(
 		return response
 	},
 	(error) => {
-		// Handle unauthorized responses
-		if (error.response?.status === 401) {
+		const handleLogout = () => {
 			if (typeof window !== 'undefined') {
 				localStorage.removeItem('accessToken')
 				localStorage.removeItem('userRole')
-				// Redirect to login if not already there
+				localStorage.removeItem('userName')
+				localStorage.removeItem('userEmail')
+				localStorage.removeItem('userId')
 				if (!window.location.pathname.includes('/auth/login')) {
 					window.location.href = '/auth/login'
 				}
 			}
+		}
+		if (error.response?.status === 401) {
+			toast.error(
+				error.response?.data?.message || 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.'
+			)
+			handleLogout()
+		} else if (error.response?.status === 403) {
+			toast.error(
+				error.response?.data?.message || 'Bạn không có quyền truy cập vào tài nguyên này.'
+			)
 		}
 		return Promise.reject(error)
 	}

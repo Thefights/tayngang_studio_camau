@@ -42,7 +42,7 @@ const productCategoryData = [
 ]
 
 export function AdminDashboard() {
-	const [activeTab, setActiveTab] = useState('overview')
+	const [activeTab, setActiveTab] = useState('analytics')
 
 	return (
 		<div className='flex h-screen bg-[#EAEAEA]'>

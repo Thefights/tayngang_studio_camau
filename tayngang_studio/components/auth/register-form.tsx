@@ -1,58 +1,49 @@
 'use client'
 
-import type React from 'react'
-
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { registerSchema } from '@/lib/validations/auth.validation'
 import { authService } from '@/services/other/auth.service'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { motion } from 'framer-motion'
 import { ArrowRight, Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as yup from 'yup'
+
+type RegisterFormData = yup.InferType<typeof registerSchema>
 
 export function RegisterForm() {
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-	const [formData, setFormData] = useState({
-		firstName: '',
-		lastName: '',
-		email: '',
-		phone: '',
-		password: '',
-		confirmPassword: '',
-	})
 	const [isLoading, setIsLoading] = useState(false)
-	const [error, setError] = useState<string | null>(null)
 
-	const handleInputChange = (field: string, value: string | boolean) => {
-		setFormData((prev) => ({ ...prev, [field]: value }))
-	}
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<RegisterFormData>({
+		resolver: yupResolver(registerSchema),
+	})
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
+	const onSubmit = async (data: RegisterFormData) => {
 		setIsLoading(true)
-		setError(null)
-
-		if (formData.password !== formData.confirmPassword) {
-			setError('Mật khẩu xác nhận không khớp!')
-			setIsLoading(false)
-			return
-		}
-
 		try {
 			await authService.register({
-				name: `${formData.firstName} ${formData.lastName}`,
-				phone: formData.phone,
-				email: formData.email,
-				password: formData.password,
+				name: data.name,
+				phone: data.phone,
+				email: data.email,
+				password: data.password,
 			})
-			// Redirect to login or account page
+			toast.success('Registration successful! Please log in.')
 			window.location.href = '/auth/login'
 		} catch (err: any) {
-			setError(err.response?.data?.message || 'An unexpected error occurred.')
+			toast.error(err.response?.data?.message || 'An unexpected error occurred.')
 		} finally {
 			setIsLoading(false)
 		}
@@ -76,45 +67,26 @@ export function RegisterForm() {
 				transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
 			>
 				<Card className='p-8 bg-white border-[#5A3E2B]/10 shadow-lg'>
-					{error && (
-						<div className='mb-4 text-center text-red-500 bg-red-100 p-3 rounded-md'>{error}</div>
-					)}
-					<form onSubmit={handleSubmit} className='space-y-6'>
-						{/* Name Fields */}
+					<form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+						{/* Name Field */}
 						<motion.div
-							className='grid grid-cols-2 gap-4'
+							className='space-y-2'
 							initial={{ opacity: 0, x: -20 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.5, delay: 0.3 }}
 						>
-							<div className='space-y-2'>
-								<Label htmlFor='firstName' className='text-[#5A3E2B] font-medium'>
-									Họ
-								</Label>
-								<div className='relative'>
-									<User className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50' />
-									<Input
-										id='firstName'
-										required
-										value={formData.firstName}
-										onChange={(e) => handleInputChange('firstName', e.target.value)}
-										className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
-										placeholder='Nguyễn'
-									/>
-								</div>
-							</div>
-							<div className='space-y-2'>
-								<Label htmlFor='lastName' className='text-[#5A3E2B] font-medium'>
-									Tên
-								</Label>
+							<Label htmlFor='name' className='text-[#5A3E2B] font-medium'>
+								Họ và Tên
+							</Label>
+							<div className='relative'>
+								<User className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50' />
 								<Input
-									id='lastName'
-									required
-									value={formData.lastName}
-									onChange={(e) => handleInputChange('lastName', e.target.value)}
-									className='border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
-									placeholder='Văn A'
+									id='name'
+									{...register('name')}
+									className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
+									placeholder='Nguyễn Văn A'
 								/>
+								{errors.name && <p className='text-red-500 text-sm mt-1'>{errors.name.message}</p>}
 							</div>
 						</motion.div>
 
@@ -133,12 +105,13 @@ export function RegisterForm() {
 								<Input
 									id='email'
 									type='email'
-									required
-									value={formData.email}
-									onChange={(e) => handleInputChange('email', e.target.value)}
+									{...register('email')}
 									className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
 									placeholder='your@email.com'
 								/>
+								{errors.email && (
+									<p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>
+								)}
 							</div>
 						</motion.div>
 
@@ -157,12 +130,13 @@ export function RegisterForm() {
 								<Input
 									id='phone'
 									type='tel'
-									required
-									value={formData.phone}
-									onChange={(e) => handleInputChange('phone', e.target.value)}
+									{...register('phone')}
 									className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
 									placeholder='0123 456 789'
 								/>
+								{errors.phone && (
+									<p className='text-red-500 text-sm mt-1'>{errors.phone.message}</p>
+								)}
 							</div>
 						</motion.div>
 
@@ -181,9 +155,7 @@ export function RegisterForm() {
 								<Input
 									id='password'
 									type={showPassword ? 'text' : 'password'}
-									required
-									value={formData.password}
-									onChange={(e) => handleInputChange('password', e.target.value)}
+									{...register('password')}
 									className='pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
 									placeholder='••••••••'
 								/>
@@ -195,6 +167,9 @@ export function RegisterForm() {
 									{showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='w-4 h-4' />}
 								</button>
 							</div>
+							{errors.password && (
+								<p className='text-red-500 text-sm mt-1'>{errors.password.message}</p>
+							)}
 						</motion.div>
 
 						{/* Confirm Password Field */}
@@ -212,9 +187,7 @@ export function RegisterForm() {
 								<Input
 									id='confirmPassword'
 									type={showConfirmPassword ? 'text' : 'password'}
-									required
-									value={formData.confirmPassword}
-									onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+									{...register('confirmPassword')}
 									className='pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
 									placeholder='••••••••'
 								/>
@@ -230,6 +203,9 @@ export function RegisterForm() {
 									)}
 								</button>
 							</div>
+							{errors.confirmPassword && (
+								<p className='text-red-500 text-sm mt-1'>{errors.confirmPassword.message}</p>
+							)}
 						</motion.div>
 
 						{/* Register Button */}
@@ -277,7 +253,7 @@ export function RegisterForm() {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5, delay: 1.1 }}
 						>
-							<Button
+							{/* <Button
 								type='button'
 								variant='outline'
 								className='w-full border-[#5A3E2B]/20 text-[#5A3E2B] hover:bg-[#5A3E2B]/5 bg-white transition-all duration-300 hover:scale-[1.02]'
@@ -301,7 +277,7 @@ export function RegisterForm() {
 									/>
 								</svg>
 								Đăng ký với Google
-							</Button>
+							</Button> */}
 						</motion.div>
 					</form>
 
