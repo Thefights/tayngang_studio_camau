@@ -64,5 +64,17 @@ namespace BusinessLogicLayer.Utils
                 return null;
             }
         }
+
+        public static async Task<int?> GetUserIdFromClaimsPrincipalAsync(ClaimsPrincipal user)
+        {
+            if (user == null || !user.Identity.IsAuthenticated)
+                return null;
+            var idClaim = user.Claims.FirstOrDefault(c => c.Type == "id" || c.Type == ClaimTypes.NameIdentifier);
+            if (idClaim != null && int.TryParse(idClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            return null;
+        }
     }
 }

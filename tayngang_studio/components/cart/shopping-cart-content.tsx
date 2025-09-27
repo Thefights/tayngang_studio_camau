@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -7,57 +5,32 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Minus, Plus, ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
-// Mock cart data
-const initialCartItems = [
-  {
-    id: "1",
-    name: "Sổ Tay Cà Mau Classic",
-    price: 250000,
-    originalPrice: 300000,
-    image: "/classic-brown-leather-travel-notebook.jpg",
-    quantity: 2,
-    inStock: true,
-  },
-  {
-    id: "2",
-    name: "Sổ Tay Miền Tây Deluxe",
-    price: 350000,
-    originalPrice: null,
-    image: "/premium-blue-travel-journal-with-golden-details.jpg",
-    quantity: 1,
-    inStock: true,
-  },
-];
+export function ShoppingCartContent({ cartItems }: { cartItems: any[] }) {
+  console.log(cartItems);
+  // const updateQuantity = (id: string, newQuantity: number) => {
+  //   if (newQuantity === 0) {
+  //     setCartItems(cartItems.filter((item) => item.id !== id));
+  //   } else {
+  //     setCartItems(
+  //       cartItems.map((item) =>
+  //         item.id === id ? { ...item, quantity: newQuantity } : item
+  //       )
+  //     );
+  //   }
+  // };
 
-export function ShoppingCartContent() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
-  const [promoCode, setPromoCode] = useState("");
+  // const removeItem = (id: string) => {
+  //   setCartItems(cartItems.filter((item) => item.id !== id));
+  // };
 
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity === 0) {
-      setCartItems(cartItems.filter((item) => item.id !== id));
-    } else {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === id ? { ...item, quantity: newQuantity } : item
-        )
-      );
-    }
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const shipping = subtotal >= 500000 ? 0 : 30000;
-  const discount = promoCode === "CAMAU10" ? subtotal * 0.1 : 0;
-  const total = subtotal + shipping - discount;
+  // const subtotal = cartItems.reduce(
+  //   (sum, item) => sum + item.price * item.quantity,
+  //   0
+  // );
+  // const shipping = subtotal >= 500000 ? 0 : 30000;
+  // const discount = promoCode === "CAMAU10" ? subtotal * 0.1 : 0;
+  // const total = subtotal + shipping - discount;
 
   if (cartItems.length === 0) {
     return (

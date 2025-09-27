@@ -30,7 +30,7 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -113,7 +113,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<double>("TotalAmount")
                         .HasColumnType("float");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -380,9 +380,7 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -409,10 +407,8 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -467,6 +463,11 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.ProductCategory", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

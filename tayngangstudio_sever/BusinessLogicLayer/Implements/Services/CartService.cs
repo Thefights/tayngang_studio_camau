@@ -10,26 +10,18 @@ namespace BusinessLogicLayer.Implements.Services
     public interface ICartService : ICrudService<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>
     {
         Task AddCartItems(int cartId, CreateCartDTO cartItems);
+        Task<GetCartDTO> GetCartByUserId(int userId);
     }
     public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>(_unitOfWork, _mapper, ["CartItems"]), ICartService
     {
         public async Task AddCartItems(int cartId, CreateCartDTO cartItems)
         {
-            var cartRepo = _unitOfWork.Repository<Cart>();
-            var cart = await cartRepo.GetByIdAsync(cartId, ["CartItems"]);
-
-            if (cart == null)
-            {
-                throw new NotFoundException("Cart not found");
-            }
+            var cart = await GetCartById(cartId);
 
             foreach (var item in cartItems.CartItems)
             {
-                var productExist = await IsProductExist(item.ProductId);
-                if (!productExist)
-                {
-                    throw new NotFoundException($"Product not found: {item.ProductId}");
-                }
+                var product = await GetProductById(item.ProductId);
+
                 var existingCartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == item.ProductId);
                 if (existingCartItem != null)
                 {
@@ -45,11 +37,42 @@ namespace BusinessLogicLayer.Implements.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        private async Task<bool> IsProductExist(int? productId)
+        public async Task<GetCartDTO> GetCartByUserId(int userId)
+        {
+            //var userId = JwtUtils.GetUserIdFromClaimsPrincipalAsync(ClaimsPrincipal.Current).Result;
+            var cartRepo = _unitOfWork.Repository<Cart>();
+            var cart = await cartRepo.GetByCondition(c => c.UserId == userId, ["CartItems"]);
+
+            if (cart == null)
+            {
+                throw new NotFoundException("Cart not found");
+            }
+
+            return _mapper.Map<GetCartDTO>(cart);
+        }
+
+        //Private methods
+
+        private async Task<Product> GetProductById(int? productId)
         {
             var productRepo = _unitOfWork.Repository<Product>();
             var product = await productRepo.GetByIdAsync(productId);
-            return product != null;
+            if (product == null)
+            {
+                throw new NotFoundException("Product not found");
+            }
+            return product;
+        }
+
+        private async Task<Cart> GetCartById(int? cartId)
+        {
+            var cartRepo = _unitOfWork.Repository<Cart>();
+            var cart = await cartRepo.GetByIdAsync(cartId, ["CartItems"]);
+            if (cart == null)
+            {
+                throw new NotFoundException("Cart not found");
+            }
+            return cart;
         }
     }
 }
