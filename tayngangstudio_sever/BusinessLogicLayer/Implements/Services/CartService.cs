@@ -9,37 +9,40 @@ namespace BusinessLogicLayer.Implements.Services
 {
     public interface ICartService : ICrudService<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>
     {
-
+        Task AddCartItems(int cartId, CreateCartDTO cartItems);
     }
     public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>(_unitOfWork, _mapper, ["CartItems"]), ICartService
     {
-        public override async Task<CreateCartDTO> CreateAsync(CreateCartDTO dto)
+        public async Task AddCartItems(int cartId, CreateCartDTO cartItems)
         {
-            var userExists = await IsUserExist(dto.UserId);
+            var cartRepo = _unitOfWork.Repository<Cart>();
+            var cart = await cartRepo.GetByIdAsync(cartId, ["CartItems"]);
 
-            if (!userExists)
+            if (cart == null)
             {
-                throw new NotFoundException("User not found");
+                throw new NotFoundException("Cart not found");
             }
 
-            foreach (var item in dto.CartItems)
+            foreach (var item in cartItems.CartItems)
             {
                 var productExist = await IsProductExist(item.ProductId);
-
                 if (!productExist)
                 {
                     throw new NotFoundException($"Product not found: {item.ProductId}");
                 }
+                var existingCartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == item.ProductId);
+                if (existingCartItem != null)
+                {
+                    existingCartItem.Quantity += item.Quantity;
+                }
+                else
+                {
+                    var newCartItem = _mapper.Map<CartItem>(item);
+                    newCartItem.CartId = cartId;
+                    cart.CartItems.Add(newCartItem);
+                }
             }
-
-            return await base.CreateAsync(dto);
-        }
-
-        private async Task<bool> IsUserExist(int? userId)
-        {
-            var userRepo = _unitOfWork.Repository<User>();
-            var user = await userRepo.GetByIdAsync(userId);
-            return user != null;
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private async Task<bool> IsProductExist(int? productId)

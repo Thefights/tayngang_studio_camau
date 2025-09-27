@@ -14,7 +14,7 @@ namespace BusinessLogicLayer.Implements.Services
         Task ForgotPasswordAsync(string email);
     }
 
-    public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper, IEmailService _emailService) : IAuthService
+    public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper, IEmailService _emailService, ICartService _cartService) : IAuthService
     {
         public async Task<User> RegisterAsync(RegisterDTO dto)
         {
@@ -35,6 +35,7 @@ namespace BusinessLogicLayer.Implements.Services
             entity.Password = CryptoUtil.EncryptPassword(dto.Password);
 
             await _unitOfWork.Repository<User>().CreateAsync(entity);
+            await _unitOfWork.Repository<Cart>().CreateAsync(new Cart { User = entity });
             await _unitOfWork.SaveChangesAsync();
 
             return entity;

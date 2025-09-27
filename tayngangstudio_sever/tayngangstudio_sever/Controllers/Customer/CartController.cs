@@ -11,5 +11,11 @@ namespace tayngangstudio_sever.Controllers.Customer
     //[Authorize]
     public class CartController(ICartService _cartService) : CrudController<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>(_cartService)
     {
+        [HttpPost("{cartId}/items")]
+        public async Task<IActionResult> AddCartItems(int cartId, [FromBody] CreateCartDTO cartItems)
+        {
+            await _cartService.AddCartItems(cartId, cartItems);
+            return NoContent();
+        }
     }
 }

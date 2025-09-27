@@ -1,32 +1,41 @@
 import axiosInstance from "@/axios.config";
 
-const cartService = {
-  addToCart: async (item) => {
-    try {
-      const response = await axiosInstance.post("/cart", item);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  removeFromCart: async (itemId) => {
-    try {
-      const response = await axiosInstance.delete(`/cart/${itemId}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  getCartItems: async () => {
-    try {
-      const response = await axiosInstance.get("/cart");
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export const fetchAllCart = async () => {
+  try {
+    const respond = await axiosInstance.get("cart");
+    return respond;
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    throw error;
+  }
 };
 
-export default cartService;
+export const createCart = async (cartData: any) => {
+  try {
+    const respond = await axiosInstance.post("cart", cartData);
+    return respond;
+  } catch (error) {
+    console.error("Error creating cart:", error);
+    throw error;
+  }
+};
+
+export const updateCart = async (cartId: number | string, cartData: any) => {
+  try {
+    const respond = await axiosInstance.put(`cart/${cartId}`, cartData);
+    return respond;
+  } catch (error) {
+    console.error(`Error updating cart with id ${cartId}:`, error);
+    throw error;
+  }
+};
+
+export const deleteCart = async (cartId: number | string) => {
+  try {
+    const respond = await axiosInstance.delete(`cart/${cartId}`);
+    return respond;
+  } catch (error) {
+    console.error(`Error deleting cart with id ${cartId}:`, error);
+    throw error;
+  }
+};
