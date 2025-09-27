@@ -32,6 +32,7 @@ namespace BusinessLogicLayer.DTO
 		public string Phone { get; set; } = string.Empty;
 		public string Address { get; set; } = string.Empty;
 		public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
+		public List<GetOrderDTO> Orders { get; set; } = [];
 	}
 
 	public class UpdateUserDTO

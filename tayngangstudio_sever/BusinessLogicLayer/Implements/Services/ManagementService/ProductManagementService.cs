@@ -11,9 +11,9 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
     {
     }
 
-    public class ProductManagementService(IUnitOfWork _unitOfWork, IMapper _mapper)
+    public class ProductManagementService(IUnitOfWork _unitOfWork, IMapper _mapper, IImageUploadService _imageUploadService)
         : CrudService<CreateProductDTO, GetProductDTO, UpdateProductDTO,
-            Product>(_unitOfWork, _mapper), IProductManagementService
+            Product>(_unitOfWork, _mapper, null, _imageUploadService), IProductManagementService
     {
     }
 }
