@@ -10,6 +10,7 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class ProductCategoryManagementController(IProductCategoryManagementService _productCategoryService)
-        : CrudController<CreateProductCategoryDTO, GetProductCategoryDTO, UpdateProductCategoryDTO, ProductCategory>(_productCategoryService){ }
+    public class CategoryManagementController(IProductCategoryManagementService _productCategoryService)
+        : CrudController<CreateProductCategoryDTO, GetProductCategoryDTO, UpdateProductCategoryDTO, ProductCategory>(_productCategoryService)
+    { }
 }

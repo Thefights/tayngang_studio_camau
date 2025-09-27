@@ -13,6 +13,7 @@ export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
 	const menuItems = [
 		{ id: 'analytics', label: 'Thống kê', icon: BarChart3 },
 		{ id: 'products', label: 'Sản phẩm', icon: Package },
+		{ id: 'categories', label: 'Danh mục', icon: Package },
 		{ id: 'orders', label: 'Đơn hàng', icon: ShoppingCart },
 		{ id: 'customers', label: 'Khách hàng', icon: Users },
 	]
