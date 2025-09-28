@@ -12,6 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     {
         Task<string> CreatePaymentLink(int orderId);
         Task<string> VerifyPayment(int orderId);
+        Task<GetOrderDTO> GetOrderByCurrentUser(int userId);
     }
 
     public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper, PayOS _payOS) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails"]), IOrderService
@@ -57,6 +58,12 @@ namespace BusinessLogicLayer.Implements.Services
             }
 
             return paymentLinkInformation.status;
+        }
+
+        public async Task<GetOrderDTO> GetOrderByCurrentUser(int userId)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetByCondition(u => u.UserId == userId, ["OrderDetails"]);
+            return _mapper.Map<GetOrderDTO>(order);
         }
 
         private async Task<GetProductDTO> GetProductById(int productId)

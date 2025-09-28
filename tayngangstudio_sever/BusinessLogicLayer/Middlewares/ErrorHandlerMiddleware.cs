@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLogicLayer.Helpers;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 
-namespace BusinessLogicLayer.Helpers
+namespace BusinessLogicLayer.Middlewares
 
 {
     public class ErrorHandlerMiddleware(RequestDelegate _next)
