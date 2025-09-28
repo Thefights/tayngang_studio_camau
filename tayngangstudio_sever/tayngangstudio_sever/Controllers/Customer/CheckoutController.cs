@@ -10,9 +10,9 @@ namespace tayngangstudio_sever.Controllers.Customer
         [HttpPost]
         public async Task<IActionResult> Checkout([FromQuery] int paymentMethod)
         {
-            var userIdFromToken = int.Parse(User.FindFirst("id")!.Value);
+            var userId = int.Parse(User.FindFirst("id")!.Value);
             var paymentMethodEnum = (DataAccessLayer.Enums.PaymentMethodEnum)paymentMethod;
-            var paymentLink = await _checkoutService.Checkout(userIdFromToken, paymentMethodEnum);
+            var paymentLink = await _checkoutService.Checkout(userId, paymentMethodEnum);
             return Ok(new { PaymentLink = paymentLink });
         }
     }

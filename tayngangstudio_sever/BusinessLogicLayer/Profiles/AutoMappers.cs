@@ -30,6 +30,7 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<OrderDetail, GetOrderDetailDTO>()
                 .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
             CreateMap<GetOrderDetailDTO, OrderDetail>();
+            CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
 
             //Cart
             CreateMap<Cart, GetCartDTO>().ReverseMap();

@@ -11,7 +11,7 @@ namespace BusinessLogicLayer.Implements.Services
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
     }
 
-    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService)
+    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService) : ICheckoutService
     {
         public async Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod)
         {
