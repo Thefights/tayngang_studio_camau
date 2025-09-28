@@ -63,9 +63,10 @@ export function ViewOrderDetail({ orderId, onBack }: ViewOrderDetailProps) {
 
 	return (
 		<div className='space-y-6'>
-			<div className='flex items-center gap-4'>
-				<Button variant='outline' size='icon' onClick={onBack}>
+			<div className='flex items-center gap-3'>
+				<Button variant='outline' onClick={onBack} className='flex items-center gap-2'>
 					<ArrowLeft className='w-4 h-4' />
+					<span>Trở về</span>
 				</Button>
 				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Chi tiết đơn hàng #{order.id}</h2>
 			</div>

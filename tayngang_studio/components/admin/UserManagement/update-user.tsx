@@ -70,7 +70,7 @@ export function UpdateUser({ userId, onBack, onUserUpdated }: UpdateUserProps) {
 		<div className='space-y-6'>
 			<Button onClick={onBack} variant='outline'>
 				<ArrowLeft className='w-4 h-4 mr-2' />
-				Back to User List
+				Trở về
 			</Button>
 
 			<Card className='p-6 bg-white border-[#5A3E2B]/10'>

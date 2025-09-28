@@ -27,6 +27,8 @@ export function OrdersManagement() {
 	>('all')
 	const [view, setView] = useState<View>('list')
 	const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null)
+	const [deletingId, setDeletingId] = useState<number | null>(null)
+	const [deleteLoading, setDeleteLoading] = useState(false)
 
 	const fetchOrders = async () => {
 		try {
@@ -62,20 +64,29 @@ export function OrdersManagement() {
 				`Đơn hàng đã được cập nhật thành ${status === 'Completed' ? 'Hoàn thành' : 'Đã hủy'}.`
 			)
 			fetchOrders()
-		} catch (error) {
-			toast.error('Cập nhật trạng thái đơn hàng thất bại.')
+		} catch (err: any) {
+			const msg =
+				err?.response?.data?.message || err?.message || 'Cập nhật trạng thái đơn hàng thất bại.'
+			toast.error(msg)
 		}
 	}
 
-	const handleDeleteOrder = async (id: number) => {
-		if (window.confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?')) {
-			try {
-				await deleteOrder(id)
-				toast.success('Đơn hàng đã được xóa thành công.')
-				fetchOrders()
-			} catch (error) {
-				toast.error('Xóa đơn hàng thất bại.')
-			}
+	const confirmDelete = (id: number) => {
+		setDeletingId(id)
+	}
+
+	const handleDelete = async () => {
+		if (!deletingId) return
+		try {
+			setDeleteLoading(true)
+			await deleteOrder(deletingId)
+			toast.success('Đơn hàng đã được xóa thành công.')
+			setDeletingId(null)
+			fetchOrders()
+		} catch (error) {
+			toast.error('Xóa đơn hàng thất bại.')
+		} finally {
+			setDeleteLoading(false)
 		}
 	}
 
@@ -119,18 +130,11 @@ export function OrdersManagement() {
 			<div className='flex items-center justify-between'>
 				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Quản lý đơn hàng</h2>
 				<div className='flex gap-2'>
-					<Button
-						variant='outline'
-						className='border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent'
-						onClick={() => router.push('/admin/orders/create')}
-					>
+					<Button onClick={() => router.push('/admin/orders/create')}>
 						<PlusCircle className='w-4 h-4 mr-2' />
 						Tạo đơn hàng mới
 					</Button>
-					<Button
-						variant='outline'
-						className='border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent'
-					>
+					<Button>
 						<Download className='w-4 h-4 mr-2' />
 						Xuất báo cáo
 					</Button>
@@ -236,41 +240,49 @@ export function OrdersManagement() {
 									<td className='p-4 text-[#5A3E2B]/70'>
 										{new Date(order.orderDate).toLocaleDateString('vi-VN')}
 									</td>
-									<td className='p-4 flex justify-center gap-1'>
-										<Button
-											variant='ghost'
-											size='icon'
-											className='text-[#87C1D8] hover:bg-[#87C1D8]/10'
-											onClick={() => handleShowDetail(order.id)}
-										>
-											<Eye className='w-4 h-4' />
-										</Button>
-										<Button
-											variant='ghost'
-											size='icon'
-											className='text-green-600 hover:bg-green-100'
-											onClick={() => handleUpdateStatus(order.id, 'Completed')}
-											disabled={order.status === 'Completed' || order.status === 'Canceled'}
-										>
-											<CheckCircle className='w-4 h-4' />
-										</Button>
-										<Button
-											variant='ghost'
-											size='icon'
-											className='text-orange-500 hover:bg-orange-100'
-											onClick={() => handleUpdateStatus(order.id, 'Canceled')}
-											disabled={order.status === 'Completed' || order.status === 'Canceled'}
-										>
-											<XCircle className='w-4 h-4' />
-										</Button>
-										<Button
-											variant='ghost'
-											size='icon'
-											className='text-red-600 hover:bg-red-100'
-											onClick={() => handleDeleteOrder(order.id)}
-										>
-											<Trash2 className='w-4 h-4' />
-										</Button>
+									<td className='p-4'>
+										<div className='flex justify-center gap-2 min-w-[140px]'>
+											<Button
+												variant='ghost'
+												size='sm'
+												className='text-[#87C1D8] hover:bg-[#87C1D8]/10'
+												onClick={() => handleShowDetail(order.id)}
+												title='Xem chi tiết'
+											>
+												<Eye className='w-4 h-4' />
+											</Button>
+											{order.status === 'Pending' && (
+												<>
+													<Button
+														variant='ghost'
+														size='sm'
+														className='text-green-600 hover:bg-green-50'
+														onClick={() => handleUpdateStatus(order.id, 'Completed')}
+														title='Hoàn thành'
+													>
+														<CheckCircle className='w-4 h-4' />
+													</Button>
+													<Button
+														variant='ghost'
+														size='sm'
+														className='text-orange-500 hover:bg-orange-50'
+														onClick={() => handleUpdateStatus(order.id, 'Canceled')}
+														title='Hủy'
+													>
+														<XCircle className='w-4 h-4' />
+													</Button>
+												</>
+											)}
+											<Button
+												variant='ghost'
+												size='sm'
+												className='text-red-600 hover:bg-red-50'
+												onClick={() => confirmDelete(order.id)}
+												title='Xóa'
+											>
+												<Trash2 className='w-4 h-4' />
+											</Button>
+										</div>
 									</td>
 								</tr>
 							))}
@@ -278,6 +290,34 @@ export function OrdersManagement() {
 					</table>
 				</div>
 			</Card>
+
+			{/* Delete Confirmation */}
+			{deletingId !== null && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4'>
+					<div className='bg-white rounded-lg shadow-lg w-full max-w-sm border border-[#5A3E2B]/10 p-6 space-y-4'>
+						<h3 className='text-lg font-serif text-[#5A3E2B]'>Xác nhận xoá</h3>
+						<p className='text-sm text-[#5A3E2B]/80'>
+							Bạn có chắc chắn muốn xoá đơn hàng ID {deletingId}?
+						</p>
+						<div className='flex justify-end gap-2'>
+							<Button
+								variant='ghost'
+								className='text-[#5A3E2B] hover:bg-[#5A3E2B]/10'
+								onClick={() => setDeletingId(null)}
+							>
+								Huỷ
+							</Button>
+							<Button
+								disabled={deleteLoading}
+								onClick={handleDelete}
+								className='bg-red-600 text-white hover:bg-red-700'
+							>
+								{deleteLoading ? 'Đang xoá...' : 'Xoá'}
+							</Button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

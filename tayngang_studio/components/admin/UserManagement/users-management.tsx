@@ -20,6 +20,8 @@ export function UsersManagement() {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [currentView, setCurrentView] = useState<View>('list')
 	const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+	const [deletingId, setDeletingId] = useState<number | null>(null)
+	const [deleteLoading, setDeleteLoading] = useState(false)
 
 	const fetchUsers = async () => {
 		try {
@@ -47,14 +49,21 @@ export function UsersManagement() {
 		setCurrentView('edit')
 	}
 
-	const handleDelete = async (userId: number) => {
-		if (window.confirm('Are you sure you want to delete this user?')) {
-			try {
-				await deleteUser(userId)
-				fetchUsers()
-			} catch (error) {
-				console.error('Failed to delete user', error)
-			}
+	const confirmDelete = (userId: number) => {
+		setDeletingId(userId)
+	}
+
+	const handleDelete = async () => {
+		if (!deletingId) return
+		try {
+			setDeleteLoading(true)
+			await deleteUser(deletingId)
+			setDeletingId(null)
+			fetchUsers()
+		} catch (error) {
+			console.error('Failed to delete user', error)
+		} finally {
+			setDeleteLoading(false)
 		}
 	}
 
@@ -183,27 +192,27 @@ export function UsersManagement() {
 											size='sm'
 											className='text-[#87C1D8] hover:bg-[#87C1D8]/10'
 											onClick={() => handleViewDetails(user.id)}
+											title='Chi tiết'
 										>
-											<Eye className='w-4 h-4 mr-2' />
-											Chi tiết
+											<Eye className='w-4 h-4' />
 										</Button>
 										<Button
 											variant='ghost'
 											size='sm'
 											className='text-blue-500 hover:bg-blue-500/10'
 											onClick={() => handleEdit(user.id)}
+											title='Sửa'
 										>
-											<Edit className='w-4 h-4 mr-2' />
-											Sửa
+											<Edit className='w-4 h-4' />
 										</Button>
 										<Button
 											variant='ghost'
 											size='sm'
 											className='text-red-500 hover:bg-red-500/10'
-											onClick={() => handleDelete(user.id)}
+											onClick={() => confirmDelete(user.id)}
+											title='Xóa'
 										>
-											<Trash2 className='w-4 h-4 mr-2' />
-											Xóa
+											<Trash2 className='w-4 h-4' />
 										</Button>
 									</td>
 								</tr>
@@ -212,6 +221,34 @@ export function UsersManagement() {
 					</table>
 				</div>
 			</Card>
+
+			{/* Delete Confirmation */}
+			{deletingId !== null && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4'>
+					<div className='bg-white rounded-lg shadow-lg w-full max-w-sm border border-[#5A3E2B]/10 p-6 space-y-4'>
+						<h3 className='text-lg font-serif text-[#5A3E2B]'>Xác nhận xoá</h3>
+						<p className='text-sm text-[#5A3E2B]/80'>
+							Bạn có chắc chắn muốn xoá khách hàng ID {deletingId}?
+						</p>
+						<div className='flex justify-end gap-2'>
+							<Button
+								variant='ghost'
+								className='text-[#5A3E2B] hover:bg-[#5A3E2B]/10'
+								onClick={() => setDeletingId(null)}
+							>
+								Huỷ
+							</Button>
+							<Button
+								disabled={deleteLoading}
+								onClick={handleDelete}
+								className='bg-red-600 text-white hover:bg-red-700'
+							>
+								{deleteLoading ? 'Đang xoá...' : 'Xoá'}
+							</Button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

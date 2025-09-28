@@ -127,16 +127,16 @@ export function CreateOrderForm() {
 	return (
 		<Card className='p-6 bg-white border-[#5A3E2B]/10'>
 			<form onSubmit={handleSubmit} className='space-y-6'>
-				<div className='flex items-center justify-between'>
-					<h2 className='text-2xl font-serif text-[#5A3E2B]'>Tạo đơn hàng mới</h2>
+				<div className='flex items-center gap-3'>
 					<Button
 						type='button'
 						variant='outline'
 						onClick={() => router.push('/admin/orders')}
 						className='border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent'
 					>
-						Trở về danh sách
+						← Trở về danh sách
 					</Button>
+					<h2 className='text-2xl font-serif text-[#5A3E2B]'>Tạo đơn hàng mới</h2>
 				</div>
 
 				{/* User ID and Payment Method */}
@@ -397,7 +397,7 @@ export function CreateOrderForm() {
 					<div className='text-xl font-bold text-[#5A3E2B]'>
 						Tổng cộng: <span className='text-2xl'>{totalAmount.toLocaleString('vi-VN')}₫</span>
 					</div>
-					<Button type='submit' className='bg-[#A5C6A1] text-white hover:bg-[#90b58c]' size='lg'>
+					<Button type='submit' className='bg-[#7ef671] text-white hover:bg-[#90b58c]' size='lg'>
 						Tạo đơn hàng
 					</Button>
 				</div>
