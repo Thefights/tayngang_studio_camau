@@ -11,7 +11,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { createUserSchema } from '@/lib/validations/user.validation'
-import { createUser } from '@/services/other/users-management.service'
+import { createUser } from '@/services/manager/users-management.service'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowLeft } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'

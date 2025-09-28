@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { getUserById } from '@/services/other/users-management.service'
+import { getUserById } from '@/services/manager/users-management.service'
 import { IUser } from '@/types/user'
 import { ArrowLeft } from 'lucide-react'
 import { useEffect, useState } from 'react'

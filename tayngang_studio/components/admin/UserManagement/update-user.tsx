@@ -11,7 +11,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { updateUserSchema } from '@/lib/validations/user.validation'
-import { getUserById, updateUser } from '@/services/other/users-management.service'
+import { getUserById, updateUser } from '@/services/manager/users-management.service'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowLeft } from 'lucide-react'
 import { useEffect } from 'react'
