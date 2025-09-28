@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250928103701_A")]
+    [Migration("20250928140014_A")]
     partial class A
     {
         /// <inheritdoc />
@@ -315,6 +315,10 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -343,6 +347,7 @@ namespace DataAccessLayer.Migrations
                         new
                         {
                             Id = 1,
+                            Address = "",
                             Email = "admin@example.com",
                             Name = "Admin",
                             Password = "123456",
@@ -352,6 +357,7 @@ namespace DataAccessLayer.Migrations
                         new
                         {
                             Id = 2,
+                            Address = "",
                             Email = "alice@example.com",
                             Name = "Alice",
                             Password = "123456",
@@ -361,6 +367,7 @@ namespace DataAccessLayer.Migrations
                         new
                         {
                             Id = 3,
+                            Address = "",
                             Email = "bob@example.com",
                             Name = "Bob",
                             Password = "123456",
