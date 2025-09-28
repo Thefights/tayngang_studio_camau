@@ -4,6 +4,7 @@ using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250928140014_A")]
+    partial class A
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,7 +350,7 @@ namespace DataAccessLayer.Migrations
                             Address = "",
                             Email = "admin@example.com",
                             Name = "Admin",
-                            Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
+                            Password = "123456",
                             Phone = "0123456789",
                             Role = 0
                         },
@@ -357,7 +360,7 @@ namespace DataAccessLayer.Migrations
                             Address = "",
                             Email = "alice@example.com",
                             Name = "Alice",
-                            Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
+                            Password = "123456",
                             Phone = "0987654321",
                             Role = 1
                         },
@@ -367,7 +370,7 @@ namespace DataAccessLayer.Migrations
                             Address = "",
                             Email = "bob@example.com",
                             Name = "Bob",
-                            Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
+                            Password = "123456",
                             Phone = "0911222333",
                             Role = 1
                         });

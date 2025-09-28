@@ -12,6 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     {
         Task<string> CreatePaymentLink(int orderId);
         Task<string> VerifyPayment(int orderId);
+        Task<GetOrderDTO> GetOrderByCurrentUser(int userId);
     }
 
     public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper, PayOS _payOS) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails"]), IOrderService
@@ -35,7 +36,7 @@ namespace BusinessLogicLayer.Implements.Services
             }
             var totalAmount = items.Sum(i => i.quantity * i.price);
             var cancelUrl = "https://fptsoftware.com/";
-            var returnUrl = "https://fptsoftware.com/";
+            var returnUrl = "http://localhost:3000/checkout/success/";
 
             PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
 
@@ -57,6 +58,12 @@ namespace BusinessLogicLayer.Implements.Services
             }
 
             return paymentLinkInformation.status;
+        }
+
+        public async Task<GetOrderDTO> GetOrderByCurrentUser(int userId)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetByCondition(u => u.UserId == userId, ["OrderDetails"]);
+            return _mapper.Map<GetOrderDTO>(order);
         }
 
         private async Task<GetProductDTO> GetProductById(int productId)

@@ -1,4 +1,6 @@
-﻿using BusinessLogicLayer.Implements.Services;
+﻿using BusinessLogicLayer.DTO;
+using BusinessLogicLayer.Implements.Services;
+using DataAccessLayer.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace tayngangstudio_sever.Controllers.Customer
@@ -8,11 +10,10 @@ namespace tayngangstudio_sever.Controllers.Customer
     public class CheckoutController(ICheckoutService _checkoutService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Checkout([FromQuery] int paymentMethod)
+        public async Task<IActionResult> Checkout([FromBody] CheckoutRequestDTO dto)
         {
-            var userIdFromToken = int.Parse(User.FindFirst("id")!.Value);
-            var paymentMethodEnum = (DataAccessLayer.Enums.PaymentMethodEnum)paymentMethod;
-            var paymentLink = await _checkoutService.Checkout(userIdFromToken, paymentMethodEnum);
+            var userId = int.Parse(User.FindFirst("id")!.Value);
+            var paymentLink = await _checkoutService.Checkout(userId, (PaymentMethodEnum)dto.PaymentMethod);
             return Ok(new { PaymentLink = paymentLink });
         }
     }

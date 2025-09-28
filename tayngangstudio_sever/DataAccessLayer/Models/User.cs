@@ -13,6 +13,8 @@ namespace DataAccessLayer.Models
 
         public string Phone { get; set; } = string.Empty;
 
+        public string Address { get; set; } = string.Empty;
+
         [MinLength(6)]
         public string Password { get; set; } = string.Empty;
 

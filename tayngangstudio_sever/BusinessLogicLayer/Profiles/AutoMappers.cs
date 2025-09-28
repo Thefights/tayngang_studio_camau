@@ -67,6 +67,7 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<GetUserDTO, User>();
             CreateMap<User, UpdateUserDTO>().ReverseMap();
             CreateMap<User, CreateUserDTO>().ReverseMap();
+            CreateMap<User, UpdateUserCustomerDTO>().ReverseMap();
         }
     }
 }
