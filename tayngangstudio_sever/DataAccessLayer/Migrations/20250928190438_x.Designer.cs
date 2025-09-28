@@ -4,6 +4,7 @@ using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250928190438_x")]
+    partial class x
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,10 +315,6 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -344,7 +343,6 @@ namespace DataAccessLayer.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "",
                             Email = "admin@example.com",
                             Name = "Admin",
                             Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
@@ -354,7 +352,6 @@ namespace DataAccessLayer.Migrations
                         new
                         {
                             Id = 2,
-                            Address = "",
                             Email = "alice@example.com",
                             Name = "Alice",
                             Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
@@ -364,7 +361,6 @@ namespace DataAccessLayer.Migrations
                         new
                         {
                             Id = 3,
-                            Address = "",
                             Email = "bob@example.com",
                             Name = "Bob",
                             Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",

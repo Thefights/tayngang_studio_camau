@@ -3,8 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CreateProductFormData, createProductSchema } from '@/lib/validations/product.validation'
-import { categoryManagementService } from '@/services/other/category-management.service'
-import { productManagementService } from '@/services/other/product-management.service'
+import { categoryManagementService } from '@/services/manager/category-management.service'
+import { productManagementService } from '@/services/manager/product-management.service'
 import { ICategory } from '@/types/category'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Image from 'next/image'
@@ -23,6 +23,7 @@ export function CreateProduct({ isOpen, onClose, onSuccess }: CreateProductProps
 	const [loading, setLoading] = useState(false)
 	const [imagePreview, setImagePreview] = useState<string | null>(null)
 	const [imageFile, setImageFile] = useState<File | null>(null)
+	const [imageError, setImageError] = useState<string>('')
 
 	const {
 		register,
@@ -63,6 +64,14 @@ export function CreateProduct({ isOpen, onClose, onSuccess }: CreateProductProps
 	}, [isOpen, fetchCategories])
 
 	const onSubmit = async (data: CreateProductFormData) => {
+		// Validate image is required
+		if (!imageFile) {
+			setImageError('Hình ảnh sản phẩm là bắt buộc')
+			return
+		}
+
+		setImageError('')
+
 		try {
 			setLoading(true)
 			const formDataObj = new FormData()
@@ -92,6 +101,7 @@ export function CreateProduct({ isOpen, onClose, onSuccess }: CreateProductProps
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0] || null
 		setImageFile(file)
+		setImageError('') // Clear error when file is selected
 
 		if (file) {
 			const reader = new FileReader()
@@ -108,6 +118,7 @@ export function CreateProduct({ isOpen, onClose, onSuccess }: CreateProductProps
 		reset()
 		setImageFile(null)
 		setImagePreview(null)
+		setImageError('')
 		onClose()
 	}
 
@@ -123,13 +134,16 @@ export function CreateProduct({ isOpen, onClose, onSuccess }: CreateProductProps
 						{/* Image Preview Section */}
 						<div className='space-y-4'>
 							<div className='space-y-1'>
-								<label className='text-sm font-medium text-[#5A3E2B]'>Hình ảnh sản phẩm</label>
+								<label className='text-sm font-medium text-[#5A3E2B]'>Hình ảnh sản phẩm *</label>
 								<Input
 									type='file'
 									accept='image/*'
 									onChange={handleFileChange}
-									className='file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-[#5A3E2B] file:text-white hover:file:bg-[#5A3E2B]/90'
+									className={`file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-[#5A3E2B] file:text-white hover:file:bg-[#5A3E2B]/90 ${
+										imageError ? 'border-red-500' : ''
+									}`}
 								/>
+								{imageError && <p className='text-xs text-red-500'>{imageError}</p>}
 							</div>
 
 							{/* Image Preview */}

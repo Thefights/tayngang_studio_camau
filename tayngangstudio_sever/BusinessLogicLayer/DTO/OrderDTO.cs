@@ -21,9 +21,13 @@ namespace BusinessLogicLayer.DTO
 
         public OrderStatusEnum Status { get; set; }
 
+        public PaymentMethodEnum PaymentMethod { get; set; }
+
         public int? UserId { get; set; }
 
-        public List<GetOrderDetailDTO> OrderDetails { get; set; }
+        public string? PaymentUrl { get; set; }
+
+        public List<GetOrderDetailDTO> OrderDetails { get; set; } = [];
     }
 
     public class UpdateOrderDTO

@@ -20,17 +20,27 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<ProductCategory, GetProductCategoryDTO>().ReverseMap();
 
             //Order
-            CreateMap<Order, CreateOrderDTO>().ReverseMap();
+            CreateMap<Order, CreateOrderDTO>().ReverseMap()
+                .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails))
+                .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore());
             CreateMap<Order, UpdateOrderDTO>().ReverseMap();
             CreateMap<Order, GetOrderDTO>()
                 .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));
-            CreateMap<GetOrderDTO, Order>();
+            CreateMap<GetOrderDTO, Order>()
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderDetails, opt => opt.Ignore());
 
             //OrderDetail
             CreateMap<OrderDetail, GetOrderDetailDTO>()
                 .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
             CreateMap<GetOrderDetailDTO, OrderDetail>();
-            CreateMap<OrderDetail, CreateOrderDetailDTO>().ReverseMap();
+            CreateMap<CreateOrderDetailDTO, OrderDetail>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+                .ForMember(dest => dest.OrderId, opt => opt.Ignore())
+                .ForMember(dest => dest.Order, opt => opt.Ignore())
+                .ForMember(dest => dest.Product, opt => opt.Ignore());
+            CreateMap<OrderDetail, CreateOrderDetailDTO>();
 
             //Cart
             CreateMap<Cart, GetCartDTO>().ReverseMap();

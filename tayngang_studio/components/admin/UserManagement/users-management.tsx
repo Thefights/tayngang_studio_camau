@@ -1,22 +1,27 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { deleteUser, getAllUsers } from '@/services/other/users-management.service'
+import { deleteUser, getAllUsers } from '@/services/manager/users-management.service'
 import { IUser } from '@/types/user'
 import { Edit, Eye, Mail, Phone, PlusCircle, Search, Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { CreateUser } from './create-user'
 import { UpdateUser } from './update-user'
 import { ViewUserDetail } from './view-user-detail'
 
 type View = 'list' | 'detail' | 'create' | 'edit'
 
 export function UsersManagement() {
+	const router = useRouter()
 	const [users, setUsers] = useState<IUser[]>([])
 	const [searchTerm, setSearchTerm] = useState('')
 	const [currentView, setCurrentView] = useState<View>('list')
 	const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+	const [deletingId, setDeletingId] = useState<number | null>(null)
+	const [deleteLoading, setDeleteLoading] = useState(false)
 
 	const fetchUsers = async () => {
 		try {
@@ -44,14 +49,21 @@ export function UsersManagement() {
 		setCurrentView('edit')
 	}
 
-	const handleDelete = async (userId: number) => {
-		if (window.confirm('Are you sure you want to delete this user?')) {
-			try {
-				await deleteUser(userId)
-				fetchUsers()
-			} catch (error) {
-				console.error('Failed to delete user', error)
-			}
+	const confirmDelete = (userId: number) => {
+		setDeletingId(userId)
+	}
+
+	const handleDelete = async () => {
+		if (!deletingId) return
+		try {
+			setDeleteLoading(true)
+			await deleteUser(deletingId)
+			setDeletingId(null)
+			fetchUsers()
+		} catch (error) {
+			console.error('Failed to delete user', error)
+		} finally {
+			setDeleteLoading(false)
 		}
 	}
 
@@ -62,10 +74,6 @@ export function UsersManagement() {
 
 	if (currentView === 'detail' && selectedUserId) {
 		return <ViewUserDetail userId={selectedUserId} onBack={handleBack} />
-	}
-
-	if (currentView === 'create') {
-		return <CreateUser onBack={handleBack} onUserCreated={handleBack} />
 	}
 
 	if (currentView === 'edit' && selectedUserId) {
@@ -79,11 +87,12 @@ export function UsersManagement() {
 	)
 
 	const calculateTotalSpent = (orders: IUser['orders']) => {
+		if (!orders) return 0
 		return orders.reduce((total, order) => total + order.totalAmount, 0)
 	}
 
 	const getLastOrderDate = (orders: IUser['orders']) => {
-		if (orders.length === 0) return 'N/A'
+		if (!orders || orders.length === 0) return 'N/A'
 		const lastOrder = orders.reduce((latest, order) => {
 			return new Date(order.orderDate) > new Date(latest.orderDate) ? order : latest
 		})
@@ -94,7 +103,7 @@ export function UsersManagement() {
 		<div className='space-y-6'>
 			<div className='flex items-center justify-between'>
 				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Quản lý khách hàng</h2>
-				<Button onClick={() => setCurrentView('create')}>
+				<Button onClick={() => router.push('/admin/customers/create')}>
 					<PlusCircle className='w-4 h-4 mr-2' />
 					Thêm mới
 				</Button>
@@ -183,27 +192,27 @@ export function UsersManagement() {
 											size='sm'
 											className='text-[#87C1D8] hover:bg-[#87C1D8]/10'
 											onClick={() => handleViewDetails(user.id)}
+											title='Chi tiết'
 										>
-											<Eye className='w-4 h-4 mr-2' />
-											Chi tiết
+											<Eye className='w-4 h-4' />
 										</Button>
 										<Button
 											variant='ghost'
 											size='sm'
 											className='text-blue-500 hover:bg-blue-500/10'
 											onClick={() => handleEdit(user.id)}
+											title='Sửa'
 										>
-											<Edit className='w-4 h-4 mr-2' />
-											Sửa
+											<Edit className='w-4 h-4' />
 										</Button>
 										<Button
 											variant='ghost'
 											size='sm'
 											className='text-red-500 hover:bg-red-500/10'
-											onClick={() => handleDelete(user.id)}
+											onClick={() => confirmDelete(user.id)}
+											title='Xóa'
 										>
-											<Trash2 className='w-4 h-4 mr-2' />
-											Xóa
+											<Trash2 className='w-4 h-4' />
 										</Button>
 									</td>
 								</tr>
@@ -212,6 +221,34 @@ export function UsersManagement() {
 					</table>
 				</div>
 			</Card>
+
+			{/* Delete Confirmation */}
+			{deletingId !== null && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4'>
+					<div className='bg-white rounded-lg shadow-lg w-full max-w-sm border border-[#5A3E2B]/10 p-6 space-y-4'>
+						<h3 className='text-lg font-serif text-[#5A3E2B]'>Xác nhận xoá</h3>
+						<p className='text-sm text-[#5A3E2B]/80'>
+							Bạn có chắc chắn muốn xoá khách hàng ID {deletingId}?
+						</p>
+						<div className='flex justify-end gap-2'>
+							<Button
+								variant='ghost'
+								className='text-[#5A3E2B] hover:bg-[#5A3E2B]/10'
+								onClick={() => setDeletingId(null)}
+							>
+								Huỷ
+							</Button>
+							<Button
+								disabled={deleteLoading}
+								onClick={handleDelete}
+								className='bg-red-600 text-white hover:bg-red-700'
+							>
+								{deleteLoading ? 'Đang xoá...' : 'Xoá'}
+							</Button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

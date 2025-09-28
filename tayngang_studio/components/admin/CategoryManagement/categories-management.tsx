@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { categoryManagementService } from '@/services/other/category-management.service'
+import { categoryManagementService } from '@/services/manager/category-management.service'
 import { ICategory } from '@/types/category'
 import { Edit, Plus, Search, Trash2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
