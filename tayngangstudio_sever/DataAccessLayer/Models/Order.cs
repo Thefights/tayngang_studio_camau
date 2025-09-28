@@ -5,11 +5,13 @@ namespace DataAccessLayer.Models
 {
     public class Order : BaseEntity
     {
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         public double TotalAmount { get; set; }
 
         public OrderStatusEnum Status { get; set; } = OrderStatusEnum.Pending;
+
+        public PaymentMethodEnum PaymentMethod { get; set; }
 
         public int? UserId { get; set; }
 

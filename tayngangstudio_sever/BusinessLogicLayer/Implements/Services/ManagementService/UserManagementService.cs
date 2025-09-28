@@ -15,7 +15,7 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
         : CrudService<CreateUserDTO, GetUserDTO, UpdateUserDTO,
             User>(_unitOfWork, _mapper, ["Orders.OrderDetails.Product"]), IUserManagementService
     {
-        public override async Task<CreateUserDTO> CreateAsync(CreateUserDTO dto)
+        public override async Task<GetUserDTO> CreateAsync(CreateUserDTO dto)
         {
             if (await _unitOfWork.Repository<User>()
                 .AnyAsync(u => u.Email == dto.Email || u.Phone == dto.Phone))

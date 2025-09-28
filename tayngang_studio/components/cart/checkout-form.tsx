@@ -13,39 +13,17 @@ import { ArrowLeft, CreditCard, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
-// Mock cart data for checkout
-const cartItems = [
-  {
-    id: "1",
-    name: "Sổ Tay Cà Mau Classic",
-    price: 250000,
-    quantity: 2,
-    image: "/classic-brown-leather-travel-notebook.jpg",
-  },
-  {
-    id: "2",
-    name: "Sổ Tay Miền Tây Deluxe",
-    price: 350000,
-    quantity: 1,
-    image: "/premium-blue-travel-journal-with-golden-details.jpg",
-  },
-];
+import { useCart } from "../cart-context";
 
 export function CheckoutForm() {
+  const { getCartItems } = useCart();
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    lastName: "",
+    name: "",
     phone: "",
     address: "",
-    city: "",
-    district: "",
-    ward: "",
-    postalCode: "",
-    notes: "",
   });
 
   const subtotal = cartItems.reduce(
@@ -67,7 +45,7 @@ export function CheckoutForm() {
       formData,
       paymentMethod,
       shippingMethod,
-      cartItems,
+      // cartItems,
     });
     // Redirect to success page
     window.location.href = "/checkout/success";

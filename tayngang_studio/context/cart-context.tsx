@@ -20,8 +20,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const getCartItems = async () => {
+    try {
+      const cartItems = await cartData.getCartItems();
+      return cartItems;
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      return [];
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ addToCart }}>
+    <CartContext.Provider value={{ addToCart, getCartItems }}>
       {children}
     </CartContext.Provider>
   );
