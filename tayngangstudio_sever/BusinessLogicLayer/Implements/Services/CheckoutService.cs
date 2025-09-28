@@ -38,9 +38,13 @@ namespace BusinessLogicLayer.Implements.Services
             cart.CartItems.Clear();
             await _unitOfWork.SaveChangesAsync();
 
-            var paymentLink = await _orderService.CreatePaymentLink(order.Id);
+            if (paymentMethod == PaymentMethodEnum.PayOS)
+            {
+                var paymentLink = await _orderService.CreatePaymentLink(order.Id);
+                return paymentLink;
+            }
 
-            return paymentLink;
+            return string.Empty;
         }
     }
 }
