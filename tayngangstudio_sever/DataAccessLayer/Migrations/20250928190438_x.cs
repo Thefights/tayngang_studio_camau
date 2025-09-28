@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class A : Migration
+    public partial class x : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -177,9 +177,9 @@ namespace DataAccessLayer.Migrations
                 columns: new[] { "Id", "Email", "Name", "Password", "Phone", "Role" },
                 values: new object[,]
                 {
-                    { 1, "admin@example.com", "Admin", "123456", "0123456789", 0 },
-                    { 2, "alice@example.com", "Alice", "123456", "0987654321", 1 },
-                    { 3, "bob@example.com", "Bob", "123456", "0911222333", 1 }
+                    { 1, "admin@example.com", "Admin", "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa", "0123456789", 0 },
+                    { 2, "alice@example.com", "Alice", "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa", "0987654321", 1 },
+                    { 3, "bob@example.com", "Bob", "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa", "0911222333", 1 }
                 });
 
             migrationBuilder.InsertData(

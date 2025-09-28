@@ -48,8 +48,8 @@ namespace tayngangstudio_sever.Controllers.Base
         {
             var entityName = ControllerContext.ActionDescriptor.ControllerName;
 
-            await _crudService.CreateAsync(dto);
-            return Ok(new { Message = $"Create new {entityName} successfully", Data = dto });
+            var result = await _crudService.CreateAsync(dto);
+            return Ok(new { Message = $"Create new {entityName} successfully", Data = result });
         }
 
         [HttpPut("{id}")]
