@@ -1,18 +1,20 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Helpers;
-using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
 {
-    public interface ICartService : ICrudService<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>
+    public interface ICartService
     {
         Task AddCartItems(int cartId, CreateCartDTO cartItems);
         Task<GetCartDTO> GetCartByUserId(int userId);
+        Task ClearCart(int cartId);
+        Task UpdateCartItemQuantity(int cartId, int productId, int quantity);
     }
-    public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>(_unitOfWork, _mapper, ["CartItems"]), ICartService
+
+    public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper) : ICartService
     {
         public async Task AddCartItems(int cartId, CreateCartDTO cartItems)
         {
@@ -39,7 +41,6 @@ namespace BusinessLogicLayer.Implements.Services
 
         public async Task<GetCartDTO> GetCartByUserId(int userId)
         {
-            //var userId = JwtUtils.GetUserIdFromClaimsPrincipalAsync(ClaimsPrincipal.Current).Result;
             var cartRepo = _unitOfWork.Repository<Cart>();
             var cart = await cartRepo.GetByCondition(c => c.UserId == userId, ["CartItems"]);
 
@@ -51,8 +52,37 @@ namespace BusinessLogicLayer.Implements.Services
             return _mapper.Map<GetCartDTO>(cart);
         }
 
-        //Private methods
+        public async Task ClearCart(int cartId)
+        {
+            var cart = await GetCartById(cartId);
+            cart.CartItems.Clear();
+            await _unitOfWork.SaveChangesAsync();
+        }
 
+        public async Task UpdateCartItemQuantity(int cartId, int productId, int quantity)
+        {
+            var cart = await GetCartById(cartId);
+            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+
+            if (cartItem == null)
+            {
+                throw new NotFoundException("Cart item not found");
+            }
+
+            if (quantity <= 0)
+            {
+                cart.CartItems.Remove(cartItem);
+            }
+
+            else
+            {
+                cartItem.Quantity = quantity;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        //Private methods
         private async Task<Product> GetProductById(int? productId)
         {
             var productRepo = _unitOfWork.Repository<Product>();
