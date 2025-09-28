@@ -10,8 +10,8 @@ namespace tayngangstudio_sever.Controllers.Customer
     [Authorize]
     public class CartController(ICartService _cartService) : ControllerBase
     {
-        [HttpPost("/items")]
-        public async Task<IActionResult> AddCartItems([FromBody] CreateCartDTO cartItems)
+        [HttpPost("items")]
+        public async Task<IActionResult> AddCartItems([FromBody] CreateCartItemDTO cartItems)
         {
             var userId = int.Parse(User.FindFirst("id")!.Value);
             var cart = await _cartService.GetCartByUserId(userId);
@@ -25,24 +25,31 @@ namespace tayngangstudio_sever.Controllers.Customer
         {
             var userId = int.Parse(User.FindFirst("id")!.Value);
             var cart = await _cartService.GetCartByUserId(userId);
-            return Ok(new { Message = "Get cart by user ID successfully", Data = cart });
+            return Ok(cart);
         }
 
-        [HttpPut("/items/{cartItemId}")]
-        public async Task<IActionResult> UpdateCartItemQuantity(int cartItemId, int quantity)
+        [HttpPatch("items/{productId}/increase")]
+        public async Task<IActionResult> IncreaseCartItem(int productId)
         {
             var userId = int.Parse(User.FindFirst("id")!.Value);
             var cart = await _cartService.GetCartByUserId(userId);
-            await _cartService.UpdateCartItemQuantity(cart.Id, cartItemId, quantity);
+            await _cartService.IncreaseQuantity(cart.Id, productId);
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> ClearCart()
+        [HttpPatch("items/{productId}/decrease")]
+        public async Task<IActionResult> DecreaseCartItem(int productId)
         {
             var userId = int.Parse(User.FindFirst("id")!.Value);
             var cart = await _cartService.GetCartByUserId(userId);
-            await _cartService.ClearCart(cart.Id);
+            await _cartService.DecreaseQuantity(cart.Id, productId);
+            return NoContent();
+        }
+
+        [HttpDelete("items/{productId}")]
+        public async Task<IActionResult> RemoveCartItem(int productId)
+        {
+            await _cartService.RemoveCartItem(productId);
             return NoContent();
         }
     }

@@ -6,7 +6,17 @@ import { motion } from "framer-motion";
 import { Heart, Star } from "lucide-react";
 import Link from "next/link";
 
-export function ProductFeatureGallery({ products }: { products: any[] }) {
+export function ProductFeatureGallery({
+  products,
+  addToCart,
+}: {
+  products: any[];
+  addToCart: (
+    productId: number,
+    quantity: number,
+    unitPrice: number
+  ) => Promise<void>;
+}) {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -154,6 +164,7 @@ export function ProductFeatureGallery({ products }: { products: any[] }) {
                     <Button
                       className="w-full bg-[#5A3E2B] hover:bg-gradient-to-r hover:from-[#5A3E2B] hover:to-[#4A3325] text-white transition-all duration-300"
                       size="sm"
+                      onClick={() => addToCart(product.id, 1, product.price)}
                     >
                       Thêm vào giỏ hàng
                     </Button>

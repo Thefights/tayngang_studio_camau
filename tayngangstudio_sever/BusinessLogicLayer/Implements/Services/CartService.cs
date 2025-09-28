@@ -8,33 +8,32 @@ namespace BusinessLogicLayer.Implements.Services
 {
     public interface ICartService
     {
-        Task AddCartItems(int cartId, CreateCartDTO cartItems);
+        Task AddCartItems(int cartId, CreateCartItemDTO cartItems);
         Task<GetCartDTO> GetCartByUserId(int userId);
         Task ClearCart(int cartId);
-        Task UpdateCartItemQuantity(int cartId, int productId, int quantity);
+        Task IncreaseQuantity(int cartId, int productId);
+        Task DecreaseQuantity(int cartId, int productId);
+        Task RemoveCartItem(int productId);
     }
 
     public class CartService(IUnitOfWork _unitOfWork, IMapper _mapper) : ICartService
     {
-        public async Task AddCartItems(int cartId, CreateCartDTO cartItems)
+        public async Task AddCartItems(int cartId, CreateCartItemDTO cartItems)
         {
             var cart = await GetCartById(cartId);
 
-            foreach (var item in cartItems.CartItems)
-            {
-                var product = await GetProductById(item.ProductId);
+            var product = await GetProductById(cartItems.ProductId);
 
-                var existingCartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == item.ProductId);
-                if (existingCartItem != null)
-                {
-                    existingCartItem.Quantity += item.Quantity;
-                }
-                else
-                {
-                    var newCartItem = _mapper.Map<CartItem>(item);
-                    newCartItem.CartId = cartId;
-                    cart.CartItems.Add(newCartItem);
-                }
+            var existingCartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == cartItems.ProductId);
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity += cartItems.Quantity;
+            }
+            else
+            {
+                var newCartItem = _mapper.Map<CartItem>(cartItems);
+                newCartItem.CartId = cartId;
+                cart.CartItems.Add(newCartItem);
             }
             await _unitOfWork.SaveChangesAsync();
         }
@@ -42,7 +41,7 @@ namespace BusinessLogicLayer.Implements.Services
         public async Task<GetCartDTO> GetCartByUserId(int userId)
         {
             var cartRepo = _unitOfWork.Repository<Cart>();
-            var cart = await cartRepo.GetByCondition(c => c.UserId == userId, ["CartItems"]);
+            var cart = await cartRepo.GetByCondition(c => c.UserId == userId, ["CartItems.Product"]);
 
             if (cart == null)
             {
@@ -59,26 +58,46 @@ namespace BusinessLogicLayer.Implements.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateCartItemQuantity(int cartId, int productId, int quantity)
+        public async Task IncreaseQuantity(int cartId, int productId)
         {
             var cart = await GetCartById(cartId);
             var cartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-
             if (cartItem == null)
             {
                 throw new NotFoundException("Cart item not found");
             }
+            cartItem.Quantity += 1;
+            await _unitOfWork.SaveChangesAsync();
+        }
 
-            if (quantity <= 0)
+        public async Task DecreaseQuantity(int cartId, int productId)
+        {
+            var cart = await GetCartById(cartId);
+            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+            if (cartItem == null)
+            {
+                throw new NotFoundException("Cart item not found");
+            }
+            if (cartItem.Quantity <= 0)
             {
                 cart.CartItems.Remove(cartItem);
             }
-
             else
             {
-                cartItem.Quantity = quantity;
+                cartItem.Quantity -= 1;
             }
+            await _unitOfWork.SaveChangesAsync();
+        }
 
+        public async Task RemoveCartItem(int productId)
+        {
+            var cartItemRepo = _unitOfWork.Repository<CartItem>();
+            var cartItem = await cartItemRepo.GetByCondition(ci => ci.ProductId == productId);
+            if (cartItem == null)
+            {
+                throw new NotFoundException("Cart item not found");
+            }
+            cartItemRepo.Delete(cartItem);
             await _unitOfWork.SaveChangesAsync();
         }
 

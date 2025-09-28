@@ -1,37 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@radix-ui/react-separator";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, Minus, Plus, ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export function ShoppingCartContent({ cartItems }: { cartItems: any[] }) {
-  console.log(cartItems);
-  // const updateQuantity = (id: string, newQuantity: number) => {
-  //   if (newQuantity === 0) {
-  //     setCartItems(cartItems.filter((item) => item.id !== id));
-  //   } else {
-  //     setCartItems(
-  //       cartItems.map((item) =>
-  //         item.id === id ? { ...item, quantity: newQuantity } : item
-  //       )
-  //     );
-  //   }
-  // };
-
-  // const removeItem = (id: string) => {
-  //   setCartItems(cartItems.filter((item) => item.id !== id));
-  // };
-
-  // const subtotal = cartItems.reduce(
-  //   (sum, item) => sum + item.price * item.quantity,
-  //   0
-  // );
-  // const shipping = subtotal >= 500000 ? 0 : 30000;
-  // const discount = promoCode === "CAMAU10" ? subtotal * 0.1 : 0;
-  // const total = subtotal + shipping - discount;
-
+export function ShoppingCartContent({
+  cartItems,
+  increaseQuantity,
+  decreaseQuantity,
+  removeItem,
+}: {
+  cartItems: any[];
+  increaseQuantity: (id: number) => void;
+  decreaseQuantity: (id: number) => void;
+  removeItem: (id: number) => void;
+}) {
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.unitPrice * item.quantity,
+    0
+  );
   if (cartItems.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,161 +74,155 @@ export function ShoppingCartContent({ cartItems }: { cartItems: any[] }) {
               ({cartItems.length} sản phẩm)
             </span>
           </motion.div>
-
           <div className="space-y-4">
             <AnimatePresence mode="popLayout">
-              {cartItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{
-                    opacity: 0,
-                    x: -100,
-                    scale: 0.8,
-                    transition: { duration: 0.3 },
-                  }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.1,
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                  }}
-                >
-                  <Card className="p-6 bg-white border-[#5A3E2B]/10">
-                    <div className="flex gap-4">
-                      {/* Product Image */}
-                      <motion.div
-                        className="w-24 h-24 bg-[#EAEAEA]/30 rounded-lg overflow-hidden flex-shrink-0"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 30,
-                        }}
-                      >
-                        <Image
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
-                          className="w-full h-full object-cover"
-                          width={96}
-                          height={96}
-                        />
-                      </motion.div>
+              {cartItems.map((item, index) => {
+                const itemTotal = item.unitPrice * item.quantity;
+                return (
+                  <motion.div
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{
+                      opacity: 0,
+                      x: -100,
+                      scale: 0.8,
+                      transition: { duration: 0.3 },
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.1,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30,
+                    }}
+                  >
+                    <Card className="p-6 bg-white border-[#5A3E2B]/10">
+                      <div className="flex gap-4">
+                        {/* Product Image */}
+                        <motion.div
+                          className="w-24 h-24 bg-[#EAEAEA]/30 rounded-lg overflow-hidden flex-shrink-0"
+                          whileHover={{ scale: 1.05 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 30,
+                          }}
+                        >
+                          <Image
+                            src={item.productImageUrl}
+                            alt="Product Image"
+                            className="w-full h-full object-cover"
+                            width={96}
+                            height={96}
+                          />
+                        </motion.div>
 
-                      {/* Product Details */}
-                      <div className="flex-1 space-y-2">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h3 className="font-serif text-lg text-[#5A3E2B] font-medium">
-                              {item.name}
-                            </h3>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-lg font-bold text-[#5A3E2B]">
-                                {item.price.toLocaleString("vi-VN")}₫
-                              </span>
-                              {item.originalPrice && (
-                                <span className="text-sm text-[#5A3E2B]/50 line-through">
-                                  {item.originalPrice.toLocaleString("vi-VN")}₫
+                        {/* Product Details */}
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h3 className="font-serif text-lg text-[#5A3E2B] font-medium">
+                                {item.productName}
+                              </h3>
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="text-lg font-bold text-[#5A3E2B]">
+                                  {item.unitPrice.toLocaleString("vi-VN")}₫
                                 </span>
-                              )}
+                              </div>
                             </div>
-                          </div>
-                          <motion.div
-                            whileHover={{ scale: 1.1, rotate: 90 }}
-                            whileTap={{ scale: 0.9 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 400,
-                              damping: 17,
-                            }}
-                          >
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeItem(item.id)}
-                              className="text-[#5A3E2B]/50 hover:text-red-500 p-1 transition-colors duration-200"
+                            <motion.div
+                              whileHover={{ scale: 1.1, rotate: 90 }}
+                              whileTap={{ scale: 0.9 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 400,
+                                damping: 17,
+                              }}
                             >
-                              <X className="w-4 h-4" />
-                            </Button>
-                          </motion.div>
-                        </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeItem(item.productId)}
+                                className="text-[#5A3E2B]/50 hover:text-red-500 p-1 transition-colors duration-200"
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </motion.div>
+                          </div>
 
-                        {/* Quantity Controls */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center border border-[#5A3E2B]/20 rounded-lg">
-                            <motion.div
-                              whileTap={{ scale: 0.95 }}
-                              transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 17,
-                              }}
-                            >
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
-                                }
-                                className="text-[#5A3E2B] hover:bg-[#5A3E2B]/10 px-3 transition-colors duration-200"
+                          {/* Quantity Controls */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center border border-[#5A3E2B]/20 rounded-lg">
+                              <motion.div
+                                whileTap={{ scale: 0.95 }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 400,
+                                  damping: 17,
+                                }}
                               >
-                                <Minus className="w-4 h-4" />
-                              </Button>
-                            </motion.div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    decreaseQuantity(item.productId)
+                                  }
+                                  className="text-[#5A3E2B] hover:bg-[#5A3E2B]/10 px-3 transition-colors duration-200"
+                                >
+                                  <Minus className="w-4 h-4" />
+                                </Button>
+                              </motion.div>
+                              <motion.span
+                                className="px-4 py-2 text-[#5A3E2B] font-medium min-w-[3rem] text-center"
+                                key={`${item.id}-${item.quantity}`}
+                                initial={{ scale: 1.2 }}
+                                animate={{ scale: 1 }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 500,
+                                  damping: 30,
+                                }}
+                              >
+                                {item.quantity}
+                              </motion.span>
+                              <motion.div
+                                whileTap={{ scale: 0.95 }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 400,
+                                  damping: 17,
+                                }}
+                              >
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    increaseQuantity(item.productId)
+                                  }
+                                  className="text-[#5A3E2B] hover:bg-[#5A3E2B]/10 px-3 transition-colors duration-200"
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </Button>
+                              </motion.div>
+                            </div>
                             <motion.span
-                              className="px-4 py-2 text-[#5A3E2B] font-medium min-w-[3rem] text-center"
-                              key={`${item.id}-${item.quantity}`}
-                              initial={{ scale: 1.2 }}
-                              animate={{ scale: 1 }}
-                              transition={{
-                                type: "spring",
-                                stiffness: 500,
-                                damping: 30,
-                              }}
+                              className="text-lg font-bold text-[#5A3E2B]"
+                              key={`total-${item.id}-${item.quantity}`}
+                              initial={{ scale: 1.1, color: "#A5C6A1" }}
+                              animate={{ scale: 1, color: "#5A3E2B" }}
+                              transition={{ duration: 0.3 }}
                             >
-                              {item.quantity}
+                              {itemTotal.toLocaleString("vi-VN")}₫
                             </motion.span>
-                            <motion.div
-                              whileTap={{ scale: 0.95 }}
-                              transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 17,
-                              }}
-                            >
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
-                                }
-                                className="text-[#5A3E2B] hover:bg-[#5A3E2B]/10 px-3 transition-colors duration-200"
-                              >
-                                <Plus className="w-4 h-4" />
-                              </Button>
-                            </motion.div>
                           </div>
-                          <motion.span
-                            className="text-lg font-bold text-[#5A3E2B]"
-                            key={`total-${item.id}-${item.quantity}`}
-                            initial={{ scale: 1.1, color: "#A5C6A1" }}
-                            animate={{ scale: 1, color: "#5A3E2B" }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            {(item.price * item.quantity).toLocaleString(
-                              "vi-VN"
-                            )}
-                            ₫
-                          </motion.span>
                         </div>
                       </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
+                    </Card>
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </div>
         </div>
@@ -257,32 +240,12 @@ export function ShoppingCartContent({ cartItems }: { cartItems: any[] }) {
             </h2>
 
             <div className="space-y-3">
-              <div className="flex justify-between text-[#5A3E2B]/80">
-                <span>Tạm tính:</span>
-                <span>{subtotal.toLocaleString("vi-VN")}₫</span>
-              </div>
-
-              {discount > 0 && (
-                <div className="flex justify-between text-[#A5C6A1]">
-                  <span>Giảm giá:</span>
-                  <span>-{discount.toLocaleString("vi-VN")}₫</span>
-                </div>
-              )}
               <Separator className="bg-[#5A3E2B]/10" />
               <div className="flex justify-between text-lg font-bold text-[#5A3E2B]">
                 <span>Tổng cộng:</span>
                 <span>{total.toLocaleString("vi-VN")}₫</span>
               </div>
             </div>
-
-            {shipping > 0 && (
-              <div className="mt-4 p-3 bg-[#87C1D8]/10 rounded-lg">
-                <p className="text-sm text-[#5A3E2B]/70">
-                  Thêm {(500000 - subtotal).toLocaleString("vi-VN")}₫ để được
-                  miễn phí vận chuyển
-                </p>
-              </div>
-            )}
           </Card>
 
           <motion.div

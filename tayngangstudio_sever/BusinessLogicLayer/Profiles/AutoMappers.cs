@@ -37,7 +37,13 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<Cart, CreateCartDTO>().ReverseMap();
 
             //CartItem
-            CreateMap<CartItem, GetCartItemDTO>().ReverseMap();
+            CreateMap<CartItem, GetCartItemDTO>()
+                .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ProductId))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product != null ? s.Product.Name : string.Empty))
+                .ForMember(d => d.ProductImageUrl, o => o.MapFrom(s => s.Product != null ? s.Product.ImageUrl : string.Empty))
+                .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.UnitPrice))
+                .ForMember(d => d.Quantity, o => o.MapFrom(s => s.Quantity));
+            CreateMap<CartItem, CreateCartItemDTO>().ReverseMap();
 
 
             //User
