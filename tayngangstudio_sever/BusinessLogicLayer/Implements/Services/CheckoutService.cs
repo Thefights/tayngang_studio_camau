@@ -11,7 +11,7 @@ namespace BusinessLogicLayer.Implements.Services
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
     }
 
-    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService)
+    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService) : ICheckoutService
     {
         public async Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod)
         {
@@ -38,9 +38,13 @@ namespace BusinessLogicLayer.Implements.Services
             cart.CartItems.Clear();
             await _unitOfWork.SaveChangesAsync();
 
-            var paymentLink = await _orderService.CreatePaymentLink(order.Id);
+            if (paymentMethod == PaymentMethodEnum.PayOS)
+            {
+                var paymentLink = await _orderService.CreatePaymentLink(order.Id);
+                return paymentLink;
+            }
 
-            return paymentLink;
+            return string.Empty;
         }
     }
 }

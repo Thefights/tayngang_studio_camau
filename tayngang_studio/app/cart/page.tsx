@@ -11,7 +11,7 @@ export default function CartPage() {
     const fetchCartItems = async () => {
       try {
         const data = await cartData.getCartItems();
-        setCartItems(data.cartItems);
+        setCartItems(data);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }

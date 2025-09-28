@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { CheckCircle, Package, Phone, Truck } from "lucide-react";
 import Link from "next/link";
 
@@ -18,35 +17,6 @@ export default function CheckoutSuccessPage() {
               của bạn đã được tiếp nhận và đang được xử lý.
             </p>
           </div>
-
-          <Card className="p-8 bg-white border-[#5A3E2B]/10 text-left mb-8">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[#5A3E2B]/70">Mã đơn hàng:</span>
-                <span className="font-mono text-[#5A3E2B] font-medium">
-                  #CM2024001
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#5A3E2B]/70">Tổng tiền:</span>
-                <span className="text-xl font-bold text-[#5A3E2B]">
-                  850.000₫
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#5A3E2B]/70">
-                  Phương thức thanh toán:
-                </span>
-                <span className="text-[#5A3E2B]">Thanh toán khi nhận hàng</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#5A3E2B]/70">
-                  Thời gian giao hàng dự kiến:
-                </span>
-                <span className="text-[#5A3E2B]">3-5 ngày làm việc</span>
-              </div>
-            </div>
-          </Card>
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <div className="text-center">
@@ -89,13 +59,6 @@ export default function CheckoutSuccessPage() {
                 className="bg-[#5A3E2B] hover:bg-[#5A3E2B]/90 text-white"
               >
                 <Link href="/products">Tiếp tục mua sắm</Link>
-              </Button>
-              <Button
-                variant="outline"
-                asChild
-                className="border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent"
-              >
-                <Link href="/contact">Liên hệ hỗ trợ</Link>
               </Button>
             </div>
           </div>

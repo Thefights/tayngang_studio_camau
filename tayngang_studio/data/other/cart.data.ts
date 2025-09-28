@@ -11,7 +11,7 @@ export const addToCart = async (
 
 export const getCartItems = async () => {
   const response = await cartService.getCartItems();
-  return response.data;
+  return response.data.cartItems;
 };
 
 export const increaseCartItemQuantity = async (productId: number) => {
