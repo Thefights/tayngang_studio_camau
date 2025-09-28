@@ -1,9 +1,9 @@
 "use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCart } from "@/context/cart-context";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Minus,
@@ -20,6 +20,7 @@ export function ProductDetail({ product }: { product: any }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const { addToCart } = useCart();
 
   const discount = product.originalPrice
     ? Math.round(
@@ -176,6 +177,7 @@ export function ProductDetail({ product }: { product: any }) {
                 <Button
                   size="lg"
                   className="w-full bg-[#5A3E2B] hover:bg-gradient-to-r hover:from-[#5A3E2B] hover:to-[#4A3325] text-white transition-all duration-300"
+                  onClick={() => addToCart(product.id, 1, product.price)}
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Thêm vào giỏ hàng
