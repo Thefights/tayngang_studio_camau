@@ -25,6 +25,11 @@ export const registerSchema = yup.object().shape({
 			'Invalid Vietnamese phone number'
 		),
 	email: yup.string().required('Email is required').email('Invalid email format'),
+	address: yup
+		.string()
+		.required('Address is required')
+		.min(10, 'Address must be at least 10 characters')
+		.max(200, 'Address must be at most 200 characters'),
 	password: yup
 		.string()
 		.required('Password is required')
@@ -36,4 +41,8 @@ export const registerSchema = yup.object().shape({
 		.string()
 		.oneOf([yup.ref('password'), undefined], 'Passwords must match')
 		.required('Confirm Password is required'),
+})
+
+export const forgotPasswordSchema = yup.object().shape({
+	email: yup.string().required('Email is required').email('Invalid email format'),
 })
