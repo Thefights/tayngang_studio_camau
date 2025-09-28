@@ -2,21 +2,27 @@
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from '@/components/ui/command'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 import { createOrder } from '@/services/manager/order-management.service'
 import { productManagementService } from '@/services/manager/product-management.service'
+import { getAllUsers } from '@/services/manager/users-management.service'
 import { CreateOrderDto } from '@/types/order'
 import { IProduct } from '@/types/product'
-import { PlusCircle, Trash2 } from 'lucide-react'
+import { IUser } from '@/types/user'
+import { Check, ChevronsUpDown, PlusCircle, Trash2 } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -26,26 +32,34 @@ interface OrderDetailItem {
 	quantity: number
 	unitPrice: number
 	productName?: string
+	productImageUrl?: string | null
 }
 
 export function CreateOrderForm() {
 	const router = useRouter()
 	const [products, setProducts] = useState<IProduct[]>([])
+	const [users, setUsers] = useState<IUser[]>([])
 	const [userId, setUserId] = useState(1) // Hardcoded for now
 	const [paymentMethod, setPaymentMethod] = useState<'PayOS' | 'Cash'>('Cash')
 	const [orderDetails, setOrderDetails] = useState<OrderDetailItem[]>([])
 	const [selectedProduct, setSelectedProduct] = useState<number | null>(null)
+	const [userPopoverOpen, setUserPopoverOpen] = useState(false)
+	const [productPopoverOpen, setProductPopoverOpen] = useState(false)
 
 	useEffect(() => {
-		const fetchProducts = async () => {
+		const fetchData = async () => {
 			try {
-				const allProducts = await productManagementService.getAllProducts()
+				const [allProducts, allUsers] = await Promise.all([
+					productManagementService.getAllProducts(),
+					getAllUsers(),
+				])
 				setProducts(allProducts)
+				setUsers(allUsers)
 			} catch (error) {
-				toast.error('Không thể tải danh sách sản phẩm.')
+				toast.error('Không thể tải dữ liệu. Vui lòng thử lại.')
 			}
 		}
-		fetchProducts()
+		fetchData()
 	}, [])
 
 	const handleAddProduct = () => {
@@ -59,6 +73,7 @@ export function CreateOrderForm() {
 						quantity: 1,
 						unitPrice: product.price,
 						productName: product.name,
+						productImageUrl: product.imageUrl ?? null,
 					},
 				])
 				setSelectedProduct(null)
@@ -100,7 +115,7 @@ export function CreateOrderForm() {
 			if (newOrder.paymentMethod === 'PayOS' && newOrder.paymentUrl) {
 				router.push(newOrder.paymentUrl)
 			} else {
-				router.push('/admin?tab=orders')
+				router.push('/admin/orders')
 			}
 		} catch (error) {
 			toast.error('Tạo đơn hàng thất bại.')
@@ -112,22 +127,76 @@ export function CreateOrderForm() {
 	return (
 		<Card className='p-6 bg-white border-[#5A3E2B]/10'>
 			<form onSubmit={handleSubmit} className='space-y-6'>
-				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Tạo đơn hàng mới</h2>
+				<div className='flex items-center justify-between'>
+					<h2 className='text-2xl font-serif text-[#5A3E2B]'>Tạo đơn hàng mới</h2>
+					<Button
+						type='button'
+						variant='outline'
+						onClick={() => router.push('/admin/orders')}
+						className='border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent'
+					>
+						Trở về danh sách
+					</Button>
+				</div>
 
 				{/* User ID and Payment Method */}
 				<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 					<div>
-						<Label htmlFor='userId' className='text-[#5A3E2B]'>
-							Mã khách hàng (User ID)
-						</Label>
-						<Input
-							id='userId'
-							type='number'
-							value={userId}
-							onChange={(e) => setUserId(Number(e.target.value))}
-							className='mt-1 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white'
-							required
-						/>
+						<Label className='text-[#5A3E2B]'>Khách hàng</Label>
+						<Popover open={userPopoverOpen} onOpenChange={setUserPopoverOpen}>
+							<PopoverTrigger asChild>
+								<Button
+									variant='outline'
+									role='combobox'
+									aria-expanded={userPopoverOpen}
+									className='mt-1 w-full justify-between border-[#5A3E2B]/20 bg-white'
+								>
+									{userId ? (
+										<span className='truncate text-left'>
+											{users.find((u) => u.id === userId)?.name || `User ID: ${userId}`}
+										</span>
+									) : (
+										'Chọn khách hàng'
+									)}
+									<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+								</Button>
+							</PopoverTrigger>
+							<PopoverContent className='p-0 w-[--radix-popover-trigger-width]'>
+								<Command>
+									<CommandInput placeholder='Tìm khách hàng...' />
+									<CommandEmpty>Không tìm thấy khách hàng.</CommandEmpty>
+									<CommandList>
+										<CommandGroup>
+											{users.map((u) => (
+												<CommandItem
+													key={u.id}
+													value={`${u.name} ${u.email} ${u.phone} #${u.id}`}
+													onSelect={() => {
+														setUserId(u.id)
+														setUserPopoverOpen(false)
+													}}
+												>
+													<Check
+														className={cn(
+															'mr-2 h-4 w-4',
+															userId === u.id ? 'opacity-100' : 'opacity-0'
+														)}
+													/>
+													<div className='flex flex-col'>
+														<span className='text-sm font-medium text-[#5A3E2B]'>
+															{u.name} (#{u.id})
+														</span>
+														<span className='text-xs text-muted-foreground'>
+															{u.email} · {u.phone}
+														</span>
+													</div>
+												</CommandItem>
+											))}
+										</CommandGroup>
+									</CommandList>
+								</Command>
+							</PopoverContent>
+						</Popover>
 					</div>
 					<div>
 						<Label className='text-[#5A3E2B]'>Phương thức thanh toán</Label>
@@ -152,21 +221,94 @@ export function CreateOrderForm() {
 				<div>
 					<Label className='text-[#5A3E2B]'>Sản phẩm</Label>
 					<div className='flex gap-2 mt-1'>
-						<Select
-							onValueChange={(value) => setSelectedProduct(Number(value))}
-							value={selectedProduct?.toString() || ''}
-						>
-							<SelectTrigger className='flex-1 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white'>
-								<SelectValue placeholder='Chọn sản phẩm để thêm vào đơn hàng' />
-							</SelectTrigger>
-							<SelectContent>
-								{products.map((product) => (
-									<SelectItem key={product.id} value={product.id.toString()}>
-										{product.name} - {product.price.toLocaleString('vi-VN')}₫
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+						<Popover open={productPopoverOpen} onOpenChange={setProductPopoverOpen}>
+							<PopoverTrigger asChild>
+								<Button
+									variant='outline'
+									role='combobox'
+									aria-expanded={productPopoverOpen}
+									className='flex-1 justify-between border-[#5A3E2B]/20 bg-white'
+								>
+									{selectedProduct ? (
+										<span className='flex items-center gap-2 truncate'>
+											{(() => {
+												const p = products.find((pp) => pp.id === selectedProduct)
+												if (!p) return null
+												return (
+													<>
+														<span className='inline-flex h-6 w-6 items-center justify-center rounded bg-[#5A3E2B]/10 overflow-hidden'>
+															{p.imageUrl ? (
+																<Image
+																	src={p.imageUrl}
+																	alt={p.name}
+																	width={24}
+																	height={24}
+																	className='h-full w-full object-cover'
+																/>
+															) : (
+																<span className='text-xs text-[#5A3E2B]'>{p.name?.[0] ?? '?'}</span>
+															)}
+														</span>
+														<span className='truncate'>
+															{p.name} - {p.price.toLocaleString('vi-VN')}₫
+														</span>
+													</>
+												)
+											})()}
+										</span>
+									) : (
+										'Chọn sản phẩm để thêm vào đơn hàng'
+									)}
+									<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+								</Button>
+							</PopoverTrigger>
+							<PopoverContent className='p-0 w-[--radix-popover-trigger-width] max-h-80 overflow-auto'>
+								<Command>
+									<CommandInput placeholder='Tìm sản phẩm...' />
+									<CommandEmpty>Không tìm thấy sản phẩm.</CommandEmpty>
+									<CommandList>
+										<CommandGroup>
+											{products.map((p) => (
+												<CommandItem
+													key={p.id}
+													value={`${p.name} ${p.price} #${p.id}`}
+													onSelect={() => {
+														setSelectedProduct(p.id)
+														setProductPopoverOpen(false)
+													}}
+												>
+													<Check
+														className={cn(
+															'mr-2 h-4 w-4',
+															selectedProduct === p.id ? 'opacity-100' : 'opacity-0'
+														)}
+													/>
+													<span className='mr-2 inline-flex h-8 w-8 items-center justify-center rounded bg-[#5A3E2B]/10 overflow-hidden'>
+														{p.imageUrl ? (
+															<Image
+																src={p.imageUrl}
+																alt={p.name}
+																width={32}
+																height={32}
+																className='h-full w-full object-cover'
+															/>
+														) : (
+															<span className='text-xs text-[#5A3E2B]'>{p.name[0]}</span>
+														)}
+													</span>
+													<div className='flex flex-col'>
+														<span className='text-sm font-medium text-[#5A3E2B]'>{p.name}</span>
+														<span className='text-xs text-muted-foreground'>
+															{p.price.toLocaleString('vi-VN')}₫
+														</span>
+													</div>
+												</CommandItem>
+											))}
+										</CommandGroup>
+									</CommandList>
+								</Command>
+							</PopoverContent>
+						</Popover>
 						<Button
 							type='button'
 							onClick={handleAddProduct}
@@ -195,7 +337,26 @@ export function CreateOrderForm() {
 							<tbody>
 								{orderDetails.map((item) => (
 									<tr key={item.productId} className='border-b border-[#5A3E2B]/5'>
-										<td className='p-3 font-medium text-[#5A3E2B]'>{item.productName}</td>
+										<td className='p-3 font-medium text-[#5A3E2B]'>
+											<div className='flex items-center gap-2'>
+												<span className='inline-flex h-8 w-8 items-center justify-center rounded bg-[#5A3E2B]/10 overflow-hidden'>
+													{item.productImageUrl ? (
+														<Image
+															src={item.productImageUrl}
+															alt={item.productName ?? 'product'}
+															width={32}
+															height={32}
+															className='h-full w-full object-cover'
+														/>
+													) : (
+														<span className='text-xs text-[#5A3E2B]'>
+															{item.productName?.[0] ?? '?'}
+														</span>
+													)}
+												</span>
+												<span>{item.productName}</span>
+											</div>
+										</td>
 										<td className='p-3'>
 											<Input
 												type='number'

@@ -11,14 +11,15 @@ import {
 } from '@/services/manager/order-management.service'
 import { Order } from '@/types/order'
 import { CheckCircle, Download, Eye, PlusCircle, Search, Trash2, XCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { CreateOrderForm } from './create-order'
 import { ViewOrderDetail } from './view-order-detail'
 
-type View = 'list' | 'create' | 'detail'
+type View = 'list' | 'detail'
 
 export function OrdersManagement() {
+	const router = useRouter()
 	const [orders, setOrders] = useState<Order[]>([])
 	const [searchTerm, setSearchTerm] = useState('')
 	const [selectedStatus, setSelectedStatus] = useState<
@@ -109,10 +110,6 @@ export function OrdersManagement() {
 				order.userId.toString().toLowerCase().includes(searchTerm.toLowerCase())
 		)
 
-	if (view === 'create') {
-		return <CreateOrderForm />
-	}
-
 	if (view === 'detail' && selectedOrderId) {
 		return <ViewOrderDetail orderId={selectedOrderId} onBack={handleBackToList} />
 	}
@@ -125,7 +122,7 @@ export function OrdersManagement() {
 					<Button
 						variant='outline'
 						className='border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent'
-						onClick={() => setView('create')}
+						onClick={() => router.push('/admin/orders/create')}
 					>
 						<PlusCircle className='w-4 h-4 mr-2' />
 						Tạo đơn hàng mới

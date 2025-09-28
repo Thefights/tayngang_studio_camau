@@ -1,3 +1,5 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -5,14 +7,15 @@ import { Input } from '@/components/ui/input'
 import { deleteUser, getAllUsers } from '@/services/manager/users-management.service'
 import { IUser } from '@/types/user'
 import { Edit, Eye, Mail, Phone, PlusCircle, Search, Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { CreateUser } from './create-user'
 import { UpdateUser } from './update-user'
 import { ViewUserDetail } from './view-user-detail'
 
 type View = 'list' | 'detail' | 'create' | 'edit'
 
 export function UsersManagement() {
+	const router = useRouter()
 	const [users, setUsers] = useState<IUser[]>([])
 	const [searchTerm, setSearchTerm] = useState('')
 	const [currentView, setCurrentView] = useState<View>('list')
@@ -64,10 +67,6 @@ export function UsersManagement() {
 		return <ViewUserDetail userId={selectedUserId} onBack={handleBack} />
 	}
 
-	if (currentView === 'create') {
-		return <CreateUser onBack={handleBack} onUserCreated={handleBack} />
-	}
-
 	if (currentView === 'edit' && selectedUserId) {
 		return <UpdateUser userId={selectedUserId} onBack={handleBack} onUserUpdated={handleBack} />
 	}
@@ -79,11 +78,12 @@ export function UsersManagement() {
 	)
 
 	const calculateTotalSpent = (orders: IUser['orders']) => {
+		if (!orders) return 0
 		return orders.reduce((total, order) => total + order.totalAmount, 0)
 	}
 
 	const getLastOrderDate = (orders: IUser['orders']) => {
-		if (orders.length === 0) return 'N/A'
+		if (!orders || orders.length === 0) return 'N/A'
 		const lastOrder = orders.reduce((latest, order) => {
 			return new Date(order.orderDate) > new Date(latest.orderDate) ? order : latest
 		})
@@ -94,7 +94,7 @@ export function UsersManagement() {
 		<div className='space-y-6'>
 			<div className='flex items-center justify-between'>
 				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Quản lý khách hàng</h2>
-				<Button onClick={() => setCurrentView('create')}>
+				<Button onClick={() => router.push('/admin/customers/create')}>
 					<PlusCircle className='w-4 h-4 mr-2' />
 					Thêm mới
 				</Button>
