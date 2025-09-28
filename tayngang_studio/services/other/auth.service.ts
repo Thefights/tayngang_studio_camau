@@ -1,5 +1,5 @@
 import axiosInstance from '@/axios.config'
-import { LoginData, RegisterData } from '@/types/auth'
+import { ForgotPasswordData, LoginData, RegisterData } from '@/types/auth'
 
 export const authService = {
 	login: async (credentials: LoginData) => {
@@ -14,6 +14,17 @@ export const authService = {
 	register: async (userData: RegisterData) => {
 		try {
 			const response = await axiosInstance.post('/auth/register', userData)
+			return response.data
+		} catch (error) {
+			throw error
+		}
+	},
+
+	forgotPassword: async (data: ForgotPasswordData) => {
+		try {
+			const response = await axiosInstance.post(
+				`/auth/forgot-password?email=${encodeURIComponent(data.email)}`
+			)
 			return response.data
 		} catch (error) {
 			throw error
