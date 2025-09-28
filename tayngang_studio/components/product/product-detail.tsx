@@ -55,32 +55,6 @@ export function ProductDetail({ product }: { product: any }) {
               />
             </AnimatePresence>
           </motion.div>
-
-          {/* Thumbnail Images */}
-          {/* <div className="grid grid-cols-4 gap-4">
-            {product.images.map((image, index) => (
-              <motion.button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`aspect-square bg-white rounded-lg overflow-hidden shadow-md transition-all ${
-                  selectedImage === index
-                    ? "ring-2 ring-[#5A3E2B] ring-offset-2"
-                    : "hover:shadow-lg"
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Image
-                  src={image || "/placeholder.svg"}
-                  alt={`${product.name} ${index + 1}`}
-                  className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
-                />
-              </motion.button>
-            ))}
-          </div> */}
         </motion.div>
 
         {/* Product Info */}

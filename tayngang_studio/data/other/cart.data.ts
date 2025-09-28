@@ -1,21 +1,30 @@
 import * as cartService from "@/services/other/cart.service";
 
-export const getCarts = async () => {
-  const response = await cartService.fetchAllCart();
+export const addToCart = async (
+  productId: number,
+  quantity: number,
+  unitPrice: number
+) => {
+  const response = await cartService.addToCart(productId, quantity, unitPrice);
   return response.data;
 };
 
-export const createCart = async (cartData: any) => {
-  const response = await cartService.createCart(cartData);
+export const getCartItems = async () => {
+  const response = await cartService.getCartItems();
   return response.data;
 };
 
-export const updateCart = async (cartId: number | string, cartData: any) => {
-  const response = await cartService.updateCart(cartId, cartData);
+export const increaseCartItemQuantity = async (productId: number) => {
+  const response = await cartService.increaseCartItemQuantity(productId);
   return response.data;
 };
 
-export const deleteCart = async (cartId: number | string) => {
-  const response = await cartService.deleteCart(cartId);
+export const decreaseCartItemQuantity = async (productId: number) => {
+  const response = await cartService.decreaseCartItemQuantity(productId);
+  return response.data;
+};
+
+export const removeCartItem = async (productId: number) => {
+  const response = await cartService.removeCartItem(productId);
   return response.data;
 };

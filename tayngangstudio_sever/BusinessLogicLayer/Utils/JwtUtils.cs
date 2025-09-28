@@ -22,9 +22,9 @@ namespace BusinessLogicLayer.Utils
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // standard id claim
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Role, user.Role.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -63,6 +63,18 @@ namespace BusinessLogicLayer.Utils
             {
                 return null;
             }
+        }
+
+        public static async Task<int?> GetUserIdFromClaimsPrincipalAsync(ClaimsPrincipal user)
+        {
+            if (user == null || !user.Identity.IsAuthenticated)
+                return null;
+            var idClaim = user.Claims.FirstOrDefault(c => c.Type == "id" || c.Type == ClaimTypes.NameIdentifier);
+            if (idClaim != null && int.TryParse(idClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            return null;
         }
     }
 }

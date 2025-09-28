@@ -1,20 +1,55 @@
-﻿using BusinessLogicLayer.DTO;
+﻿using BusinessLogicLayer.Attributes;
+using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Implements.Services;
-using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using tayngangstudio_sever.Controllers.Base;
 
 namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    public class CartController(ICartService _cartService) : CrudController<CreateCartDTO, GetCartDTO, UpdateCartDTO, Cart>(_cartService)
+    [Authorize]
+    public class CartController(ICartService _cartService) : ControllerBase
     {
-        [HttpPost("{cartId}/items")]
-        public async Task<IActionResult> AddCartItems(int cartId, [FromBody] CreateCartDTO cartItems)
+        [HttpPost("items")]
+        public async Task<IActionResult> AddCartItems([FromBody] CreateCartItemDTO cartItems)
         {
-            await _cartService.AddCartItems(cartId, cartItems);
+            var userId = int.Parse(User.FindFirst("id")!.Value);
+            var cart = await _cartService.GetCartByUserId(userId);
+
+            await _cartService.AddCartItems(cart.Id, cartItems);
+            return NoContent();
+        }
+
+        [HttpGet("user")]
+        public async Task<IActionResult> GetCartByUserId()
+        {
+            var userId = int.Parse(User.FindFirst("id")!.Value);
+            var cart = await _cartService.GetCartByUserId(userId);
+            return Ok(cart);
+        }
+
+        [HttpPatch("items/{productId}/increase")]
+        public async Task<IActionResult> IncreaseCartItem(int productId)
+        {
+            var userId = int.Parse(User.FindFirst("id")!.Value);
+            var cart = await _cartService.GetCartByUserId(userId);
+            await _cartService.IncreaseQuantity(cart.Id, productId);
+            return NoContent();
+        }
+
+        [HttpPatch("items/{productId}/decrease")]
+        public async Task<IActionResult> DecreaseCartItem(int productId)
+        {
+            var userId = int.Parse(User.FindFirst("id")!.Value);
+            var cart = await _cartService.GetCartByUserId(userId);
+            await _cartService.DecreaseQuantity(cart.Id, productId);
+            return NoContent();
+        }
+
+        [HttpDelete("items/{productId}")]
+        public async Task<IActionResult> RemoveCartItem(int productId)
+        {
+            await _cartService.RemoveCartItem(productId);
             return NoContent();
         }
     }

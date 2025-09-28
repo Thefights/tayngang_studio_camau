@@ -1,41 +1,63 @@
 import axiosInstance from "@/axios.config";
 
-export const fetchAllCart = async () => {
+export const addToCart = async (
+  productId: number,
+  quantity: number,
+  unitPrice: number
+) => {
   try {
-    const respond = await axiosInstance.get("cart");
-    return respond;
+    const response = await axiosInstance.post("cart/items", {
+      productId,
+      quantity,
+      unitPrice,
+    });
+    return response;
   } catch (error) {
-    console.error("Error fetching cart:", error);
+    console.error("Error adding to cart:", error);
     throw error;
   }
 };
 
-export const createCart = async (cartData: any) => {
+export const getCartItems = async () => {
   try {
-    const respond = await axiosInstance.post("cart", cartData);
-    return respond;
+    const response = await axiosInstance.get("cart/user");
+    return response;
   } catch (error) {
-    console.error("Error creating cart:", error);
+    console.error("Error fetching cart items:", error);
     throw error;
   }
 };
 
-export const updateCart = async (cartId: number | string, cartData: any) => {
+export const increaseCartItemQuantity = async (productId: number) => {
   try {
-    const respond = await axiosInstance.put(`cart/${cartId}`, cartData);
-    return respond;
+    const response = await axiosInstance.patch(
+      `cart/items/${productId}/increase`
+    );
+    return response;
   } catch (error) {
-    console.error(`Error updating cart with id ${cartId}:`, error);
+    console.error("Error increasing cart item quantity:", error);
     throw error;
   }
 };
 
-export const deleteCart = async (cartId: number | string) => {
+export const decreaseCartItemQuantity = async (productId: number) => {
   try {
-    const respond = await axiosInstance.delete(`cart/${cartId}`);
-    return respond;
+    const response = await axiosInstance.patch(
+      `cart/items/${productId}/decrease`
+    );
+    return response;
   } catch (error) {
-    console.error(`Error deleting cart with id ${cartId}:`, error);
+    console.error("Error decreasing cart item quantity:", error);
+    throw error;
+  }
+};
+
+export const removeCartItem = async (productId: number) => {
+  try {
+    const response = await axiosInstance.delete(`cart/items/${productId}`);
+    return response;
+  } catch (error) {
+    console.error("Error removing cart item:", error);
     throw error;
   }
 };
