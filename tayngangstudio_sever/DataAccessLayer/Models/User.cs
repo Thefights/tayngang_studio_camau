@@ -18,10 +18,6 @@ namespace DataAccessLayer.Models
 
         public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
 
-        public DateTime CreateAt { get; set; } = DateTime.UtcNow;
-
-        public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
-
         public ICollection<Order> Orders { get; set; } = [];
     }
 }

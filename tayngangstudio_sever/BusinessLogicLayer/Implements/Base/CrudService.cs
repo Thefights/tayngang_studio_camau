@@ -11,7 +11,7 @@ namespace BusinessLogicLayer.Implements.Base
     {
         public Task<GetDTO> GetByIdAsync(int id);
         public Task<IEnumerable<GetDTO>> GetAllAsync();
-        public Task<CreateDTO> CreateAsync(CreateDTO dto);
+        public Task<GetDTO> CreateAsync(CreateDTO dto);
         public Task UpdateAsync(int id, UpdateDTO dto);
         public Task DeleteAsync(int id);
     }
@@ -35,7 +35,7 @@ namespace BusinessLogicLayer.Implements.Base
             return _mapper.Map<IEnumerable<GetDTO>>(entities);
         }
 
-        public virtual async Task<CreateDTO> CreateAsync(CreateDTO dto)
+        public virtual async Task<GetDTO> CreateAsync(CreateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
 
@@ -55,7 +55,7 @@ namespace BusinessLogicLayer.Implements.Base
             await _unitOfWork.Repository<T>().CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<CreateDTO>(entity);
+            return _mapper.Map<GetDTO>(entity);
         }
 
         public virtual async Task<CreateDTO> CreateWithImageAsync(CreateDTO dto)
