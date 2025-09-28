@@ -24,6 +24,8 @@ export const authService = {
 		if (typeof window !== 'undefined') {
 			localStorage.removeItem('accessToken')
 			localStorage.removeItem('userRole')
+			localStorage.removeItem('userName')
+			localStorage.removeItem('userEmail')
 		}
 	},
 
