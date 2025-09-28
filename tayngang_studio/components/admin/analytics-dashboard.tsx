@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { statisticsService } from '@/services/manager/statistics.service'
 import type { DashboardData } from '@/types/statistics'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
 	Area,
 	AreaChart,
@@ -19,22 +19,52 @@ import {
 } from 'recharts'
 import { toast } from 'sonner'
 
+// Helper: get today's date as YYYY-MM-DD in *local* timezone
+function getTodayLocalISO(): string {
+	const d = new Date()
+	const year = d.getFullYear()
+	const month = String(d.getMonth() + 1).padStart(2, '0')
+	const day = String(d.getDate()).padStart(2, '0')
+	return `${year}-${month}-${day}`
+}
+
 export function AnalyticsDashboard() {
 	const [data, setData] = useState<DashboardData | null>(null)
 	const [loading, setLoading] = useState(false)
+
+	const today = useMemo(() => getTodayLocalISO(), [])
 	const [startDate, setStartDate] = useState(() => {
-		const date = new Date()
-		date.setMonth(date.getMonth() - 6)
-		return date.toISOString().split('T')[0]
-	})
-	const [endDate, setEndDate] = useState(() => {
-		return new Date().toISOString().split('T')[0]
+		const d = new Date()
+		d.setMonth(d.getMonth() - 6)
+		const year = d.getFullYear()
+		const month = String(d.getMonth() + 1).padStart(2, '0')
+		const day = String(d.getDate()).padStart(2, '0')
+		return `${year}-${month}-${day}`
 	})
 
-	const fetchDashboardData = async () => {
+	// endDate must always be today
+	const endDate = today
+
+	// Keep “today” fresh at midnight (so endDate updates automatically)
+	useEffect(() => {
+		const now = new Date()
+		const msUntilMidnight =
+			new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime()
+		const t = setTimeout(() => {
+			// re-compute by forcing a re-render (any state update works)
+			// Option 1: use a dummy state or replace with a more robust approach.
+			// Here we'll just update startDate to itself to trigger a re-render.
+			setStartDate((s) => s)
+		}, msUntilMidnight + 50)
+		return () => clearTimeout(t)
+	}, [])
+
+	const fetchDashboardData = async (from: string, to: string) => {
 		try {
 			setLoading(true)
-			const dashboardData = await statisticsService.getDashboardData(startDate, endDate)
+			// clamp startDate if it's after today
+			const safeFrom = from > to ? to : from
+			const dashboardData = await statisticsService.getDashboardData(safeFrom, to)
 			setData(dashboardData)
 		} catch (err: any) {
 			toast.error(err?.response?.data?.message || 'Không thể tải dữ liệu thống kê')
@@ -45,13 +75,13 @@ export function AnalyticsDashboard() {
 	}
 
 	useEffect(() => {
-		fetchDashboardData()
-	}, [startDate, endDate]) // eslint-disable-line react-hooks/exhaustive-deps
+		fetchDashboardData(startDate, endDate)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [startDate, endDate])
 
 	const handleDateRangeChange = () => {
-		if (startDate && endDate) {
-			fetchDashboardData()
-		}
+		// Always use today's date for end
+		fetchDashboardData(startDate, endDate)
 	}
 
 	if (loading && !data) {
@@ -77,6 +107,7 @@ export function AnalyticsDashboard() {
 						<Input
 							type='date'
 							value={startDate}
+							max={endDate} // cannot choose after today
 							onChange={(e) => setStartDate(e.target.value)}
 							className='w-auto'
 						/>
@@ -86,7 +117,8 @@ export function AnalyticsDashboard() {
 						<Input
 							type='date'
 							value={endDate}
-							onChange={(e) => setEndDate(e.target.value)}
+							max={endDate}
+							readOnly // lock to today
 							className='w-auto'
 						/>
 					</div>

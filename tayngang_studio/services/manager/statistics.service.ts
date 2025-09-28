@@ -1,6 +1,5 @@
 import axiosInstance from '@/axios.config'
 import type {
-	CustomerSegment,
 	DashboardData,
 	MonthlyAnalytics,
 	ProductSalesData,
@@ -49,16 +48,6 @@ export const statisticsService = {
 	): Promise<TopProduct[]> => {
 		const response = await axiosInstance.get('Statistic/top-products', {
 			params: { startDate, endDate, top },
-		})
-		return response.data
-	},
-
-	/**
-	 * Get customer distribution by segment for the range
-	 */
-	getCustomerSegments: async (startDate: string, endDate: string): Promise<CustomerSegment[]> => {
-		const response = await axiosInstance.get('Statistic/customer-segments', {
-			params: { startDate, endDate },
 		})
 		return response.data
 	},

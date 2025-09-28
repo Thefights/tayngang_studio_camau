@@ -24,14 +24,7 @@ export interface TopProduct {
 	revenue: number
 }
 
-export interface CustomerSegment {
-	name: string
-	value: number
-	color: string
-}
-
 export interface DashboardData {
 	monthlyData: MonthlyAnalytics[]
 	topProducts: TopProduct[]
-	customerSegments: CustomerSegment[]
 }
