@@ -2,15 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { authService } from '@/services/other/auth.service'
-import {
-	BarChart3,
-	LayoutDashboard,
-	LogOut,
-	Package,
-	Settings,
-	ShoppingCart,
-	Users,
-} from 'lucide-react'
+import { BarChart3, LogOut, Package, ShoppingCart, Users } from 'lucide-react'
 
 interface AdminSidebarProps {
 	activeTab: string
@@ -19,12 +11,11 @@ interface AdminSidebarProps {
 
 export function AdminSidebar({ activeTab, setActiveTab }: AdminSidebarProps) {
 	const menuItems = [
-		{ id: 'overview', label: 'Tổng quan', icon: LayoutDashboard },
+		{ id: 'analytics', label: 'Thống kê', icon: BarChart3 },
 		{ id: 'products', label: 'Sản phẩm', icon: Package },
+		{ id: 'categories', label: 'Danh mục', icon: Package },
 		{ id: 'orders', label: 'Đơn hàng', icon: ShoppingCart },
 		{ id: 'customers', label: 'Khách hàng', icon: Users },
-		{ id: 'analytics', label: 'Thống kê', icon: BarChart3 },
-		{ id: 'settings', label: 'Cài đặt', icon: Settings },
 	]
 
 	const handleLogout = () => {

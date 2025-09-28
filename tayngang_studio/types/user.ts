@@ -20,7 +20,7 @@ export interface IOrder {
 
 export interface IUser {
 	email: string
-	fullName: string
+	name: string
 	phone: string
 	address: string
 	role: string

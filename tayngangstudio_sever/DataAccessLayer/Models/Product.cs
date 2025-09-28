@@ -12,8 +12,7 @@ namespace DataAccessLayer.Models
 
         public double Price { get; set; }
 
-        [MaxLength(1000)]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         public double Rating { get; set; }
 

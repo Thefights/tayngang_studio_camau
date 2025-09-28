@@ -1,46 +1,48 @@
 'use client'
 
-import type React from 'react'
-
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { loginSchema } from '@/lib/validations/auth.validation'
 import { authService } from '@/services/other/auth.service'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { motion } from 'framer-motion'
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as yup from 'yup'
+
+type LoginFormData = yup.InferType<typeof loginSchema>
 
 export function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false)
-	const [formData, setFormData] = useState({
-		email: '',
-		password: '',
-		rememberMe: false,
-	})
 	const [isLoading, setIsLoading] = useState(false)
-	const [error, setError] = useState<string | null>(null)
 
-	const handleInputChange = (field: string, value: string | boolean) => {
-		setFormData((prev) => ({ ...prev, [field]: value }))
-	}
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		control,
+	} = useForm<LoginFormData>({
+		resolver: yupResolver(loginSchema),
+	})
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
+	const onSubmit = async (data: LoginFormData) => {
 		setIsLoading(true)
-		setError(null)
-
 		try {
 			const response = await authService.login({
-				email: formData.email,
-				password: formData.password,
+				email: data.email,
+				password: data.password,
 			})
+			console.log(response)
 
-			if (response.data?.accessToken) {
+			if (response.data.accessToken) {
 				const role = response.data.role
+				toast.success('Login successful!')
 				if (role === 'Admin') {
 					window.location.href = '/admin'
 				} else if (role === 'Customer') {
@@ -49,10 +51,10 @@ export function LoginForm() {
 					window.location.href = '/account'
 				}
 			} else {
-				setError(response.message || 'Login failed. Please try again.')
+				toast.error('Login failed. Please try again.')
 			}
 		} catch (err: any) {
-			setError(err.response?.data?.message || err.message)
+			toast.error(err.response?.data?.message || err.message)
 		} finally {
 			setIsLoading(false)
 		}
@@ -76,10 +78,7 @@ export function LoginForm() {
 				transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
 			>
 				<Card className='p-8 bg-white border-[#5A3E2B]/10 shadow-lg'>
-					{error && (
-						<div className='mb-4 text-center text-red-500 bg-red-100 p-3 rounded-md'>{error}</div>
-					)}
-					<form onSubmit={handleSubmit} className='space-y-6'>
+					<form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
 						{/* Email Field */}
 						<motion.div
 							className='space-y-2'
@@ -95,12 +94,13 @@ export function LoginForm() {
 								<Input
 									id='email'
 									type='email'
-									required
-									value={formData.email}
-									onChange={(e) => handleInputChange('email', e.target.value)}
+									{...register('email')}
 									className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
 									placeholder='your@email.com'
 								/>
+								{errors.email && (
+									<p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>
+								)}
 							</div>
 						</motion.div>
 
@@ -119,9 +119,7 @@ export function LoginForm() {
 								<Input
 									id='password'
 									type={showPassword ? 'text' : 'password'}
-									required
-									value={formData.password}
-									onChange={(e) => handleInputChange('password', e.target.value)}
+									{...register('password')}
 									className='pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
 									placeholder='••••••••'
 								/>
@@ -133,25 +131,18 @@ export function LoginForm() {
 									{showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='w-4 h-4' />}
 								</button>
 							</div>
+							{errors.password && (
+								<p className='text-red-500 text-sm mt-1'>{errors.password.message}</p>
+							)}
 						</motion.div>
 
-						{/* Remember Me & Forgot Password */}
+						{/*  Forgot Password */}
 						<motion.div
 							className='flex items-center justify-between'
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ duration: 0.5, delay: 0.5 }}
 						>
-							<div className='flex items-center space-x-2'>
-								<Checkbox
-									id='remember'
-									checked={formData.rememberMe}
-									onCheckedChange={(checked) => handleInputChange('rememberMe', checked as boolean)}
-								/>
-								<Label htmlFor='remember' className='text-sm text-[#5A3E2B]/80 cursor-pointer'>
-									Ghi nhớ đăng nhập
-								</Label>
-							</div>
 							<Link
 								href='/auth/forgot-password'
 								className='text-sm text-[#87C1D8] hover:text-[#5A3E2B] transition-colors'
@@ -177,10 +168,10 @@ export function LoginForm() {
 										Đang đăng nhập...
 									</div>
 								) : (
-									<div className='flex items-center gap-2'>
+									<>
 										Đăng nhập
 										<ArrowRight className='w-4 h-4' />
-									</div>
+									</>
 								)}
 							</Button>
 						</motion.div>
@@ -205,7 +196,7 @@ export function LoginForm() {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5, delay: 0.8 }}
 						>
-							<Button
+							{/* <Button
 								type='button'
 								variant='outline'
 								className='w-full border-[#5A3E2B]/20 text-[#5A3E2B] hover:bg-[#5A3E2B]/5 bg-white transition-all duration-300 hover:scale-[1.02]'
@@ -229,7 +220,7 @@ export function LoginForm() {
 									/>
 								</svg>
 								Đăng nhập với Google
-							</Button>
+							</Button> */}
 						</motion.div>
 					</form>
 

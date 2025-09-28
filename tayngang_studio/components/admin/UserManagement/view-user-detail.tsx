@@ -48,7 +48,7 @@ export function ViewUserDetail({ userId, onBack }: ViewUserDetailProps) {
 						<strong>Email:</strong> {user.email}
 					</div>
 					<div>
-						<strong>Full Name:</strong> {user.fullName || 'N/A'}
+						<strong>Name:</strong> {user.name || 'N/A'}
 					</div>
 					<div>
 						<strong>Phone:</strong> {user.phone}

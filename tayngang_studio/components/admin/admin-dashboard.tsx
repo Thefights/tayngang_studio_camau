@@ -3,8 +3,8 @@
 import { AdminHeader } from '@/components/admin/admin-header'
 import { AdminSidebar } from '@/components/admin/admin-sidebar'
 import { AnalyticsDashboard } from '@/components/admin/analytics-dashboard'
-import { OrdersManagement } from '@/components/admin/orders-management'
-import { ProductsManagement } from '@/components/admin/products-management'
+import { OrdersManagement } from '@/components/admin/OrderManagement/orders-management'
+import { ProductsManagement } from '@/components/admin/ProductManagement/products-management'
 import { UsersManagement } from '@/components/admin/UserManagement/users-management'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -23,6 +23,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts'
+import { CategoriesManagement } from './CategoryManagement/categories-management'
 
 // Mock analytics data
 const salesData = [
@@ -42,7 +43,7 @@ const productCategoryData = [
 ]
 
 export function AdminDashboard() {
-	const [activeTab, setActiveTab] = useState('overview')
+	const [activeTab, setActiveTab] = useState('analytics')
 
 	return (
 		<div className='flex h-screen bg-[#EAEAEA]'>
@@ -212,6 +213,7 @@ export function AdminDashboard() {
 					)}
 
 					{activeTab === 'products' && <ProductsManagement />}
+					{activeTab === 'categories' && <CategoriesManagement />}
 					{activeTab === 'orders' && <OrdersManagement />}
 					{activeTab === 'customers' && <UsersManagement />}
 					{activeTab === 'analytics' && <AnalyticsDashboard />}
