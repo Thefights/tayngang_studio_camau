@@ -95,6 +95,11 @@ namespace BusinessLogicLayer.Implements.Services
         //    return paymentLinkInformation.status;
         //}
 
+        public async Task ConfirmWebhook(string webhookUrl)
+        {
+            await _payOS.confirmWebhook(webhookUrl);
+        }
+        
         public async Task UpdateOrderStatus(long orderId)
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);
