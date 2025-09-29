@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     public interface ICheckoutService
     {
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
-        Task UpdateOrderStatus(long orderId);
+        Task UpdateOrderStatus(long orderId, string orderCode);
     }
 
     public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper) : ICheckoutService
@@ -54,38 +54,30 @@ namespace BusinessLogicLayer.Implements.Services
 
         private async Task<string> CreatePaymentLink(int orderId)
         {
-            try
+            var order = await GetOrderById(orderId);
+            string description = "Order Payment";
+
+            List<ItemData> items = new List<ItemData>();
+
+            foreach (var detail in order.OrderDetails)
             {
-                var order = await GetOrderById(orderId);
-                string description = "Order Payment";
-
-                List<ItemData> items = new List<ItemData>();
-
-                foreach (var detail in order.OrderDetails)
-                {
-                    var product = await GetProductById(detail.ProductId);
-                    ItemData item = new ItemData(
-                         product.Name,
-                         detail.Quantity,
-                         (int)detail.UnitPrice
-         );
-                    items.Add(item);
-                }
-                var totalAmount = items.Sum(i => i.quantity * i.price);
-                var cancelUrl = "https://fptsoftware.com/";
-                var returnUrl = "http://localhost:3000/checkout/success/";
-
-                PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
-
-                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
-                return createPayment.checkoutUrl;
+                var product = await GetProductById(detail.ProductId);
+                ItemData item = new ItemData(
+                     product.Name,
+                     detail.Quantity,
+                     (int)detail.UnitPrice
+     );
+                items.Add(item);
             }
-            catch (Exception ex)
-            {
+            var totalAmount = items.Sum(i => i.quantity * i.price);
+            var cancelUrl = "https://fptsoftware.com/";
+            var returnUrl = "https://sotaycamau.vercel.app/checkout/success/";
 
-                throw new Exception("", ex);
-            }
+            PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
+
+            CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
+
+            return createPayment.checkoutUrl;
         }
 
         public async Task ConfirmWebhook(string webhookUrl)
@@ -93,14 +85,25 @@ namespace BusinessLogicLayer.Implements.Services
             await _payOS.confirmWebhook(webhookUrl);
         }
 
-        public async Task UpdateOrderStatus(long orderId)
+        public async Task UpdateOrderStatus(long orderId, string orderCode)
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);
 
-            order.Status = OrderStatusEnum.Completed;
+            if (orderCode != "00")
+            {
 
-            _unitOfWork.Repository<Order>().Update(order);
-            await _unitOfWork.SaveChangesAsync();
+                order.Status = OrderStatusEnum.Canceled;
+
+                _unitOfWork.Repository<Order>().Update(order);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            else
+            {
+                order.Status = OrderStatusEnum.Completed;
+
+                _unitOfWork.Repository<Order>().Update(order);
+                await _unitOfWork.SaveChangesAsync();
+            }
         }
 
         private async Task<GetProductDTO> GetProductById(int productId)

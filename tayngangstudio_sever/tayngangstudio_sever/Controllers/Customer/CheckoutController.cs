@@ -62,12 +62,14 @@ namespace tayngangstudio_sever.Controllers.Customer
                 // 2) Xác minh chữ ký & parse dữ liệu an toàn
                 WebhookData data = _payOS.verifyPaymentWebhookData(payload);
                 _logger.LogInformation("[PayOS][Webhook] Verified: {@data}", data);
+                _logger.LogInformation("[PayOS][Webhook] Verified: {@data}", data.orderCode);
+
 
 
                 // 3) Idempotency: xử lý theo orderCode/paymentLinkId một lần duy nhất
                 // Bạn tự định nghĩa HandleWebhookAsync để cập nhật trạng thái đơn, lưu log, v.v.
                 // Nên dựa vào data.orderCode (hoặc data.paymentLinkId) + trạng thái hiện tại trong DB.
-                await _checkoutService.UpdateOrderStatus(data.orderCode);
+                await _checkoutService.UpdateOrderStatus(data.orderCode, data.code);
 
 
                 // 4) Trả 2xx càng sớm càng tốt
