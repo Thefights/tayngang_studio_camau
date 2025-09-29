@@ -22,12 +22,13 @@ namespace tayngangstudio_sever.Controllers.Customer
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PayOSWebhook([FromBody] WebhookData? payload)
         {
+            Console.WriteLine(payload);
+
             if (payload == null)
             {
                 return Ok("Null rồi huhu");
             }
 
-            Console.WriteLine(payload);
 
             if (payload.code == "00")
             {
