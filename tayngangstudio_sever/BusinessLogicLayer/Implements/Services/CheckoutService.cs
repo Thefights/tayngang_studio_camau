@@ -54,30 +54,39 @@ namespace BusinessLogicLayer.Implements.Services
 
         private async Task<string> CreatePaymentLink(int orderId)
         {
-            var order = await GetOrderById(orderId);
-            string description = "Order Payment";
-
-            List<ItemData> items = new List<ItemData>();
-
-            foreach (var detail in order.OrderDetails)
+            try
             {
-                var product = await GetProductById(detail.ProductId);
-                ItemData item = new ItemData(
-                     product.Name,
-                     detail.Quantity,
-                     (int)detail.UnitPrice
-     );
-                items.Add(item);
+                var order = await GetOrderById(orderId);
+                int orderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
+                string description = "Order Payment";
+
+                List<ItemData> items = new List<ItemData>();
+
+                foreach (var detail in order.OrderDetails)
+                {
+                    var product = await GetProductById(detail.ProductId);
+                    ItemData item = new ItemData(
+                         product.Name,
+                         detail.Quantity,
+                         (int)detail.UnitPrice
+         );
+                    items.Add(item);
+                }
+                var totalAmount = items.Sum(i => i.quantity * i.price);
+                var cancelUrl = "https://fptsoftware.com/";
+                var returnUrl = "http://localhost:3000/checkout/success/";
+
+                PaymentData paymentData = new PaymentData(orderCode, totalAmount, description, items, cancelUrl, returnUrl);
+
+                CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
+
+                return createPayment.checkoutUrl;
             }
-            var totalAmount = items.Sum(i => i.quantity * i.price);
-            var cancelUrl = "https://fptsoftware.com/";
-            var returnUrl = "http://localhost:3000/checkout/success/";
+            catch (Exception ex)
+            {
 
-            PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
-
-            CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
-            return createPayment.checkoutUrl;
+                throw new Exception("", ex);
+            }
         }
 
         public async Task ConfirmWebhook(string webhookUrl)
