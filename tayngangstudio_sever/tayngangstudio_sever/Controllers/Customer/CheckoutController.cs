@@ -27,14 +27,14 @@ namespace tayngangstudio_sever.Controllers.Customer
 
         [HttpPost("payos/webhook")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult PayOSWebhook(WebhookData payload)
+        public IActionResult PayOSWebhook(WebhookData? payload)
         {
             if (payload.code == "00")
             {
                 _checkoutService.UpdateOrderStatus(payload.orderCode);
             }
 
-            return Ok();
+            return Ok("Hehe");
         }
     }
 }
