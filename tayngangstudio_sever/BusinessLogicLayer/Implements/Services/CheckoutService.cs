@@ -68,6 +68,7 @@ namespace BusinessLogicLayer.Implements.Services
                      (int)detail.UnitPrice
      );
                 items.Add(item);
+
             }
             var totalAmount = items.Sum(i => i.quantity * i.price);
             var cancelUrl = "https://fptsoftware.com/";
@@ -88,7 +89,9 @@ namespace BusinessLogicLayer.Implements.Services
         public async Task UpdateOrderStatus(long orderId)
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);
+
             order.Status = OrderStatusEnum.Completed;
+
             _unitOfWork.Repository<Order>().Update(order);
             await _unitOfWork.SaveChangesAsync();
         }

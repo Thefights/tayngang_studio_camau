@@ -24,8 +24,10 @@ namespace tayngangstudio_sever.Controllers.Customer
         {
             if (payload == null)
             {
-                return BadRequest("Null rồi huhu");
+                return Ok("Null rồi huhu");
             }
+
+            Console.WriteLine(payload);
 
             if (payload.code == "00")
             {
