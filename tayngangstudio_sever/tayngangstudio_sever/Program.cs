@@ -63,7 +63,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: QuachKhangOrigin,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000", "https://sotaycamau.vercel.app/")
+                          policy.WithOrigins("http://localhost:3000", "https://sotaycamau.vercel.app")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
                                 .AllowCredentials();
