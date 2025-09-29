@@ -23,7 +23,7 @@ namespace tayngangstudio_sever.Controllers.Customer
         [HttpPost("payos/webhook")]
         [AllowAnonymous]
         [Consumes("application/json")]
-        public async Task<IActionResult> PayOSWebhook([FromBody] WebhookType body)
+        public async Task<IActionResult> PayOSWebhook([FromBody] WebhookType? body)
         {
             // 1) Xác minh chữ ký + bóc dữ liệu theo đúng SDK
             WebhookData data = _payOS.verifyPaymentWebhookData(body); // trả về WebhookData đã verify
