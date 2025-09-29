@@ -85,11 +85,11 @@ namespace BusinessLogicLayer.Implements.Services
             await _payOS.confirmWebhook(webhookUrl);
         }
 
-        public async Task UpdateOrderStatus(long orderId, string orderCode)
+        public async Task UpdateOrderStatus(long orderId, string? orderCode)
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);
 
-            if (orderCode != "00")
+            if (orderCode == null)
             {
 
                 order.Status = OrderStatusEnum.Canceled;
