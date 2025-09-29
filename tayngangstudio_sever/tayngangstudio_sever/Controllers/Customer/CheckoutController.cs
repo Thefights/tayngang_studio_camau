@@ -3,7 +3,6 @@ using BusinessLogicLayer.Implements.Services;
 using DataAccessLayer.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS.Types;
-using System.Text.Json;
 
 namespace tayngangstudio_sever.Controllers.Customer
 {
@@ -21,22 +20,20 @@ namespace tayngangstudio_sever.Controllers.Customer
 
         [HttpPost("payos/webhook")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult> PayOSWebhook([FromBody] JsonElement payload)
+        public async Task<IActionResult> PayOSWebhook([FromBody] WebhookData? payload)
         {
-            if (payload.ValueKind == JsonValueKind.Undefined || payload.ValueKind == JsonValueKind.Null)
+            // Nếu payload null (PayOS chỉ gọi verify), thì vẫn Ok
+            if (payload == null)
             {
-                return Ok(); // verify request
+                return Ok("Webhook verified");
             }
 
-            // map về WebhookData khi có giao dịch thật
-            var data = JsonSerializer.Deserialize<WebhookData>(payload);
-
-            if (data != null && data.code == "00")
+            if (payload.code == "00")
             {
-                await _checkoutService.UpdateOrderStatus(data.orderCode);
+                await _checkoutService.UpdateOrderStatus(payload.orderCode);
             }
 
-            return Ok();
+            return Ok("Webhook received");
         }
     }
 }
