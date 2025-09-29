@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     public interface ICheckoutService
     {
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
-        Task<string> VerifyPayment(int orderId);
+        Task UpdateOrderStatus(long orderId);
     }
 
     public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper) : ICheckoutService
@@ -80,19 +80,27 @@ namespace BusinessLogicLayer.Implements.Services
             return createPayment.checkoutUrl;
         }
 
-        public async Task<string> VerifyPayment(int orderId)
+        //public async Task<string> VerifyPayment(int orderId)
+        //{
+        //    PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderId);
+
+        //    if (paymentLinkInformation.status == "PAID")
+        //    {
+        //        var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
+        //        order.Status = OrderStatusEnum.Completed;
+        //        _unitOfWork.Repository<Order>().Update(order);
+        //        await _unitOfWork.SaveChangesAsync();
+        //    }
+
+        //    return paymentLinkInformation.status;
+        //}
+
+        public async Task UpdateOrderStatus(long orderId)
         {
-            PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderId);
-
-            if (paymentLinkInformation.status == "PAID")
-            {
-                var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
-                order.Status = OrderStatusEnum.Completed;
-                _unitOfWork.Repository<Order>().Update(order);
-                await _unitOfWork.SaveChangesAsync();
-            }
-
-            return paymentLinkInformation.status;
+            var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);
+            order.Status = OrderStatusEnum.Completed;
+            _unitOfWork.Repository<Order>().Update(order);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private async Task<GetProductDTO> GetProductById(int productId)

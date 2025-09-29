@@ -2,6 +2,7 @@
 using BusinessLogicLayer.Implements.Services;
 using DataAccessLayer.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Net.payOS.Types;
 
 namespace tayngangstudio_sever.Controllers.Customer
 {
@@ -17,11 +18,22 @@ namespace tayngangstudio_sever.Controllers.Customer
             return Ok(new { PaymentLink = paymentLink });
         }
 
-        [HttpPost("VerifyPayment/{orderId}")]
-        public async Task<IActionResult> VerifyPayment(int orderId)
+        //[HttpPost("VerifyPayment/{orderId}")]
+        //public async Task<IActionResult> VerifyPayment(int orderId)
+        //{
+        //    var result = await _checkoutService.VerifyPayment(orderId);
+        //    return Ok(new { status = result });
+        //}
+
+        [HttpPost("PayOSWebhook")]
+        public IActionResult PayOSWebhook(WebhookData payload)
         {
-            var result = await _checkoutService.VerifyPayment(orderId);
-            return Ok(new { status = result });
+            if (payload.code == "00")
+            {
+                _checkoutService.UpdateOrderStatus(payload.orderCode);
+            }
+
+            return Ok();
         }
     }
 }
