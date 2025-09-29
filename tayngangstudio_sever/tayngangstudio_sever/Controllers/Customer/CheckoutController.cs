@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CheckoutController(ICheckoutService _checkoutService) : ControllerBase
+    public class CheckoutController(ICheckoutService _checkoutService, ILogger _logger) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Checkout([FromBody] CheckoutRequestDTO dto)
@@ -22,7 +22,7 @@ namespace tayngangstudio_sever.Controllers.Customer
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PayOSWebhook([FromBody] WebhookData? payload)
         {
-            Console.WriteLine(payload);
+            _logger.LogInformation("Webhook nhận payload: {@payload}", payload);
 
             if (payload == null)
             {
