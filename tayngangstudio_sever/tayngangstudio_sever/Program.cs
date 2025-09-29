@@ -86,7 +86,6 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "TayNgang API v1");
     c.RoutePrefix = "swagger";
-
 });
 
 

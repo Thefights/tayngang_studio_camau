@@ -25,7 +25,8 @@ namespace tayngangstudio_sever.Controllers.Customer
         //    return Ok(new { status = result });
         //}
 
-        [HttpPost("PayOSWebhook")]
+        [HttpPost("payos/webhook")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult PayOSWebhook(WebhookData payload)
         {
             if (payload.code == "00")
