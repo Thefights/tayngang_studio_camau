@@ -8,6 +8,8 @@ namespace BusinessLogicLayer.DTO
     {
         public int? UserId { get; set; }
 
+        public double TotalAmount { get; set; }
+
         [Required]
         public PaymentMethodEnum PaymentMethod { get; set; }
 
@@ -18,6 +20,8 @@ namespace BusinessLogicLayer.DTO
     public class GetOrderDTO : BaseGetDTO
     {
         public DateTime OrderDate { get; set; }
+
+        public double TotalAmount { get; set; }
 
         public OrderStatusEnum Status { get; set; }
 

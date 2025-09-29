@@ -7,24 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import * as orderData from "@/data/other/order.data";
 import * as userData from "@/data/other/user.data";
-import {
-  Badge,
-  Edit,
-  Eye,
-  Link,
-  MapPin,
-  Package,
-  Phone,
-  User,
-} from "lucide-react";
+import { Edit, MapPin, Package, Phone, User } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Badge } from "../ui/badge";
 
 export function AccountDashboard() {
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState<Record<string, any>>({});
-  const [orders, setOrders] = useState<Record<string, any>>({});
-
-  console.log(orders);
+  const [orders, setOrders] = useState<any[]>([]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -32,8 +22,9 @@ export function AccountDashboard() {
         return "bg-[#A5C6A1] text-white";
       case "Canceled":
         return "bg-red-500 text-white";
-      default:
+      case "Pending":
         return "bg-gray-500 text-white";
+      default:
     }
   };
 
@@ -62,12 +53,12 @@ export function AccountDashboard() {
     const loadUserProfile = async () => {
       const profile = await userData.fetchUserProfile();
       setUser(profile);
-      console.log(user);
     };
 
     const loadOrders = async () => {
       const userOrders = await orderData.getOrders();
       setOrders(userOrders);
+      console.log(userOrders);
     };
 
     loadUserProfile();
@@ -202,31 +193,20 @@ export function AccountDashboard() {
                             {order.status}
                           </Badge>
                         </div>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            asChild
-                            className="border-[#5A3E2B] text-[#5A3E2B] hover:bg-[#5A3E2B] hover:text-white bg-transparent"
-                          >
-                            <Link href={`/orders/${order.id}`}>
-                              <Eye className="w-4 h-4 mr-2" />
-                              Xem chi tiết
-                            </Link>
-                          </Button>
-                        </div>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div>
                           <span className="text-[#5A3E2B]/70">Ngày đặt:</span>
                           <p className="text-[#5A3E2B] font-medium">
-                            {order.orderDate}
+                            {new Date(order.orderDate).toLocaleDateString(
+                              "vi-VN"
+                            )}
                           </p>
                         </div>
                         <div>
                           <span className="text-[#5A3E2B]/70">Tổng tiền:</span>
                           <p className="text-[#5A3E2B] font-medium">
-                            {order.total.toLocaleString("vi-VN")}₫
+                            {order.totalAmount.toLocaleString("vi-VN")}₫
                           </p>
                         </div>
                         <div>

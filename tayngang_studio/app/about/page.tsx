@@ -1,6 +1,9 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
+import KhoiNguonTinhYeuDuLich from "@/public/assets/about/khoinguontinhyeudulich.jpg";
+import SuMenhLanToa from "@/public/assets/about/sumenhlantoa.jpg";
+import TamNhinKhatVong from "@/public/assets/about/tamnhinkhatvong.jpg";
 import { motion } from "framer-motion";
 import { Award, Globe, Heart, Users } from "lucide-react";
 import Image from "next/image";
@@ -77,7 +80,7 @@ export default function AboutPage() {
               variants={fadeInUp}
             >
               <Image
-                src="/ca-mau-landscape-sunset.jpg"
+                src={KhoiNguonTinhYeuDuLich}
                 alt="Phong cảnh Cà Mau"
                 width={600}
                 height={400}
@@ -100,7 +103,7 @@ export default function AboutPage() {
               variants={fadeInUp}
             >
               <Image
-                src="/ca-mau-landscape-sunset.jpg"
+                src={SuMenhLanToa}
                 alt="Phong cảnh Cà Mau"
                 width={600}
                 height={400}
@@ -157,7 +160,7 @@ export default function AboutPage() {
               variants={fadeInUp}
             >
               <Image
-                src="/ca-mau-landscape-sunset.jpg"
+                src={TamNhinKhatVong}
                 alt="Phong cảnh Cà Mau"
                 width={600}
                 height={400}

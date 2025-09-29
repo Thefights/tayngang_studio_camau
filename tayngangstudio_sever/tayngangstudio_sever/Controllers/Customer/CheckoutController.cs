@@ -16,5 +16,12 @@ namespace tayngangstudio_sever.Controllers.Customer
             var paymentLink = await _checkoutService.Checkout(userId, (PaymentMethodEnum)dto.PaymentMethod);
             return Ok(new { PaymentLink = paymentLink });
         }
+
+        [HttpPost("VerifyPayment/{orderId}")]
+        public async Task<IActionResult> VerifyPayment(int orderId)
+        {
+            var result = await _checkoutService.VerifyPayment(orderId);
+            return Ok(new { status = result });
+        }
     }
 }

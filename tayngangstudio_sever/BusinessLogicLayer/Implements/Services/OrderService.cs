@@ -1,81 +1,43 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO;
-using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repository.Base;
-using Net.payOS;
-using Net.payOS.Types;
 
 namespace BusinessLogicLayer.Implements.Services
 {
-    public interface IOrderService : ICrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>
+    public interface IOrderService
     {
-        Task<string> CreatePaymentLink(int orderId);
-        Task<string> VerifyPayment(int orderId);
-        Task<GetOrderDTO> GetOrderByCurrentUser(int userId);
+        Task<List<GetOrderDTO>> GetOrdersByCurrentUser(int userId);
+        Task<GetOrderDTO> CreateOrderAsync(CreateOrderDTO dto);
     }
 
-    public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper, PayOS _payOS) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails"]), IOrderService
+    public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper) : IOrderService
     {
-        public async Task<string> CreatePaymentLink(int orderId)
+        public async Task<List<GetOrderDTO>> GetOrdersByCurrentUser(int userId)
         {
-            var order = await GetOrderById(orderId);
-            string description = "Order Payment";
+            var orders = await _unitOfWork.Repository<Order>()
+                .GetListByCondition(u => u.UserId == userId, ["OrderDetails"]);
 
-            List<ItemData> items = new List<ItemData>();
-
-            foreach (var detail in order.OrderDetails)
-            {
-                var product = await GetProductById(detail.ProductId);
-                ItemData item = new ItemData(
-                     product.Name,
-                     detail.Quantity,
-                     (int)detail.UnitPrice
-     );
-                items.Add(item);
-            }
-            var totalAmount = items.Sum(i => i.quantity * i.price);
-            var cancelUrl = "https://fptsoftware.com/";
-            var returnUrl = "http://localhost:3000/checkout/success/";
-
-            PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
-
-            CreatePaymentResult createPayment = await _payOS.createPaymentLink(paymentData);
-
-            return createPayment.checkoutUrl;
+            return _mapper.Map<List<GetOrderDTO>>(orders);
         }
 
-        public async Task<string> VerifyPayment(int orderId)
-        {
-            PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderId);
 
-            if (paymentLinkInformation.status == "PAID")
+        public async Task<GetOrderDTO> CreateOrderAsync(CreateOrderDTO dto)
+        {
+            var totalAmount = 0;
+
+            foreach (var item in dto.OrderDetails)
             {
-                var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
-                order.Status = DataAccessLayer.Enums.OrderStatusEnum.Completed;
-                _unitOfWork.Repository<Order>().Update(order);
-                await _unitOfWork.SaveChangesAsync();
+                totalAmount += item.Quantity * (int)item.UnitPrice;
             }
 
-            return paymentLinkInformation.status;
-        }
+            var entity = _mapper.Map<Order>(dto);
+            entity.TotalAmount = totalAmount;
 
-        public async Task<GetOrderDTO> GetOrderByCurrentUser(int userId)
-        {
-            var order = await _unitOfWork.Repository<Order>().GetByCondition(u => u.UserId == userId, ["OrderDetails"]);
-            return _mapper.Map<GetOrderDTO>(order);
-        }
+            await _unitOfWork.Repository<Order>().CreateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
 
-        private async Task<GetProductDTO> GetProductById(int productId)
-        {
-            var product = await _unitOfWork.Repository<Product>().GetByIdAsync(productId);
-            return _mapper.Map<GetProductDTO>(product);
-        }
-
-        private async Task<GetOrderDTO> GetOrderById(int orderId)
-        {
-            var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId, ["OrderDetails"]);
-            return _mapper.Map<GetOrderDTO>(order);
+            return _mapper.Map<GetOrderDTO>(entity);
         }
     }
 }
