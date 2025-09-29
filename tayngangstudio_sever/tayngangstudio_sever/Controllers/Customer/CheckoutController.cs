@@ -22,6 +22,11 @@ namespace tayngangstudio_sever.Controllers.Customer
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PayOSWebhook([FromBody] WebhookData? payload)
         {
+            if (payload == null)
+            {
+                return BadRequest("Null rồi huhu");
+            }
+
             if (payload.code == "00")
             {
                 await _checkoutService.UpdateOrderStatus(payload.orderCode);
