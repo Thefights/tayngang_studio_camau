@@ -1,9 +1,5 @@
-import { AdminDashboard } from "@/components/admin/admin-dashboard";
+import { redirect } from 'next/navigation'
 
 export default function AdminPage() {
-  return (
-    <div className="min-h-screen bg-[#EAEAEA]">
-      <AdminDashboard />
-    </div>
-  );
+	redirect('/admin/analytics')
 }

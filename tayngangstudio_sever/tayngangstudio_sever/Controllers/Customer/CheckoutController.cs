@@ -25,16 +25,14 @@ namespace tayngangstudio_sever.Controllers.Customer
         //    return Ok(new { status = result });
         //}
 
-        [HttpPost("PayOSWebhook")]
-        public IActionResult PayOSWebhook([FromBody] WebhookData payload)
+        public IActionResult PayOSWebhook(WebhookData payload)
         {
-
             if (payload.code == "00")
             {
-                _checkoutService.UpdateStatusOrder(payload.orderCode);
+                _checkoutService.UpdateOrderStatus(payload.orderCode);
             }
 
-            return Ok(new { message = "Payment confirmed and order status updated." });
+            return Ok();
         }
     }
 }

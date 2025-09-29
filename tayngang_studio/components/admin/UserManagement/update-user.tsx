@@ -11,7 +11,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { updateUserSchema } from '@/lib/validations/user.validation'
-import { getUserById, updateUser } from '@/services/other/users-management.service'
+import { getUserById, updateUser } from '@/services/manager/users-management.service'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowLeft } from 'lucide-react'
 import { useEffect } from 'react'
@@ -70,7 +70,7 @@ export function UpdateUser({ userId, onBack, onUserUpdated }: UpdateUserProps) {
 		<div className='space-y-6'>
 			<Button onClick={onBack} variant='outline'>
 				<ArrowLeft className='w-4 h-4 mr-2' />
-				Back to User List
+				Trở về
 			</Button>
 
 			<Card className='p-6 bg-white border-[#5A3E2B]/10'>

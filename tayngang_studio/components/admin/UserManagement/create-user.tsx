@@ -11,21 +11,18 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { createUserSchema } from '@/lib/validations/user.validation'
-import { createUser } from '@/services/other/users-management.service'
+import { createUser } from '@/services/manager/users-management.service'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as yup from 'yup'
 
-interface CreateUserProps {
-	onBack: () => void
-	onUserCreated: () => void
-}
-
 type FormData = yup.InferType<typeof createUserSchema>
 
-export function CreateUser({ onBack, onUserCreated }: CreateUserProps) {
+export function CreateUserForm() {
+	const router = useRouter()
 	const {
 		register,
 		handleSubmit,
@@ -47,7 +44,7 @@ export function CreateUser({ onBack, onUserCreated }: CreateUserProps) {
 		try {
 			await createUser(data)
 			toast.success('User created successfully')
-			onUserCreated()
+			router.push('/admin/customers')
 		} catch (error: any) {
 			console.error('Failed to create user', error)
 			toast.error(error.response?.data?.message || 'Failed to create user')
@@ -56,9 +53,9 @@ export function CreateUser({ onBack, onUserCreated }: CreateUserProps) {
 
 	return (
 		<div className='space-y-6'>
-			<Button onClick={onBack} variant='outline'>
+			<Button onClick={() => router.back()} variant='outline'>
 				<ArrowLeft className='w-4 h-4 mr-2' />
-				Back to User List
+			Trở về
 			</Button>
 
 			<Card className='p-6 bg-white border-[#5A3E2B]/10'>

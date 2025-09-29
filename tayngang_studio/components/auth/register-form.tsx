@@ -9,7 +9,7 @@ import { registerSchema } from '@/lib/validations/auth.validation'
 import { authService } from '@/services/other/auth.service'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { motion } from 'framer-motion'
-import { ArrowRight, Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react'
+import { ArrowRight, Eye, EyeOff, Lock, Mail, MapPin, Phone, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -38,6 +38,7 @@ export function RegisterForm() {
 				name: data.name,
 				phone: data.phone,
 				email: data.email,
+				address: data.address,
 				password: data.password,
 			})
 			toast.success('Registration successful! Please log in.')
@@ -140,6 +141,31 @@ export function RegisterForm() {
 							</div>
 						</motion.div>
 
+						{/* Address Field */}
+						<motion.div
+							className='space-y-2'
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ duration: 0.5, delay: 0.55 }}
+						>
+							<Label htmlFor='address' className='text-[#5A3E2B] font-medium'>
+								Địa chỉ
+							</Label>
+							<div className='relative'>
+								<MapPin className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50' />
+								<Input
+									id='address'
+									type='text'
+									{...register('address')}
+									className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
+									placeholder='123 Đường ABC, Phường XYZ, Quận 1, TP.HCM'
+								/>
+								{errors.address && (
+									<p className='text-red-500 text-sm mt-1'>{errors.address.message}</p>
+								)}
+							</div>
+						</motion.div>
+
 						{/* Password Field */}
 						<motion.div
 							className='space-y-2'
@@ -177,7 +203,7 @@ export function RegisterForm() {
 							className='space-y-2'
 							initial={{ opacity: 0, x: -20 }}
 							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.5, delay: 0.7 }}
+							transition={{ duration: 0.5, delay: 0.65 }}
 						>
 							<Label htmlFor='confirmPassword' className='text-[#5A3E2B] font-medium'>
 								Xác nhận mật khẩu
@@ -212,7 +238,7 @@ export function RegisterForm() {
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.5, delay: 0.9 }}
+							transition={{ duration: 0.5, delay: 0.7 }}
 						>
 							<Button
 								type='submit'

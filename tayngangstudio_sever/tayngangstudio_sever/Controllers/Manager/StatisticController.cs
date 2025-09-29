@@ -9,18 +9,11 @@ namespace tayngangstudio_sever.Controllers.Manager
     [Authorize(Roles = "Admin")]
     public class StatisticController(IStatisticService statisticService) : ControllerBase
     {
-        [HttpGet("revenue")]
-        public async Task<IActionResult> GetRevenueOverTime([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetDashboard([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
         {
-            var revenue = await statisticService.GetRevenueOverTimeAsync(startDate, endDate);
-            return Ok(revenue);
+            var data = await statisticService.GetAnalyticsDashboardAsync(startDate, endDate);
+            return Ok(data);
         }
-
-        //[HttpGet("sales-by-product")]
-        //public async Task<IActionResult> GetSalesByProduct([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
-        //{
-        //    var sales = await statisticService.GetSalesByProductAsync(startDate, endDate);
-        //    return Ok(sales);
-        //}
     }
 }

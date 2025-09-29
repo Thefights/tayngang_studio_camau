@@ -347,7 +347,7 @@ namespace DataAccessLayer.Migrations
                             Address = "",
                             Email = "admin@example.com",
                             Name = "Admin",
-                            Password = "123456",
+                            Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
                             Phone = "0123456789",
                             Role = 0
                         },
@@ -357,7 +357,7 @@ namespace DataAccessLayer.Migrations
                             Address = "",
                             Email = "alice@example.com",
                             Name = "Alice",
-                            Password = "123456",
+                            Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
                             Phone = "0987654321",
                             Role = 1
                         },
@@ -367,7 +367,7 @@ namespace DataAccessLayer.Migrations
                             Address = "",
                             Email = "bob@example.com",
                             Name = "Bob",
-                            Password = "123456",
+                            Password = "$2y$07$YNEeH48yISxBEAT/m4DQ/uLVRAjUEiOOwojFJoPyS8QT4Hr2skGRa",
                             Phone = "0911222333",
                             Role = 1
                         });

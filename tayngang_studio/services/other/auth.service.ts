@@ -1,5 +1,5 @@
 import axiosInstance from '@/axios.config'
-import { LoginData, RegisterData } from '@/types/auth'
+import { ForgotPasswordData, LoginData, RegisterData } from '@/types/auth'
 
 export const authService = {
 	login: async (credentials: LoginData) => {
@@ -20,10 +20,23 @@ export const authService = {
 		}
 	},
 
+	forgotPassword: async (data: ForgotPasswordData) => {
+		try {
+			const response = await axiosInstance.post(
+				`/auth/forgot-password?email=${encodeURIComponent(data.email)}`
+			)
+			return response.data
+		} catch (error) {
+			throw error
+		}
+	},
+
 	logout: () => {
 		if (typeof window !== 'undefined') {
 			localStorage.removeItem('accessToken')
 			localStorage.removeItem('userRole')
+			localStorage.removeItem('userName')
+			localStorage.removeItem('userEmail')
 		}
 	},
 

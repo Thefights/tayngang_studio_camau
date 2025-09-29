@@ -1,156 +1,245 @@
-"use client"
+'use client'
 
-import { Card } from "@/components/ui/card"
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { statisticsService } from '@/services/manager/statistics.service'
+import type { DashboardData } from '@/types/statistics'
+import { useEffect, useMemo, useState } from 'react'
 import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  AreaChart,
-  Area,
-} from "recharts"
+	Area,
+	AreaChart,
+	CartesianGrid,
+	Line,
+	LineChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from 'recharts'
+import { toast } from 'sonner'
 
-// Mock analytics data
-const monthlyData = [
-  { month: "T1", revenue: 12000000, orders: 45, customers: 38 },
-  { month: "T2", revenue: 15000000, orders: 52, customers: 45 },
-  { month: "T3", revenue: 18000000, orders: 68, customers: 58 },
-  { month: "T4", revenue: 22000000, orders: 78, customers: 67 },
-  { month: "T5", revenue: 25000000, orders: 89, customers: 78 },
-  { month: "T6", revenue: 28000000, orders: 95, customers: 85 },
-]
-
-const topProducts = [
-  { name: "Sổ Tay Classic", sales: 156, revenue: 39000000 },
-  { name: "Sổ Tay Deluxe", sales: 89, revenue: 31150000 },
-  { name: "Sổ Tay Eco", sales: 67, revenue: 13400000 },
-  { name: "Sổ Tay Vintage", sales: 45, revenue: 18000000 },
-]
-
-const customerSegments = [
-  { name: "Khách hàng mới", value: 35, color: "#87C1D8" },
-  { name: "Khách hàng thường", value: 45, color: "#5A3E2B" },
-  { name: "Khách hàng VIP", value: 20, color: "#A5C6A1" },
-]
+// Helper: get today's date as YYYY-MM-DD in *local* timezone
+function getTodayLocalISO(): string {
+	const d = new Date()
+	const year = d.getFullYear()
+	const month = String(d.getMonth() + 1).padStart(2, '0')
+	const day = String(d.getDate()).padStart(2, '0')
+	return `${year}-${month}-${day}`
+}
 
 export function AnalyticsDashboard() {
-  return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-serif text-[#5A3E2B]">Thống kê & Phân tích</h2>
+	const [data, setData] = useState<DashboardData | null>(null)
+	const [loading, setLoading] = useState(false)
 
-      {/* Revenue Chart */}
-      <Card className="p-6 bg-white border-[#5A3E2B]/10">
-        <h3 className="text-lg font-serif text-[#5A3E2B] mb-4">Doanh thu theo tháng</h3>
-        <ResponsiveContainer width="100%" height={400}>
-          <AreaChart data={monthlyData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#5A3E2B20" />
-            <XAxis dataKey="month" stroke="#5A3E2B" />
-            <YAxis stroke="#5A3E2B" />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "white",
-                border: "1px solid #5A3E2B20",
-                borderRadius: "8px",
-              }}
-            />
-            <Area type="monotone" dataKey="revenue" stroke="#5A3E2B" fill="#5A3E2B20" strokeWidth={2} />
-          </AreaChart>
-        </ResponsiveContainer>
-      </Card>
+	const today = useMemo(() => getTodayLocalISO(), [])
+	const [startDate, setStartDate] = useState(() => {
+		const d = new Date()
+		d.setMonth(d.getMonth() - 6)
+		const year = d.getFullYear()
+		const month = String(d.getMonth() + 1).padStart(2, '0')
+		const day = String(d.getDate()).padStart(2, '0')
+		return `${year}-${month}-${day}`
+	})
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Orders Trend */}
-        <Card className="p-6 bg-white border-[#5A3E2B]/10">
-          <h3 className="text-lg font-serif text-[#5A3E2B] mb-4">Xu hướng đơn hàng</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#5A3E2B20" />
-              <XAxis dataKey="month" stroke="#5A3E2B" />
-              <YAxis stroke="#5A3E2B" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "white",
-                  border: "1px solid #5A3E2B20",
-                  borderRadius: "8px",
-                }}
-              />
-              <Line type="monotone" dataKey="orders" stroke="#87C1D8" strokeWidth={3} dot={{ fill: "#87C1D8" }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </Card>
+	// endDate must always be today
+	const endDate = today
 
-        {/* Customer Segments */}
-        <Card className="p-6 bg-white border-[#5A3E2B]/10">
-          <h3 className="text-lg font-serif text-[#5A3E2B] mb-4">Phân khúc khách hàng</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={customerSegments}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                dataKey="value"
-                label={({ name, value }) => `${name}: ${value}%`}
-              >
-                {customerSegments.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-      </div>
+	// Keep “today” fresh at midnight (so endDate updates automatically)
+	useEffect(() => {
+		const now = new Date()
+		const msUntilMidnight =
+			new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime()
+		const t = setTimeout(() => {
+			// re-compute by forcing a re-render (any state update works)
+			// Option 1: use a dummy state or replace with a more robust approach.
+			// Here we'll just update startDate to itself to trigger a re-render.
+			setStartDate((s) => s)
+		}, msUntilMidnight + 50)
+		return () => clearTimeout(t)
+	}, [])
 
-      {/* Top Products */}
-      <Card className="p-6 bg-white border-[#5A3E2B]/10">
-        <h3 className="text-lg font-serif text-[#5A3E2B] mb-4">Sản phẩm bán chạy</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-[#5A3E2B]/10">
-                <th className="text-left py-3 text-[#5A3E2B] font-medium">Sản phẩm</th>
-                <th className="text-left py-3 text-[#5A3E2B] font-medium">Số lượng bán</th>
-                <th className="text-left py-3 text-[#5A3E2B] font-medium">Doanh thu</th>
-                <th className="text-left py-3 text-[#5A3E2B] font-medium">Tỷ lệ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topProducts.map((product, index) => (
-                <tr key={product.name} className="border-b border-[#5A3E2B]/5">
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 bg-[#5A3E2B] text-white rounded-full flex items-center justify-center text-sm font-medium">
-                        {index + 1}
-                      </span>
-                      <span className="text-[#5A3E2B] font-medium">{product.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 text-[#5A3E2B]">{product.sales}</td>
-                  <td className="py-3 text-[#5A3E2B] font-medium">{product.revenue.toLocaleString("vi-VN")}₫</td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-20 h-2 bg-[#EAEAEA] rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#5A3E2B] rounded-full"
-                          style={{ width: `${(product.sales / 156) * 100}%` }}
-                        />
-                      </div>
-                      <span className="text-sm text-[#5A3E2B]/70">{Math.round((product.sales / 156) * 100)}%</span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-    </div>
-  )
+	const fetchDashboardData = async (from: string, to: string) => {
+		try {
+			setLoading(true)
+			// clamp startDate if it's after today
+			const safeFrom = from > to ? to : from
+			const dashboardData = await statisticsService.getDashboardData(safeFrom, to)
+			setData(dashboardData)
+		} catch (err: any) {
+			toast.error(err?.response?.data?.message || 'Không thể tải dữ liệu thống kê')
+			console.error('Failed to fetch dashboard data:', err)
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	useEffect(() => {
+		fetchDashboardData(startDate, endDate)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [startDate, endDate])
+
+	const handleDateRangeChange = () => {
+		// Always use today's date for end
+		fetchDashboardData(startDate, endDate)
+	}
+
+	if (loading && !data) {
+		return (
+			<div className='space-y-6'>
+				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Thống kê & Phân tích</h2>
+				<div className='flex items-center justify-center h-64'>
+					<div className='text-[#5A3E2B]'>Đang tải dữ liệu...</div>
+				</div>
+			</div>
+		)
+	}
+
+	return (
+		<div className='space-y-6'>
+			<div className='flex items-center justify-between'>
+				<h2 className='text-2xl font-serif text-[#5A3E2B]'>Thống kê & Phân tích</h2>
+
+				{/* Date Range Controls */}
+				<div className='flex items-center gap-4'>
+					<div className='flex items-center gap-2'>
+						<label className='text-sm text-[#5A3E2B]'>Từ:</label>
+						<Input
+							type='date'
+							value={startDate}
+							max={endDate} // cannot choose after today
+							onChange={(e) => setStartDate(e.target.value)}
+							className='w-auto'
+						/>
+					</div>
+					<div className='flex items-center gap-2'>
+						<label className='text-sm text-[#5A3E2B]'>Đến:</label>
+						<Input
+							type='date'
+							value={endDate}
+							max={endDate}
+							readOnly // lock to today
+							className='w-auto'
+						/>
+					</div>
+					<Button
+						onClick={handleDateRangeChange}
+						disabled={loading}
+						className='bg-[#5A3E2B] hover:bg-[#5A3E2B]/90'
+					>
+						{loading ? 'Đang tải...' : 'Cập nhật'}
+					</Button>
+				</div>
+			</div>
+
+			{/* Revenue Chart */}
+			<Card className='p-6 bg-white border-[#5A3E2B]/10'>
+				<h3 className='text-lg font-serif text-[#5A3E2B] mb-4'>Doanh thu theo tháng</h3>
+				<ResponsiveContainer width='100%' height={400}>
+					<AreaChart data={data?.monthlyData || []}>
+						<CartesianGrid strokeDasharray='3 3' stroke='#5A3E2B20' />
+						<XAxis dataKey='month' stroke='#5A3E2B' />
+						<YAxis stroke='#5A3E2B' />
+						<Tooltip
+							contentStyle={{
+								backgroundColor: 'white',
+								border: '1px solid #5A3E2B20',
+								borderRadius: '8px',
+							}}
+							formatter={(value: number) => [`${value.toLocaleString('vi-VN')}₫`, 'Doanh thu']}
+						/>
+						<Area
+							type='monotone'
+							dataKey='revenue'
+							stroke='#5A3E2B'
+							fill='#5A3E2B20'
+							strokeWidth={2}
+						/>
+					</AreaChart>
+				</ResponsiveContainer>
+			</Card>
+
+			<Card className='p-6 bg-white border-[#5A3E2B]/10'>
+				<h3 className='text-lg font-serif text-[#5A3E2B] mb-4'>Xu hướng đơn hàng</h3>
+				<ResponsiveContainer width='100%' height={300}>
+					<LineChart data={data?.monthlyData || []}>
+						<CartesianGrid strokeDasharray='3 3' stroke='#5A3E2B20' />
+						<XAxis dataKey='month' stroke='#5A3E2B' />
+						<YAxis stroke='#5A3E2B' />
+						<Tooltip
+							contentStyle={{
+								backgroundColor: 'white',
+								border: '1px solid #5A3E2B20',
+								borderRadius: '8px',
+							}}
+							formatter={(value: number) => [value, 'Đơn hàng']}
+						/>
+						<Line
+							type='monotone'
+							dataKey='orders'
+							stroke='#87C1D8'
+							strokeWidth={3}
+							dot={{ fill: '#87C1D8' }}
+						/>
+					</LineChart>
+				</ResponsiveContainer>
+			</Card>
+
+			{/* Top Products */}
+			<Card className='p-6 bg-white border-[#5A3E2B]/10'>
+				<h3 className='text-lg font-serif text-[#5A3E2B] mb-4'>Sản phẩm bán chạy</h3>
+				<div className='overflow-x-auto'>
+					<table className='w-full'>
+						<thead>
+							<tr className='border-b border-[#5A3E2B]/10'>
+								<th className='text-left py-3 text-[#5A3E2B] font-medium'>Sản phẩm</th>
+								<th className='text-left py-3 text-[#5A3E2B] font-medium'>Số lượng bán</th>
+								<th className='text-left py-3 text-[#5A3E2B] font-medium'>Doanh thu</th>
+								<th className='text-left py-3 text-[#5A3E2B] font-medium'>Tỷ lệ</th>
+							</tr>
+						</thead>
+						<tbody>
+							{(data?.topProducts || []).map((product, index) => {
+								const maxSales = Math.max(...(data?.topProducts || []).map((p) => p.sales))
+								const percentage = maxSales > 0 ? Math.round((product.sales / maxSales) * 100) : 0
+
+								return (
+									<tr key={product.productId} className='border-b border-[#5A3E2B]/5'>
+										<td className='py-3'>
+											<div className='flex items-center gap-2'>
+												<span className='w-6 h-6 bg-[#5A3E2B] text-white rounded-full flex items-center justify-center text-sm font-medium'>
+													{index + 1}
+												</span>
+												<span className='text-[#5A3E2B] font-medium'>{product.name}</span>
+											</div>
+										</td>
+										<td className='py-3 text-[#5A3E2B]'>{product.sales}</td>
+										<td className='py-3 text-[#5A3E2B] font-medium'>
+											{product.revenue.toLocaleString('vi-VN')}₫
+										</td>
+										<td className='py-3'>
+											<div className='flex items-center gap-2'>
+												<div className='w-20 h-2 bg-[#EAEAEA] rounded-full overflow-hidden'>
+													<div
+														className='h-full bg-[#5A3E2B] rounded-full'
+														style={{ width: `${percentage}%` }}
+													/>
+												</div>
+												<span className='text-sm text-[#5A3E2B]/70'>{percentage}%</span>
+											</div>
+										</td>
+									</tr>
+								)
+							})}
+						</tbody>
+					</table>
+					{(!data?.topProducts || data.topProducts.length === 0) && (
+						<div className='text-center py-8 text-[#5A3E2B]/70'>
+							Không có dữ liệu sản phẩm bán chạy
+						</div>
+					)}
+				</div>
+			</Card>
+		</div>
+	)
 }
