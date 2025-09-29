@@ -8,7 +8,7 @@ namespace tayngangstudio_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CheckoutController(ICheckoutService _checkoutService, ILogger _logger) : ControllerBase
+    public class CheckoutController(ICheckoutService _checkoutService, ILogger<CheckoutController> _logger) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Checkout([FromBody] CheckoutRequestDTO dto)
