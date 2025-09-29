@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class x : Migration
+    public partial class A : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -206,9 +206,9 @@ namespace DataAccessLayer.Migrations
                 columns: new[] { "Id", "Description", "ImageUrl", "Name", "Price", "ProductCategoryId", "Quantity", "Rating", "Review" },
                 values: new object[,]
                 {
-                    { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 25000000.0, 1, 50, 4.5, 120 },
-                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 20000000.0, 2, 40, 4.2000000000000002, 95 },
-                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 45000000.0, 3, 20, 4.7999999999999998, 210 }
+                    { 1, "Điện thoại Apple", "iphone14.jpg", "iPhone 14", 2000.0, 1, 50, 4.5, 120 },
+                    { 2, "Điện thoại Samsung", "s23.jpg", "Samsung S23", 2000.0, 2, 40, 4.2000000000000002, 95 },
+                    { 3, "Laptop Apple", "macbook.jpg", "Macbook Pro", 2000.0, 3, 20, 4.7999999999999998, 210 }
                 });
 
             migrationBuilder.InsertData(

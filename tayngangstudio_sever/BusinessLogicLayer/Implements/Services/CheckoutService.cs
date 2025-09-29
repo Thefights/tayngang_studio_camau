@@ -80,26 +80,11 @@ namespace BusinessLogicLayer.Implements.Services
             return createPayment.checkoutUrl;
         }
 
-        //public async Task<string> VerifyPayment(int orderId)
-        //{
-        //    PaymentLinkInformation paymentLinkInformation = await _payOS.getPaymentLinkInformation(orderId);
-
-        //    if (paymentLinkInformation.status == "PAID")
-        //    {
-        //        var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId);
-        //        order.Status = OrderStatusEnum.Completed;
-        //        _unitOfWork.Repository<Order>().Update(order);
-        //        await _unitOfWork.SaveChangesAsync();
-        //    }
-
-        //    return paymentLinkInformation.status;
-        //}
-
         public async Task ConfirmWebhook(string webhookUrl)
         {
             await _payOS.confirmWebhook(webhookUrl);
         }
-        
+
         public async Task UpdateOrderStatus(long orderId)
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);

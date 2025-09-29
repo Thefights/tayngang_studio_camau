@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250928215154_x")]
-    partial class x
+    [Migration("20250929115153_A")]
+    partial class A
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -233,7 +233,7 @@ namespace DataAccessLayer.Migrations
                             Description = "Điện thoại Apple",
                             ImageUrl = "iphone14.jpg",
                             Name = "iPhone 14",
-                            Price = 25000000.0,
+                            Price = 2000.0,
                             ProductCategoryId = 1,
                             Quantity = 50,
                             Rating = 4.5,
@@ -245,7 +245,7 @@ namespace DataAccessLayer.Migrations
                             Description = "Điện thoại Samsung",
                             ImageUrl = "s23.jpg",
                             Name = "Samsung S23",
-                            Price = 20000000.0,
+                            Price = 2000.0,
                             ProductCategoryId = 2,
                             Quantity = 40,
                             Rating = 4.2000000000000002,
@@ -257,7 +257,7 @@ namespace DataAccessLayer.Migrations
                             Description = "Laptop Apple",
                             ImageUrl = "macbook.jpg",
                             Name = "Macbook Pro",
-                            Price = 45000000.0,
+                            Price = 2000.0,
                             ProductCategoryId = 3,
                             Quantity = 20,
                             Rating = 4.7999999999999998,

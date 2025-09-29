@@ -18,23 +18,23 @@ namespace tayngangstudio_sever.Controllers.Customer
             return Ok(new { PaymentLink = paymentLink });
         }
 
-        //[HttpPost("VerifyPayment/{orderId}")]
-        //public async Task<IActionResult> VerifyPayment(int orderId)
-        //{
-        //    var result = await _checkoutService.VerifyPayment(orderId);
-        //    return Ok(new { status = result });
-        //}
-
         [HttpPost("payos/webhook")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult PayOSWebhook(WebhookData? payload)
+        public async Task<IActionResult> PayOSWebhook([FromBody] WebhookData? payload)
         {
-            if (payload.code == "00")
+            // Nếu payload null (PayOS chỉ gọi verify), thì vẫn Ok
+            if (payload == null)
             {
-                _checkoutService.UpdateOrderStatus(payload.orderCode);
+                return Ok("Webhook verified");
             }
 
-            return Ok("Hehe");
+            if (payload.code == "00")
+            {
+                await _checkoutService.UpdateOrderStatus(payload.orderCode);
+            }
+
+            return Ok("Webhook received");
         }
+
     }
 }
