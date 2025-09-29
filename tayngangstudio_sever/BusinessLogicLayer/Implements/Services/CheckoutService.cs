@@ -13,6 +13,7 @@ namespace BusinessLogicLayer.Implements.Services
     {
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
         Task UpdateOrderStatus(long orderId, string orderCode);
+        Task CancelOrderByUserId(int userId);
     }
 
     public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper) : ICheckoutService
@@ -70,7 +71,7 @@ namespace BusinessLogicLayer.Implements.Services
                 items.Add(item);
             }
             var totalAmount = items.Sum(i => i.quantity * i.price);
-            var cancelUrl = "https://fptsoftware.com/";
+            var cancelUrl = "https://sotaycamau.vercel.app/checkout/cancel/";
             var returnUrl = "https://sotaycamau.vercel.app/checkout/success/";
 
             PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
@@ -80,30 +81,23 @@ namespace BusinessLogicLayer.Implements.Services
             return createPayment.checkoutUrl;
         }
 
-        public async Task ConfirmWebhook(string webhookUrl)
-        {
-            await _payOS.confirmWebhook(webhookUrl);
-        }
-
-        public async Task UpdateOrderStatus(long orderId, string? orderCode)
+        public async Task UpdateOrderStatus(long orderId)
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync((int)orderId);
 
-            if (orderCode == null)
-            {
+            order.Status = OrderStatusEnum.Completed;
 
-                order.Status = OrderStatusEnum.Canceled;
+            _unitOfWork.Repository<Order>().Update(order);
+            await _unitOfWork.SaveChangesAsync();
+        }
 
-                _unitOfWork.Repository<Order>().Update(order);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            else
-            {
-                order.Status = OrderStatusEnum.Completed;
+        public async Task CancelOrderByUserId(int userId)
+        {
+            var order = await _unitOfWork.Repository<Order>().GetLastedRecord(o => o.UserId == userId && o.Status == OrderStatusEnum.Pending, orderBy: o => o.OrderDate);
+            order.Status = OrderStatusEnum.Canceled;
 
-                _unitOfWork.Repository<Order>().Update(order);
-                await _unitOfWork.SaveChangesAsync();
-            }
+            _unitOfWork.Repository<Order>().Update(order);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private async Task<GetProductDTO> GetProductById(int productId)
@@ -116,6 +110,11 @@ namespace BusinessLogicLayer.Implements.Services
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId, ["OrderDetails"]);
             return _mapper.Map<GetOrderDTO>(order);
+        }
+
+        public Task UpdateOrderStatus(long orderId, string orderCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

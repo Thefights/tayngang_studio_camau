@@ -10,6 +10,7 @@ namespace DataAccessLayer.Repository.Base
         public Task<List<T>> GetAllAsync(string[]? _include = null);
         public Task<T?> GetByIdAsync(int? id, string[]? _include = null);
         public Task<T?> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
+        Task<T?> GetLastedRecord(Expression<Func<T, bool>> predicate, string[]? _include = null, Expression<Func<T, object>>? orderBy = null);
         public Task<List<T>> GetListByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
         public Task<T> CreateAsync(T entity);
         public T Update(T entity);
@@ -48,6 +49,18 @@ namespace DataAccessLayer.Repository.Base
 
             return entity;
         }
+
+        public async Task<T?> GetLastedRecord(Expression<Func<T, bool>> predicate, string[]? _include = null, Expression<Func<T, object>>? orderBy = null)
+        {
+            var query = ApplyIncludes(_dbContext.Set<T>(), _include).Where(predicate);
+
+            if (orderBy != null)
+                query = query.OrderByDescending(orderBy);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+
 
         public async Task<List<T>> GetListByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
         {
