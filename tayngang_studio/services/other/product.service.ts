@@ -28,12 +28,8 @@ export const fetchProductFeatures = async () => {
 };
 
 export const fetchProductByCategory = async (categoryName: string) => {
-  try {
-    return await axiosInstance.get(`product/category/${categoryName}`);
-  } catch (error) {
-    console.error("Error fetching product categories:", error);
-    throw error;
-  }
+  const response = await axiosInstance.get(`product/category/${categoryName}`);
+  return response || [];
 };
 
 export const searchProduct = async (name: string) => {

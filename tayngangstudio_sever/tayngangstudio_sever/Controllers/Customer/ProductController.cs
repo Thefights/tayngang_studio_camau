@@ -47,14 +47,14 @@ namespace tayngangstudio_sever.Controllers.Customer
         }
 
         [HttpGet("category/{name}")]
-        public async Task<IActionResult> GetProductsByCategory(string name)
+        public async Task<IActionResult> GetProductsByCategory(string? name)
         {
             var products = await _service.GetProductsByCategory(name);
 
-            if (products == null || !products.Any())
-            {
-                return NotFound("No products found in this category.");
-            }
+            //if (products == null || !products.Any())
+            //{
+            //    return NotFound("No products found in this category.");
+            //}
 
             return Ok(products);
         }

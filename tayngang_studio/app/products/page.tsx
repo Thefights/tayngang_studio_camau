@@ -122,7 +122,15 @@ export default function ProductsPage() {
       {/* Products Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <ProductGallery products={products} addToCart={addToCart} />
+          {products.length === 0 ? (
+            <div className="text-center text-gray-500 py-12">
+              <p className="text-lg font-medium">
+                Không có sản phẩm nào được tìm thấy
+              </p>
+            </div>
+          ) : (
+            <ProductGallery products={products} addToCart={addToCart} />
+          )}
         </div>
       </section>
     </div>

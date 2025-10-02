@@ -46,7 +46,7 @@ export function ProductDetail({ product }: { product: any }) {
             <AnimatePresence mode="wait">
               <motion.img
                 key={selectedImage}
-                src={product.imageUrl[selectedImage] || "/placeholder.svg"}
+                src={product.imageUrl}
                 alt={product.name}
                 className="w-full h-full object-cover"
                 initial={{ opacity: 0, scale: 1.1 }}
