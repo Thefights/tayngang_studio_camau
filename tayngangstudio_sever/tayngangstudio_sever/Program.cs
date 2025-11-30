@@ -63,7 +63,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: QuachKhangOrigin,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000", "https://sotaycamau.vercel.app")
+                          policy.WithOrigins("http://localhost:3000", "https://sotaycamau.vercel.app", "https://sotaycamau.vercel.app")
                                 .AllowAnyMethod()
                                 .AllowAnyHeader()
                                 .AllowCredentials();
@@ -73,6 +73,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await context.Database.MigrateAsync();
+}
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
