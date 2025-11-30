@@ -24,6 +24,7 @@ services:
       - PayOSConfig__ClientId=${PAYOS_CLIENT_ID}
       - PayOSConfig__ApiKey=${PAYOS_API_KEY}
       - PayOSConfig__ChecksumKey=${PAYOS_CHECKSUM_KEY}
+      - FrontendUrl=${FRONTEND_URL:-http://localhost:3000}
     ports:
       - "${APP_PORT:-5001}:8080"
     networks:
