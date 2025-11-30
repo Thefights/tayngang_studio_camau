@@ -16,7 +16,7 @@ namespace BusinessLogicLayer.Implements.Services
         Task CancelOrderByUserId(int userId);
     }
 
-    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper) : ICheckoutService
+    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper, AppConfiguration _configuration) : ICheckoutService
     {
         public async Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod)
         {
@@ -71,8 +71,8 @@ namespace BusinessLogicLayer.Implements.Services
                 items.Add(item);
             }
             var totalAmount = items.Sum(i => i.quantity * i.price);
-            var cancelUrl = "https://sotaycamau.vercel.app/checkout/cancel/";
-            var returnUrl = "https://sotaycamau.vercel.app/checkout/success/";
+            var cancelUrl = $"{_configuration.FrontendUrl}/checkout/cancel";
+            var returnUrl = $"{_configuration.FrontendUrl}/checkout/success";
 
             PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
 

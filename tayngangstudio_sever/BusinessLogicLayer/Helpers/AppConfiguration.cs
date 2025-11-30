@@ -7,6 +7,7 @@ namespace BusinessLogicLayer.Helpers
         public R2Config R2Config { get; set; } = null!;
         public SmtpSettings SmtpSettings { get; set; } = null!;
         public PayOSConfig PayOsConfig { get; set; } = null!;
+        public string FrontendUrl { get; set; } = "http://localhost:3000";
     }
 
     public class AppSettings
