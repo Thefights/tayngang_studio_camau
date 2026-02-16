@@ -39,7 +39,7 @@ namespace tayngangstudio_sever.Controllers.Customer
             }
             catch (Exception ex)
             {
-                return Ok(new { code = -1, message = ex.Message });
+                return Ok(new { code = -1, message = ex.Message + "test" });
             }
         }
 
