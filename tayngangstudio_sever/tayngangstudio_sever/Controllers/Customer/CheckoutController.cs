@@ -34,7 +34,7 @@ namespace tayngangstudio_sever.Controllers.Customer
             {
                 WebhookData data = _payOS.verifyPaymentWebhookData(payload);
 
-                await _checkoutService.UpdateOrderStatus(data.orderCode, data.code);
+                await _checkoutService.UpdateOrderStatus(data.orderCode);
                 return Ok(new { code = "00", message = "acknowledged" });
             }
             catch (Exception ex)

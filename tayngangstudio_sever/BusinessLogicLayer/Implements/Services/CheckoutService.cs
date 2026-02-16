@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     public interface ICheckoutService
     {
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
-        Task UpdateOrderStatus(long orderId, string orderCode);
+        Task UpdateOrderStatus(long orderId);
         Task CancelOrderByUserId(int userId);
     }
 
@@ -58,7 +58,7 @@ namespace BusinessLogicLayer.Implements.Services
             var order = await GetOrderById(orderId);
             string description = "Order Payment";
 
-            List<ItemData> items = new List<ItemData>();
+            List<ItemData> items = [];
 
             foreach (var detail in order.OrderDetails)
             {
@@ -110,11 +110,6 @@ namespace BusinessLogicLayer.Implements.Services
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId, ["OrderDetails"]);
             return _mapper.Map<GetOrderDTO>(order);
-        }
-
-        public Task UpdateOrderStatus(long orderId, string orderCode)
-        {
-            throw new NotImplementedException();
         }
     }
 }
