@@ -37,9 +37,9 @@ namespace tayngangstudio_sever.Controllers.Customer
                 await _checkoutService.UpdateOrderStatus(data.orderCode, data.code);
                 return Ok(new { code = "00", message = "acknowledged" });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return Ok(new { code = -1, message = "handled with error" });
+                return Ok(new { code = -1, message = ex.Message });
             }
         }
 
