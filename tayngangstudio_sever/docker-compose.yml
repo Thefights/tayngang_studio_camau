@@ -1,0 +1,36 @@
+services:
+  tayngangstudio_sever:
+    image: ${DOCKER_REGISTRY-}tayngangstudiosever
+    build:
+      context: .
+      dockerfile: tayngangstudio_sever/Dockerfile
+    container_name: tayngang_studio_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS:-8080}
+      - ConnectionStrings__TayNgangDb=Server=${DB_SERVER:-localhost,1433};Database=${DB_NAME:-TayNgangStudio};User Id=sa;Password=${SA_PASSWORD:-Phuckhang@123};TrustServerCertificate=True;
+      - AppSettings__SecretKey=${JWT_SECRET_KEY:-TayNgangStudioCucDinhhahahahahahahaahahha1232183y831489y81y8491394y831y882287348}
+      - SmtpSettings__Server=${SMTP_SERVER:-smtp.gmail.com}
+      - SmtpSettings__Port=${SMTP_PORT:-587}
+      - SmtpSettings__FromAddress=${SMTP_FROM:-TayNgangStudio}
+      - SmtpSettings__Username=${SMTP_USERNAME:-sinltbce182093@fpt.edu.vn}
+      - SmtpSettings__Password=${SMTP_PASSWORD}
+      - SmtpSettings__EnableSsl=${SMTP_ENABLE_SSL:-true}
+      - R2Config__AccountId=${R2_ACCOUNT_ID:-e91133086c78e9412bbf49c26171c097}
+      - R2Config__AccessKeyId=${R2_ACCESS_KEY_ID}
+      - R2Config__SecretAccessKey=${R2_SECRET_ACCESS_KEY}
+      - R2Config__Bucket=${R2_BUCKET:-tayngang}
+      - R2Config__PublicBaseUrl=${R2_PUBLIC_URL:-https://pub-6995e0289b7b405b86d73ddb384a1799.r2.dev}
+      - PayOSConfig__ClientId=${PAYOS_CLIENT_ID}
+      - PayOSConfig__ApiKey=${PAYOS_API_KEY}
+      - PayOSConfig__ChecksumKey=${PAYOS_CHECKSUM_KEY}
+      - FrontendUrl=${FRONTEND_URL:-http://localhost:3000}
+    ports:
+      - "${APP_PORT:-5001}:8080"
+    networks:
+      - tayngang_network
+    restart: unless-stopped
+
+networks:
+  tayngang_network:
+    driver: bridge

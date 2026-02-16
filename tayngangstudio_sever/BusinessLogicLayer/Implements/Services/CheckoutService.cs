@@ -12,11 +12,11 @@ namespace BusinessLogicLayer.Implements.Services
     public interface ICheckoutService
     {
         Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod);
-        Task UpdateOrderStatus(long orderId, string orderCode);
+        Task UpdateOrderStatus(long orderId);
         Task CancelOrderByUserId(int userId);
     }
 
-    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper) : ICheckoutService
+    public class CheckoutService(IUnitOfWork _unitOfWork, IOrderService _orderService, PayOS _payOS, IMapper _mapper, AppConfiguration _configuration) : ICheckoutService
     {
         public async Task<string> Checkout(int userId, PaymentMethodEnum paymentMethod)
         {
@@ -58,7 +58,7 @@ namespace BusinessLogicLayer.Implements.Services
             var order = await GetOrderById(orderId);
             string description = "Order Payment";
 
-            List<ItemData> items = new List<ItemData>();
+            List<ItemData> items = [];
 
             foreach (var detail in order.OrderDetails)
             {
@@ -71,8 +71,8 @@ namespace BusinessLogicLayer.Implements.Services
                 items.Add(item);
             }
             var totalAmount = items.Sum(i => i.quantity * i.price);
-            var cancelUrl = "https://sotaycamau.vercel.app/checkout/cancel/";
-            var returnUrl = "https://sotaycamau.vercel.app/checkout/success/";
+            var cancelUrl = $"{_configuration.FrontendUrl}/checkout/cancel";
+            var returnUrl = $"{_configuration.FrontendUrl}/checkout/success";
 
             PaymentData paymentData = new PaymentData(orderId, totalAmount, description, items, cancelUrl, returnUrl);
 
@@ -110,11 +110,6 @@ namespace BusinessLogicLayer.Implements.Services
         {
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(orderId, ["OrderDetails"]);
             return _mapper.Map<GetOrderDTO>(order);
-        }
-
-        public Task UpdateOrderStatus(long orderId, string orderCode)
-        {
-            throw new NotImplementedException();
         }
     }
 }

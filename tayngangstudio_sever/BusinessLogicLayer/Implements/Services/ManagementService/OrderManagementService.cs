@@ -17,7 +17,7 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
         Task UpdateStatusAsync(int id, OrderStatusEnum status);
     }
 
-    public class OrderManagementService(IUnitOfWork _unitOfWork, IMapper _mapper, PayOS _payOS) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails.Product"]), IOrderManagementService
+    public class OrderManagementService(IUnitOfWork _unitOfWork, IMapper _mapper, PayOS _payOS, AppConfiguration _configuration) : CrudService<CreateOrderDTO, GetOrderDTO, UpdateOrderDTO, Order>(_unitOfWork, _mapper, ["OrderDetails.Product"]), IOrderManagementService
     {
         public override async Task<GetOrderDTO> CreateAsync(CreateOrderDTO dto)
         {
@@ -58,8 +58,8 @@ namespace BusinessLogicLayer.Implements.Services.ManagementService
                 }
 
                 var totalAmount = items.Sum(i => i.quantity * i.price);
-                var cancelUrl = "https://fptsoftware.com/";
-                var returnUrl = "https://fptsoftware.com/";
+                var cancelUrl = $"{_configuration.FrontendUrl}/checkout/cancel";
+                var returnUrl = $"{_configuration.FrontendUrl}/checkout/success";
 
                 var paymentId = long.Parse(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString());
 

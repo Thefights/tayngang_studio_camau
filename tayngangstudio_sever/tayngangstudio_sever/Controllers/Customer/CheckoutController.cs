@@ -34,12 +34,12 @@ namespace tayngangstudio_sever.Controllers.Customer
             {
                 WebhookData data = _payOS.verifyPaymentWebhookData(payload);
 
-                await _checkoutService.UpdateOrderStatus(data.orderCode, data.code);
+                await _checkoutService.UpdateOrderStatus(data.orderCode);
                 return Ok(new { code = "00", message = "acknowledged" });
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return Ok(new { code = -1, message = "handled with error" });
+                return Ok(new { code = -1, message = ex.Message + "test" });
             }
         }
 
