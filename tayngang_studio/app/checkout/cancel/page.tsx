@@ -12,7 +12,6 @@ export default function CheckoutCancelPage() {
     const handleCancel = async () => {
       try {
         await cancelOrder();
-        console.log("Order cancelled");
       } catch (error) {
         console.error("Cancel order failed:", error);
       }

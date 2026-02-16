@@ -40,7 +40,7 @@ export function AccountDashboard() {
   const updateProfile = async (
     name: string,
     phone: string,
-    address: string
+    address: string,
   ) => {
     try {
       await userData.updateUserProfile(name, phone, address);
@@ -58,7 +58,6 @@ export function AccountDashboard() {
     const loadOrders = async () => {
       const userOrders = await orderData.getOrders();
       setOrders(userOrders);
-      console.log(userOrders);
     };
 
     loadUserProfile();
@@ -199,7 +198,7 @@ export function AccountDashboard() {
                           <span className="text-[#5A3E2B]/70">Ngày đặt:</span>
                           <p className="text-[#5A3E2B] font-medium">
                             {new Date(order.orderDate).toLocaleDateString(
-                              "vi-VN"
+                              "vi-VN",
                             )}
                           </p>
                         </div>

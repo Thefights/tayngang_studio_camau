@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<number | undefined>(
-    undefined
+    undefined,
   );
 
   const handleCheckout = async () => {
@@ -16,13 +16,10 @@ export default function CheckoutPage() {
 
     try {
       const response = await checkoutData.checkout({ paymentMethod });
-      console.log("Checkout response:", response);
       // Kiểm tra response có paymentUrl không
       if (response?.paymentLink) {
-        console.log("Redirecting to PayOS:", response.paymentLink);
         window.location.href = response.paymentLink; // sang PayOS
       } else {
-        console.log("No payment link, COD order:", response);
         window.location.href = "/checkout/success"; // sang trang thành công
       }
     } catch (error) {
