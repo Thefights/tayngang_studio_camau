@@ -24,15 +24,13 @@ export function CheckoutForm({
 
   const total = cartItems.reduce(
     (sum: number, item: any) => sum + item.unitPrice * item.quantity,
-    0
+    0,
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleCheckout();
   };
-
-  console.log("Selected payment method:", paymentMethod);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -151,7 +149,7 @@ export function CheckoutForm({
                         </span>
                         <span className="font-medium text-[#5A3E2B]">
                           {(item.unitPrice * item.quantity).toLocaleString(
-                            "vi-VN"
+                            "vi-VN",
                           )}
                           ₫
                         </span>

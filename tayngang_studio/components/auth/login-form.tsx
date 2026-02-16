@@ -1,202 +1,209 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import { loginSchema } from '@/lib/validations/auth.validation'
-import { authService } from '@/services/other/auth.service'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { motion } from 'framer-motion'
-import { ArrowRight, Eye, EyeOff, Lock, Mail } from 'lucide-react'
-import Link from 'next/link'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import * as yup from 'yup'
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { loginSchema } from "@/lib/validations/auth.validation";
+import { authService } from "@/services/other/auth.service";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { motion } from "framer-motion";
+import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as yup from "yup";
 
-type LoginFormData = yup.InferType<typeof loginSchema>
+type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export function LoginForm() {
-	const [showPassword, setShowPassword] = useState(false)
-	const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		control,
-	} = useForm<LoginFormData>({
-		resolver: yupResolver(loginSchema),
-	})
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema),
+  });
 
-	const onSubmit = async (data: LoginFormData) => {
-		setIsLoading(true)
-		try {
-			const response = await authService.login({
-				email: data.email,
-				password: data.password,
-			})
-			console.log(response)
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    try {
+      const response = await authService.login({
+        email: data.email,
+        password: data.password,
+      });
 
-			if (response.data.accessToken) {
-				const role = response.data.role
-				toast.success('Login successful!')
-				if (role === 'Admin') {
-					window.location.href = '/admin'
-				} else if (role === 'Customer') {
-					window.location.href = '/'
-				} else {
-					window.location.href = '/account'
-				}
-			} else {
-				toast.error('Login failed. Please try again.')
-			}
-		} catch (err: any) {
-			toast.error(err.response?.data?.message || err.message)
-		} finally {
-			setIsLoading(false)
-		}
-	}
+      if (response.data.accessToken) {
+        const role = response.data.role;
+        toast.success("Login successful!");
+        if (role === "Admin") {
+          window.location.href = "/admin";
+        } else if (role === "Customer") {
+          window.location.href = "/";
+        } else {
+          window.location.href = "/account";
+        }
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-	return (
-		<div className='max-w-md mx-auto px-4 sm:px-6 lg:px-8'>
-			<motion.div
-				className='text-center mb-8'
-				initial={{ opacity: 0, y: -20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.6, ease: 'easeOut' }}
-			>
-				<h1 className='text-3xl font-serif text-[#5A3E2B] mb-2'>Đăng nhập</h1>
-				<p className='text-[#5A3E2B]/70'>Chào mừng bạn quay trở lại!</p>
-			</motion.div>
+  return (
+    <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div
+        className="text-center mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <h1 className="text-3xl font-serif text-[#5A3E2B] mb-2">Đăng nhập</h1>
+        <p className="text-[#5A3E2B]/70">Chào mừng bạn quay trở lại!</p>
+      </motion.div>
 
-			<motion.div
-				initial={{ opacity: 0, y: 20 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-			>
-				<Card className='p-8 bg-white border-[#5A3E2B]/10 shadow-lg'>
-					<form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-						{/* Email Field */}
-						<motion.div
-							className='space-y-2'
-							initial={{ opacity: 0, x: -20 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.5, delay: 0.3 }}
-						>
-							<Label htmlFor='email' className='text-[#5A3E2B] font-medium'>
-								Email
-							</Label>
-							<div className='relative'>
-								<Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50' />
-								<Input
-									id='email'
-									type='email'
-									{...register('email')}
-									className='pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
-									placeholder='your@email.com'
-								/>
-								{errors.email && (
-									<p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>
-								)}
-							</div>
-						</motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+      >
+        <Card className="p-8 bg-white border-[#5A3E2B]/10 shadow-lg">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Email Field */}
+            <motion.div
+              className="space-y-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <Label htmlFor="email" className="text-[#5A3E2B] font-medium">
+                Email
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50" />
+                <Input
+                  id="email"
+                  type="email"
+                  {...register("email")}
+                  className="pl-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20"
+                  placeholder="your@email.com"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+            </motion.div>
 
-						{/* Password Field */}
-						<motion.div
-							className='space-y-2'
-							initial={{ opacity: 0, x: -20 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.5, delay: 0.4 }}
-						>
-							<Label htmlFor='password' className='text-[#5A3E2B] font-medium'>
-								Mật khẩu
-							</Label>
-							<div className='relative'>
-								<Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50' />
-								<Input
-									id='password'
-									type={showPassword ? 'text' : 'password'}
-									{...register('password')}
-									className='pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20'
-									placeholder='••••••••'
-								/>
-								<button
-									type='button'
-									onClick={() => setShowPassword(!showPassword)}
-									className='absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5A3E2B]/50 hover:text-[#5A3E2B] transition-colors'
-								>
-									{showPassword ? <EyeOff className='w-4 h-4' /> : <Eye className='w-4 h-4' />}
-								</button>
-							</div>
-							{errors.password && (
-								<p className='text-red-500 text-sm mt-1'>{errors.password.message}</p>
-							)}
-						</motion.div>
+            {/* Password Field */}
+            <motion.div
+              className="space-y-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Label htmlFor="password" className="text-[#5A3E2B] font-medium">
+                Mật khẩu
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A3E2B]/50" />
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  className="pl-10 pr-10 border-[#5A3E2B]/20 focus:border-[#5A3E2B] bg-white transition-all duration-300 focus:ring-2 focus:ring-[#5A3E2B]/20"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#5A3E2B]/50 hover:text-[#5A3E2B] transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </motion.div>
 
-						{/*  Forgot Password */}
-						<motion.div
-							className='flex items-center justify-between'
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ duration: 0.5, delay: 0.5 }}
-						>
-							<Link
-								href='/auth/forgot-password'
-								className='text-sm text-[#87C1D8] hover:text-[#5A3E2B] transition-colors'
-							>
-								Quên mật khẩu?
-							</Link>
-						</motion.div>
+            {/*  Forgot Password */}
+            <motion.div
+              className="flex items-center justify-between"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm text-[#87C1D8] hover:text-[#5A3E2B] transition-colors"
+              >
+                Quên mật khẩu?
+              </Link>
+            </motion.div>
 
-						{/* Login Button */}
-						<motion.div
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.5, delay: 0.6 }}
-						>
-							<Button
-								type='submit'
-								disabled={isLoading}
-								className='w-full bg-[#5A3E2B] hover:bg-[#5A3E2B]/90 text-white py-3 text-base font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg'
-							>
-								{isLoading ? (
-									<div className='flex items-center gap-2'>
-										<div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin' />
-										Đang đăng nhập...
-									</div>
-								) : (
-									<>
-										Đăng nhập
-										<ArrowRight className='w-4 h-4' />
-									</>
-								)}
-							</Button>
-						</motion.div>
+            {/* Login Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-[#5A3E2B] hover:bg-[#5A3E2B]/90 text-white py-3 text-base font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Đang đăng nhập...
+                  </div>
+                ) : (
+                  <>
+                    Đăng nhập
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </Button>
+            </motion.div>
 
-						{/* Divider */}
-						<motion.div
-							className='relative'
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ duration: 0.5, delay: 0.7 }}
-						>
-							<Separator className='bg-[#5A3E2B]/10' />
-							<span className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-sm text-[#5A3E2B]/60'>
-								hoặc
-							</span>
-						</motion.div>
+            {/* Divider */}
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <Separator className="bg-[#5A3E2B]/10" />
+              <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-sm text-[#5A3E2B]/60">
+                hoặc
+              </span>
+            </motion.div>
 
-						{/* Social Login */}
-						<motion.div
-							className='space-y-3'
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.5, delay: 0.8 }}
-						>
-							{/* <Button
+            {/* Social Login */}
+            <motion.div
+              className="space-y-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
+              {/* <Button
 								type='button'
 								variant='outline'
 								className='w-full border-[#5A3E2B]/20 text-[#5A3E2B] hover:bg-[#5A3E2B]/5 bg-white transition-all duration-300 hover:scale-[1.02]'
@@ -221,28 +228,28 @@ export function LoginForm() {
 								</svg>
 								Đăng nhập với Google
 							</Button> */}
-						</motion.div>
-					</form>
+            </motion.div>
+          </form>
 
-					{/* Register Link */}
-					<motion.div
-						className='mt-8 text-center'
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ duration: 0.5, delay: 0.9 }}
-					>
-						<p className='text-[#5A3E2B]/70'>
-							Chưa có tài khoản?{' '}
-							<Link
-								href='/auth/register'
-								className='text-[#87C1D8] hover:text-[#5A3E2B] font-medium transition-colors'
-							>
-								Đăng ký ngay
-							</Link>
-						</p>
-					</motion.div>
-				</Card>
-			</motion.div>
-		</div>
-	)
+          {/* Register Link */}
+          <motion.div
+            className="mt-8 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.9 }}
+          >
+            <p className="text-[#5A3E2B]/70">
+              Chưa có tài khoản?{" "}
+              <Link
+                href="/auth/register"
+                className="text-[#87C1D8] hover:text-[#5A3E2B] font-medium transition-colors"
+              >
+                Đăng ký ngay
+              </Link>
+            </p>
+          </motion.div>
+        </Card>
+      </motion.div>
+    </div>
+  );
 }
